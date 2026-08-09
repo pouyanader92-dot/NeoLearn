@@ -28,142 +28,69 @@
             --neon-pink: #ff00ff;
             --bg-dark: #050510;
         }
-
         * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
-        body { 
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            margin: 0; 
-            overflow-x: hidden;
-        }
-
-        .bg-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
-        }
-        .glow-circle {
-            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 12s ease-in-out infinite;
-        }
+        body { background-color: var(--bg-dark); color: #fff; margin: 0; overflow-x: hidden; }
+        
+        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 12s ease-in-out infinite; }
         .c1 { width: 500px; height: 500px; background: var(--neon-purple); top: -100px; right: -100px; }
         .c2 { width: 400px; height: 400px; background: var(--neon-cyan); bottom: -50px; left: -50px; animation-delay: 4s; }
-        
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, 30px); } }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 3px; }
 
-        .glass { 
-            background: rgba(20, 20, 35, 0.6); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255,255,255,0.08); 
-            border-radius: 1.5rem; 
-        }
-        
+        .glass { background: rgba(20, 20, 35, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; }
         .neon-text { text-shadow: 0 0 10px rgba(188, 19, 254, 0.6); }
         .cyan-glow { box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); border-color: var(--neon-cyan) !important; }
         .purple-glow { box-shadow: 0 0 15px rgba(188, 19, 254, 0.3); border-color: var(--neon-purple) !important; }
 
-        .btn-brand { 
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink)); 
-            color: white; 
-            transition: 0.3s; 
-            position: relative;
-            overflow: hidden;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-brand:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 20px rgba(188, 19, 254, 0.5); 
-        }
-        .btn-brand::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-        }
+        .btn-brand { background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink)); color: white; transition: 0.3s; position: relative; overflow: hidden; border: none; cursor: pointer; }
+        .btn-brand:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(188, 19, 254, 0.5); }
+        .btn-brand::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); transition: 0.5s; }
         .btn-brand:hover::after { left: 100%; }
 
-        .btn-outline { 
-            background: transparent; 
-            border: 1px solid rgba(0, 255, 255, 0.3); 
-            color: var(--neon-cyan); 
-            transition: 0.3s; 
-            cursor: pointer;
-        }
-        .btn-outline:hover { 
-            background: rgba(0, 255, 255, 0.1); 
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
-        }
+        .btn-outline { background: transparent; border: 1px solid rgba(0, 255, 255, 0.3); color: var(--neon-cyan); transition: 0.3s; cursor: pointer; }
+        .btn-outline:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
 
-        input, select { 
-            background: rgba(0,0,0,0.5); 
-            border: 1px solid #333; 
+        /* استایل جدید و بهبود یافته برای اینپوت‌ها */
+        input, select, textarea { 
+            background: rgba(0,0,0,0.6); 
+            border: 1px solid rgba(255,255,255,0.1); 
             border-radius: 0.75rem; 
-            padding: 0.75rem; 
+            padding: 1rem; 
             color: #fff; 
             width: 100%; 
             transition: 0.3s; 
+            font-size: 1rem;
         }
-        input:focus, select:focus { 
+        input:focus, select:focus, textarea:focus { 
             border-color: var(--neon-purple); 
             outline: none; 
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2); 
+            box-shadow: 0 0 0 3px rgba(188, 19, 254, 0.2); 
+            background: rgba(0,0,0,0.8);
         }
+        input::placeholder { color: #555; }
 
-        .method-card { 
-            transition: 0.4s; 
-            position: relative; 
-            overflow: hidden; 
-        }
-        .method-card:hover { 
-            transform: translateY(-5px); 
-            border-color: var(--neon-cyan); 
-            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1); 
-        }
-        .method-card.locked { 
-            opacity: 0.6; 
-            filter: grayscale(80%); 
-            pointer-events: none; 
-            border-color: rgba(239, 68, 68, 0.2); 
-        }
-        .method-card.locked .lock-icon { color: #ef4444; }
+        .method-card { transition: 0.4s; position: relative; overflow: hidden; }
+        .method-card:hover { transform: translateY(-5px); border-color: var(--neon-cyan); box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1); }
+        .method-card.locked { opacity: 0.6; filter: grayscale(80%); pointer-events: none; border-color: rgba(239, 68, 68, 0.2); }
         
-        .level-badge { 
-            background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(188,19,254,0.2)); 
-            border: 1px solid rgba(0,255,255,0.3); 
-            color: #fff; 
-            padding: 0.25rem 0.75rem; 
-            border-radius: 0.5rem; 
-            font-size: 0.7rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-        }
+        .level-badge { background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(188,19,254,0.2)); border: 1px solid rgba(0,255,255,0.3); color: #fff; padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         
-        .xp-tube {
-            height: 8px; background: #222; border-radius: 4px; overflow: hidden; position: relative;
-        }
-        .xp-fill {
-            height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); 
-            border-radius: 4px; transition: width 1s ease-in-out; box-shadow: 0 0 10px var(--neon-cyan);
-        }
+        .xp-tube { height: 8px; background: #222; border-radius: 4px; overflow: hidden; position: relative; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); border-radius: 4px; transition: width 1s ease-in-out; box-shadow: 0 0 10px var(--neon-cyan); }
 
         @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         .anim-pop { animation: fadeInUp 0.6s ease-out forwards; }
-        
-        .grid-bg {
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
+        .grid-bg { background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; }
 
-        .task-checkbox {
-            width: 24px; height: 24px; border-radius: 6px; border: 2px solid #444;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;
-        }
-        .task-checkbox.done {
-            background: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan);
-        }
+        .task-checkbox { width: 24px; height: 24px; border-radius: 6px; border: 2px solid #444; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .task-checkbox.done { background: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); }
         .task-item.done span { text-decoration: line-through; opacity: 0.5; }
+
+        /* استایل مودال فضای کار متد */
+        .workspace-modal { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; p-4; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="min-h-screen grid-bg">
@@ -175,23 +102,47 @@
 
 <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden glass px-8 py-3 rounded-full text-sm font-medium border border-purple-500/30"></div>
 
+<!-- Auth Modal -->
 <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
     <div class="glass p-10 w-full max-w-md anim-pop relative purple-glow">
         <button onclick="hideAuthModal()" class="absolute top-4 left-4 text-neutral-400 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
         <div class="text-center mb-8">
             <div class="w-20 h-20 mx-auto rounded-2xl btn-brand flex items-center justify-center text-3xl font-bold mb-4 shadow-lg">N</div>
             <h2 id="auth-title" class="text-3xl font-bold neon-text">ورود به نئولرن</h2>
-            <p class="text-sm text-neutral-400 mt-2">پلتفرم یادگیری هوشمند</p>
         </div>
-        <div class="space-y-4">
-            <input id="auth-username" type="text" placeholder="نام کاربری (انگلیسی)" class="text-center">
-            <input id="auth-password" type="password" placeholder="رمز عبور" class="text-center" onkeydown="if(event.key==='Enter')doAuth()">
-            <button id="auth-btn" onclick="doAuth()" class="w-full py-3 btn-brand rounded-xl font-bold text-lg">ورود</button>
+        <div class="space-y-5">
+            <input id="auth-username" type="text" placeholder="نام کاربری (انگلیسی)">
+            <input id="auth-password" type="password" placeholder="رمز عبور" onkeydown="if(event.key==='Enter')doAuth()">
+            <button id="auth-btn" onclick="doAuth()" class="w-full py-4 btn-brand rounded-xl font-bold text-lg">ورود</button>
             <p id="auth-switch" class="text-center text-sm text-neutral-400">حساب ندارید؟ <a class="text-cyan-400 cursor-pointer hover:text-cyan-300" onclick="toggleAuthMode('register')">ثبت‌نام کنید</a></p>
         </div>
     </div>
 </div>
 
+<!-- Method Workspace Modal -->
+<div id="workspace-modal" class="workspace-modal">
+    <div class="glass w-full max-w-2xl m-4 anim-pop relative max-h-[90vh] overflow-y-auto">
+        <button onclick="closeWorkspace()" class="absolute top-4 left-4 text-neutral-400 hover:text-white z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+        <div class="p-8">
+            <div class="flex items-center gap-3 mb-6 border-b border-white/10 pb-4">
+                <div id="ws-icon" class="w-12 h-12 rounded-xl btn-brand flex items-center justify-center"></div>
+                <div>
+                    <h2 id="ws-title" class="text-2xl font-bold"></h2>
+                    <p id="ws-desc" class="text-sm text-neutral-400"></p>
+                </div>
+            </div>
+            <div id="ws-content" class="min-h-[200px]"></div>
+            <div class="mt-8 flex justify-end gap-3">
+                <button onclick="closeWorkspace()" class="btn-outline px-6 py-3 rounded-xl">بستن</button>
+                <button id="ws-complete-btn" onclick="completeWorkspace()" class="btn-brand px-6 py-3 rounded-xl font-bold flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i> تکمیل و دریافت XP
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- App Layout -->
 <div id="app" class="hidden max-w-6xl mx-auto p-4 md:p-8 pb-20">
     <nav class="flex items-center justify-between mb-10 glass px-6 py-4 rounded-2xl sticky top-4 z-40">
         <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
@@ -201,9 +152,7 @@
         <div class="flex items-center gap-3 md:gap-4">
             <div class="hidden md:flex items-center gap-3">
                 <span class="text-sm text-neutral-400">سطح <b id="nav-level" class="text-cyan-400">1</b></span>
-                <div class="w-32 xp-tube">
-                    <div id="nav-xp-bar" class="xp-fill" style="width:0%"></div>
-                </div>
+                <div class="w-32 xp-tube"><div id="nav-xp-bar" class="xp-fill" style="width:0%"></div></div>
             </div>
             <button onclick="navigate('tasks')" class="btn-outline px-3 md:px-4 py-2 rounded-xl text-sm font-medium">برنامه‌ریز</button>
             <button onclick="navigate('methods')" class="btn-outline px-3 md:px-4 py-2 rounded-xl text-sm font-medium">متدها</button>
@@ -215,37 +164,20 @@
     <div id="section-home" class="anim-pop">
         <h1 class="text-4xl font-bold mb-2">سلام، <span id="welcome-name" class="text-transparent bg-clip-text bg-gradient-to-l from-cyan-400 to-purple-400">کاربر</span> 👋</h1>
         <p class="text-neutral-400 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP متدهای پیشرفته‌تری را باز کن!</p>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="glass p-6 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
-                <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center cyan-glow">
-                    <i data-lucide="trending-up" class="w-7 h-7 text-cyan-400"></i>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold" id="stat-level">1</div>
-                    <div class="text-sm text-neutral-500">سطح فعلی</div>
-                </div>
+                <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center cyan-glow"><i data-lucide="trending-up" class="w-7 h-7 text-cyan-400"></i></div>
+                <div><div class="text-3xl font-bold" id="stat-level">1</div><div class="text-sm text-neutral-500">سطح فعلی</div></div>
             </div>
             <div class="glass p-6 flex items-center gap-4 hover:border-purple-500/30 transition-all">
-                <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center purple-glow">
-                    <i data-lucide="zap" class="w-7 h-7 text-purple-400"></i>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold" id="stat-xp">0</div>
-                    <div class="text-sm text-neutral-500">امتیاز (XP)</div>
-                </div>
+                <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center purple-glow"><i data-lucide="zap" class="w-7 h-7 text-purple-400"></i></div>
+                <div><div class="text-3xl font-bold" id="stat-xp">0</div><div class="text-sm text-neutral-500">امتیاز (XP)</div></div>
             </div>
             <div class="glass p-6 flex items-center gap-4 hover:border-pink-500/30 transition-all">
-                <div class="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center" style="box-shadow: 0 0 15px rgba(255,0,255,0.2); border-color: rgba(255,0,255,0.3) !important;">
-                    <i data-lucide="unlock" class="w-7 h-7 text-pink-400"></i>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold" id="stat-unlocked">0/20</div>
-                    <div class="text-sm text-neutral-500">متدهای فعال</div>
-                </div>
+                <div class="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center" style="box-shadow: 0 0 15px rgba(255,0,255,0.2); border-color: rgba(255,0,255,0.3) !important;"><i data-lucide="unlock" class="w-7 h-7 text-pink-400"></i></div>
+                <div><div class="text-3xl font-bold" id="stat-unlocked">0/20</div><div class="text-sm text-neutral-500">متدهای فعال</div></div>
             </div>
         </div>
-        
         <div class="glass p-8">
             <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="rocket" class="w-6 h-6 text-cyan-400"></i> مسیر پیشرفت شما</h3>
             <div id="progress-path" class="flex justify-between items-center relative"></div>
@@ -255,20 +187,13 @@
     <div id="section-tasks" class="hidden">
         <h2 class="text-3xl font-bold mb-2 neon-text">برنامه‌ریز هوشمند</h2>
         <p class="text-neutral-400 mb-8">تسک‌های روزانه و هفتگی خود را ثبت کن و با انجام آن‌ها ۱۵ XP کسب کن!</p>
-        
         <div class="glass p-6 mb-8">
             <div class="flex flex-col md:flex-row gap-3">
-                <input id="task-input" type="text" placeholder="مثلا: حل 10 سوال ریاضی فصل ۳..." class="flex-1">
-                <select id="task-type" class="md:w-1/4">
-                    <option value="daily">روزانه</option>
-                    <option value="weekly">هفتگی</option>
-                </select>
-                <button onclick="addTask()" class="btn-brand px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
-                    <i data-lucide="plus" class="w-5 h-5"></i> افزودن تسک
-                </button>
+                <input id="task-input" type="text" placeholder="مثلا: حل ۱۰ سوال ریاضی فصل ۳..." class="flex-1">
+                <select id="task-type" class="md:w-1/4"><option value="daily">روزانه</option><option value="weekly">هفتگی</option></select>
+                <button onclick="addTask()" class="btn-brand px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2"><i data-lucide="plus" class="w-5 h-5"></i> افزودن تسک</button>
             </div>
         </div>
-
         <div class="grid md:grid-cols-2 gap-6">
             <div class="glass p-6">
                 <h3 class="text-xl font-bold mb-4 text-cyan-400 flex items-center gap-2"><i data-lucide="sun"></i> تسک‌های روزانه</h3>
@@ -283,7 +208,7 @@
 
     <div id="section-methods" class="hidden">
         <h2 class="text-3xl font-bold mb-2 neon-text">کتابخانه متدهای مطالعه</h2>
-        <p class="text-neutral-400 mb-8">۲۰ روش اثبات‌شده برای تسلط بر ریاضی و سایر دروس</p>
+        <p class="text-neutral-400 mb-8">۲۰ روش اثبات‌شده برای تسلط بر ریاضی. روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی!</p>
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
@@ -315,128 +240,91 @@ const DB = {
             const res = await fetch('/api/db');
             this.data = await res.json();
             if(!this.data.users) this.data.users = [];
-            // Migration for existing users
-            this.data.users.forEach(u => {
-                if(!u.tasks) u.tasks = [];
-            });
+            this.data.users.forEach(u => { if(!u.tasks) u.tasks = []; if(!u.notes) u.notes = {}; });
         } catch (e) { console.error(e); this.data = { users: [], ownerPassword: "owner123" }; }
     },
-    async save() {
-        await fetch('/api/db', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.data) });
-    },
+    async save() { await fetch('/api/db', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.data) }); },
     getUser(u) { return this.data.users.find(x => x.username === u); },
-    updateUser(u, d) {
-        let i = this.data.users.findIndex(x => x.username === u);
-        if(i !== -1) { Object.assign(this.data.users[i], d); this.save(); }
-    },
+    updateUser(u, d) { let i = this.data.users.findIndex(x => x.username === u); if(i !== -1) { Object.assign(this.data.users[i], d); this.save(); } },
     addUser(u) { this.data.users.push(u); this.save(); },
     removeUser(u) { this.data.users = this.data.users.filter(x => x.username !== u); this.save(); }
 };
 
+// متدها با ابزارهای تعاملی (tool)
 const METHODS = [
-    { id: 1, name: "خواندن فعال", xp: 10, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل و درگیر شدن با متن." },
-    { id: 2, name: "یادداشت‌برداری خطی", xp: 10, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی به صورت خط به خط." },
-    { id: 3, name: "خلاصه‌نویسی", xp: 15, lvl: 2, icon: "file-text", desc: "خلاصه کردن مفاهیم longo در چند جمله." },
-    { id: 4, name: "فلش‌کارت", xp: 20, lvl: 2, icon: "layers", desc: "ساخت کارت‌های سوال و جواب برای مرور سریع." },
-    { id: 5, name: "نقشه ذهنی", xp: 25, lvl: 3, icon: "network", desc: "رسم نمودار درختی برای ارتباط مفاهیم." },
-    { id: 6, name: "تکنیک پومودورو", xp: 15, lvl: 3, icon: "timer", desc: "مطالعه ۲۵ دقیقه‌ای با استراحت‌های کوتاه." },
-    { id: 7, name: "یادگیری فعال", xp: 30, lvl: 4, icon: "zap", desc: "یادآوری اطلاعات از حافظه بدون نگاه به متن." },
-    { id: 8, name: "تکنیک فاینمن", xp: 40, lvl: 4, icon: "user-check", desc: "آموزش مفهوم به صورت ساده به دیگری." },
-    { id: 9, name: "تکرار فاصله‌دار", xp: 35, lvl: 5, icon: "repeat", desc: "مرور اطلاعات در فاصله‌های زمانی افزایشی." },
-    { id: 10, name: "روش SQ3R", xp: 35, lvl: 5, icon: "list-checks", desc: "پیمایش، سوال، خواندن، حفظ کردن و مرور." },
-    { id: 11, name: "درهم‌آمیزی", xp: 40, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات مختلف در یک جلسه مطالعه." },
-    { id: 12, name: "دسته‌بندی", xp: 40, lvl: 6, icon: "box", desc: "تقسیم اطلاعات بزرگ به قطعات کوچک‌تر." },
-    { id: 13, name: "تست‌سازی شخصی", xp: 45, lvl: 7, icon: "file-question", desc: "طراحی سوال آزمایی برای خودتان." },
-    { id: 14, name: "تصویرسازی ذهنی", xp: 45, lvl: 7, icon: "image", desc: "تبدیل مفاهیم به تصاویر در ذهن." },
-    { id: 15, name: "ارتباط معنایی", xp: 50, lvl: 8, icon: "link", desc: "ربط دادن اطلاعات جدید به دانش قبلی." },
-    { id: 16, name: "مثال‌سازی", xp: 50, lvl: 8, icon: "lightbulb", desc: "طراحی مثال‌های عینی برای مفاهیم انتزاعی." },
-    { id: 17, name: "روش کورنل", xp: 55, lvl: 9, icon: "layout-grid", desc: "تقسیم برگه به بخش‌های سوال، یادداشت و خلاصه." },
-    { id: 18, name: "طوفان فکری", xp: 55, lvl: 9, icon: "cloud-lightning", desc: "نوشتن تمام ایده‌های مرتبط بدون فیلتر." },
-    { id: 19, name: "آموزش همکار", xp: 60, lvl: 10, icon: "users", desc: "یاد دادن مطلب به یک دوست هم‌کلاسی." },
-    { id: 20, name: "خواب استراتژیک", xp: 30, lvl: 10, icon: "moon", desc: "خواب کافی برای تثبیت حافظه." }
+    { id: 1, name: "خواندن فعال", xp: 10, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
+    { id: 2, name: "یادداشت‌برداری", xp: 10, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
+    { id: 3, name: "خلاصه‌نویسی", xp: 15, lvl: 2, icon: "file-text", desc: "خلاصه کردن مفاهیم.", tool: "note" },
+    { id: 4, name: "فلش‌کارت", xp: 20, lvl: 2, icon: "layers", desc: "ساخت کارت سوال/جواب.", tool: "flashcard" },
+    { id: 5, name: "نقشه ذهنی", xp: 25, lvl: 3, icon: "network", desc: "رسم نمودار درختی.", tool: "note" },
+    { id: 6, name: "تکنیک پومودورو", xp: 15, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro" },
+    { id: 7, name: "یادگیری فعال", xp: 30, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "note" },
+    { id: 8, name: "تکنیک فاینمن", xp: 40, lvl: 4, icon: "user-check", desc: "آموزش ساده به دیگری.", tool: "note" },
+    { id: 9, name: "تکرار فاصله‌دار", xp: 35, lvl: 5, icon: "repeat", desc: "مرور در زمان افزایشی.", tool: "check" },
+    { id: 10, name: "روش SQ3R", xp: 35, lvl: 5, icon: "list-checks", desc: "پیمایش و مرور.", tool: "check" },
+    { id: 11, name: "درهم‌آمیزی", xp: 40, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "check" },
+    { id: 12, name: "دسته‌بندی", xp: 40, lvl: 6, icon: "box", desc: "تقسیم به قطعات.", tool: "note" },
+    { id: 13, name: "تست‌سازی شخصی", xp: 45, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "note" },
+    { id: 14, name: "تصویرسازی ذهنی", xp: 45, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "note" },
+    { id: 15, name: "ارتباط معنایی", xp: 50, lvl: 8, icon: "link", desc: "ربط به دانش قبلی.", tool: "note" },
+    { id: 16, name: "مثال‌سازی", xp: 50, lvl: 8, icon: "lightbulb", desc: "مثال عینی سازی.", tool: "note" },
+    { id: 17, name: "روش کورنل", xp: 55, lvl: 9, icon: "layout-grid", desc: "بخش‌بندی برگه.", tool: "note" },
+    { id: 18, name: "طوفان فکری", xp: 55, lvl: 9, icon: "cloud-lightning", desc: "ایده‌پردازی.", tool: "note" },
+    { id: 19, name: "آموزش همکار", xp: 60, lvl: 10, icon: "users", desc: "یاد دادن به دوست.", tool: "check" },
+    { id: 20, name: "خواب استراتژیک", xp: 30, lvl: 10, icon: "moon", desc: "استراحت مغز.", tool: "check" }
 ];
 
 const XP_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
 let currentUser = null;
 let isOwner = false;
 let authMode = 'login';
+let currentMethodId = null;
+let pomodoroInterval = null;
 
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.remove('hidden');
-    setTimeout(() => t.classList.add('hidden'), 3000);
-}
-
-function showAuthModal() {
-    document.getElementById('auth-modal').classList.remove('hidden');
-    document.getElementById('auth-modal').classList.add('flex');
-}
-function hideAuthModal() {
-    document.getElementById('auth-modal').classList.add('hidden');
-}
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000); }
+function showAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); document.getElementById('auth-modal').classList.add('flex'); }
+function hideAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
 function toggleAuthMode(mode) {
     authMode = mode;
     document.getElementById('auth-title').textContent = mode === 'login' ? 'ورود به نئولرن' : 'ثبت‌نام در نئولرن';
     document.getElementById('auth-btn').textContent = mode === 'login' ? 'ورود' : 'ثبت‌نام';
-    document.getElementById('auth-switch').innerHTML = mode === 'login' ? 'حساب ندارید؟ <a class="text-cyan-400 cursor-pointer hover:text-cyan-300" onclick="toggleAuthMode(\'register\')">ثبت‌نام کنید</a>' : 'حساب دارید؟ <a class="text-cyan-400 cursor-pointer hover:text-cyan-300" onclick="toggleAuthMode(\'login\')">وارد شوید</a>';
+    document.getElementById('auth-switch').innerHTML = mode === 'login' ? 'حساب ندارید؟ <a class="text-cyan-400 cursor-pointer" onclick="toggleAuthMode(\'register\')">ثبت‌نام کنید</a>' : 'حساب دارید؟ <a class="text-cyan-400 cursor-pointer" onclick="toggleAuthMode(\'login\')">وارد شوید</a>';
 }
 
 async function doAuth() {
     const u = document.getElementById('auth-username').value.trim().toLowerCase();
     const p = document.getElementById('auth-password').value;
     if(!u || !p) return showToast('نام کاربری و رمز را وارد کنید');
-
     if(u === 'owner') {
-        if(p === DB.data.ownerPassword) {
-            isOwner = true;
-            hideAuthModal();
-            initApp();
-            showToast('به کنسول ادمین خوش آمدید');
-        } else { showToast('رمز ادمین اشتباه است'); }
+        if(p === DB.data.ownerPassword) { isOwner = true; hideAuthModal(); initApp(); showToast('به کنسول ادمین خوش آمدید'); } 
+        else { showToast('رمز ادمین اشتباه است'); }
         return;
     }
-
     if(authMode === 'login') {
         const user = DB.getUser(u);
         if(!user || user.password !== p) return showToast('نام کاربری یا رمز اشتباه است');
         currentUser = u;
     } else {
         if(DB.getUser(u)) return showToast('این کاربر وجود دارد');
-        DB.addUser({ username: u, password: p, xp: 0, level: 1, theme: 'default', tasks: [] });
+        DB.addUser({ username: u, password: p, xp: 0, level: 1, theme: 'default', tasks: [], notes: {} });
         currentUser = u;
     }
     hideAuthModal();
     initApp();
 }
 
-function logout() {
-    currentUser = null;
-    isOwner = false;
-    document.getElementById('app').classList.add('hidden');
-    showAuthModal();
-}
+function logout() { currentUser = null; isOwner = false; document.getElementById('app').classList.add('hidden'); showAuthModal(); }
+function getLevel(xp) { for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp >= XP_THRESHOLDS[i]) return i+1; } return 1; }
 
-function getLevel(xp) {
-    for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp >= XP_THRESHOLDS[i]) return i+1; }
-    return 1;
-}
-
-function initApp() {
-    document.getElementById('app').classList.remove('hidden');
-    updateUI();
-    navigate('home');
-    lucide.createIcons();
-}
-
+function initApp() { document.getElementById('app').classList.remove('hidden'); updateUI(); navigate('home'); lucide.createIcons(); }
 function navigate(section) {
     ['home', 'tasks', 'methods', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
-    document.getElementById('section-'+section).classList.add('anim-pop');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
     if(section === 'home') renderPath();
     if(section === 'tasks') renderTasks();
+    lucide.createIcons();
 }
 
 function updateUI() {
@@ -449,58 +337,42 @@ function updateUI() {
         document.getElementById('stat-unlocked').textContent = '20/20';
         return;
     }
-
     const user = DB.getUser(currentUser);
     if(!user) return logout();
-
     const lvl = getLevel(user.xp);
     user.level = lvl;
-    
     document.getElementById('welcome-name').textContent = currentUser;
     document.getElementById('nav-level').textContent = lvl;
     document.getElementById('stat-level').textContent = lvl;
     document.getElementById('stat-xp').textContent = user.xp;
-    
     const nextXp = XP_THRESHOLDS[lvl] || XP_THRESHOLDS[XP_THRESHOLDS.length-1];
     const prevXp = XP_THRESHOLDS[lvl-1] || 0;
-    const pct = Math.min(100, ((user.xp - prevXp) / (nextXp - prevXp)) * 100);
-    document.getElementById('nav-xp-bar').style.width = pct + '%';
-    
-    const unlocked = METHODS.filter(m => m.lvl <= lvl).length;
-    document.getElementById('stat-unlocked').textContent = unlocked + '/20';
-
+    document.getElementById('nav-xp-bar').style.width = Math.min(100, ((user.xp - prevXp) / (nextXp - prevXp)) * 100) + '%';
+    document.getElementById('stat-unlocked').textContent = METHODS.filter(m => m.lvl <= lvl).length + '/20';
     setTheme(user.theme || 'default');
 }
 
 function renderPath() {
     const user = isOwner ? { level: 10 } : DB.getUser(currentUser);
-    const path = document.getElementById('progress-path');
     let html = '';
     for(let i=1; i<=10; i++) {
         const unlocked = user.level >= i;
-        html += `
-            <div class="flex flex-col items-center gap-2 z-10">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold ${unlocked ? 'btn-brand' : 'bg-neutral-800 text-neutral-500'}">
-                    ${unlocked ? i : '<i data-lucide="lock" class="w-4 h-4"></i>'}
-                </div>
-            </div>
-        `;
+        html += `<div class="flex flex-col items-center gap-2 z-10"><div class="w-10 h-10 rounded-full flex items-center justify-center font-bold ${unlocked ? 'btn-brand' : 'bg-neutral-800 text-neutral-500'}">${unlocked ? i : '<i data-lucide="lock" class="w-4 h-4"></i>'}</div></div>`;
     }
-    path.innerHTML = html;
+    document.getElementById('progress-path').innerHTML = html;
     lucide.createIcons();
 }
 
 function renderMethods() {
     const user = isOwner ? { level: 100 } : DB.getUser(currentUser);
-    const grid = document.getElementById('methods-grid');
-    grid.innerHTML = METHODS.map(m => {
+    document.getElementById('methods-grid').innerHTML = METHODS.map(m => {
         const locked = m.lvl > user.level;
         return `
         <div class="method-card glass p-6 flex flex-col justify-between ${locked ? 'locked' : ''}">
             <div>
                 <div class="flex justify-between items-start mb-4">
                     <div class="w-14 h-14 rounded-xl ${locked ? 'bg-red-500/10' : 'bg-gradient-to-br from-cyan-500/20 to-purple-500/20'} flex items-center justify-center">
-                        <i data-lucide="${locked ? 'lock' : m.icon}" class="w-7 h-7 ${locked ? 'lock-icon text-red-400' : 'text-cyan-400'}"></i>
+                        <i data-lucide="${locked ? 'lock' : m.icon}" class="w-7 h-7 ${locked ? 'text-red-400' : 'text-cyan-400'}"></i>
                     </div>
                     <span class="level-badge">Lv.${m.lvl}</span>
                 </div>
@@ -509,7 +381,7 @@ function renderMethods() {
             </div>
             <div class="flex items-center justify-between">
                 <span class="text-sm font-bold text-purple-400">+${m.xp} XP</span>
-                <button onclick="useMethod(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1">
+                <button onclick="openWorkspace(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1">
                     <i data-lucide="play" class="w-4 h-4"></i> استفاده
                 </button>
             </div>
@@ -518,90 +390,139 @@ function renderMethods() {
     lucide.createIcons();
 }
 
-async function useMethod(id) {
-    if(isOwner) return showToast('ادمین نیازی به XP ندارد');
+// --- Method Workspace Logic ---
+function openWorkspace(id) {
+    if(isOwner) return;
     const user = DB.getUser(currentUser);
     const method = METHODS.find(m => m.id === id);
     if(method.lvl > user.level) return showToast('سطح شما کافی نیست');
+    
+    currentMethodId = id;
+    document.getElementById('ws-title').textContent = method.name;
+    document.getElementById('ws-desc').textContent = method.desc;
+    document.getElementById('ws-icon').innerHTML = `<i data-lucide="${method.icon}" class="w-6 h-6 text-white"></i>`;
+    
+    const content = document.getElementById('ws-content');
+    const userNotes = user.notes && user.notes[id] ? user.notes[id] : '';
+    
+    if(method.tool === 'note') {
+        content.innerHTML = `<p class="text-sm text-neutral-400 mb-3">یادداشت‌های خود را برای این متد ثبت کنید (به صورت خودکار ذخیره می‌شود):</p>
+        <textarea id="ws-textarea" class="w-full h-48 bg-black/30 p-4" placeholder="یادداشت‌های شما...">${userNotes}</textarea>`;
+    } else if(method.tool === 'check') {
+        content.innerHTML = `<p class="text-sm text-neutral-400 mb-4">آیا این مرحله را با موفقیت انجام دادید؟</p>
+        <div class="space-y-2 text-sm">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-5 h-5"> بله، تمرین را کامل کردم.</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-5 h-5"> تمرکز خود را حفظ کردم.</label>
+        </div>`;
+    } else if(method.tool === 'pomodoro') {
+        content.innerHTML = `<div class="text-center">
+            <div id="pomodoro-display" class="text-6xl font-bold text-cyan-400 my-8 tracking-wider">25:00</div>
+            <button onclick="startPomodoro()" class="btn-brand px-8 py-3 rounded-xl font-bold">شروع تایمر</button>
+        </div>`;
+    } else if(method.tool === 'flashcard') {
+        content.innerHTML = `<div class="space-y-3">
+            <input id="fc-q" type="text" placeholder="سوال...">
+            <input id="fc-a" type="text" placeholder="جواب...">
+            <button onclick="addFlashcard()" class="btn-outline px-4 py-2 rounded-lg text-sm">افزودن کارت</button>
+            <div id="fc-list" class="mt-4 space-y-2"></div>
+        </div>`;
+    }
+    
+    document.getElementById('workspace-modal').style.display = 'flex';
+    lucide.createIcons();
+}
 
+function closeWorkspace() {
+    if(currentMethodId) {
+        const method = METHODS.find(m => m.id === currentMethodId);
+        if(method.tool === 'note') {
+            const text = document.getElementById('ws-textarea').value;
+            const user = DB.getUser(currentUser);
+            if(!user.notes) user.notes = {};
+            user.notes[currentMethodId] = text;
+            DB.updateUser(currentUser, { notes: user.notes });
+        }
+    }
+    if(pomodoroInterval) clearInterval(pomodoroInterval);
+    document.getElementById('workspace-modal').style.display = 'none';
+    currentMethodId = null;
+}
+
+function completeWorkspace() {
+    const method = METHODS.find(m => m.id === currentMethodId);
+    if(!method) return;
+    
+    // Give XP
+    const user = DB.getUser(currentUser);
     user.xp += method.xp;
     const oldLvl = user.level;
     const newLvl = getLevel(user.xp);
-    
     DB.updateUser(currentUser, { xp: user.xp, level: newLvl });
+    
+    // Save note if exists
+    if(method.tool === 'note') {
+        const text = document.getElementById('ws-textarea').value;
+        if(!user.notes) user.notes = {};
+        user.notes[currentMethodId] = text;
+        DB.updateUser(currentUser, { notes: user.notes });
+    }
+    
     updateUI();
     renderPath();
-
-    if(newLvl > oldLvl) {
-        showToast(`🎉 سطح بالا رفت! اکنون سطح ${newLvl} هستید!`);
-    } else {
-        showToast(`+${method.xp} XP کسب کردید!`);
-    }
+    closeWorkspace();
+    
+    if(newLvl > oldLvl) showToast(`🎉 سطح بالا رفت! اکنون سطح ${newLvl} هستید!`);
+    else showToast(`+${method.xp} XP کسب کردید!`);
 }
 
-// Task Manager Logic
+function startPomodoro() {
+    let time = 25 * 60;
+    if(pomodoroInterval) clearInterval(pomodoroInterval);
+    pomodoroInterval = setInterval(() => {
+        time--;
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById('pomodoro-display').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+        if(time <= 0) {
+            clearInterval(pomodoroInterval);
+            showToast("زمان تمام شد! می‌توانید XP خود را دریافت کنید.");
+        }
+    }, 1000);
+}
+
+// Task Manager
 async function addTask() {
-    if(isOwner) return;
     const user = DB.getUser(currentUser);
     const text = document.getElementById('task-input').value.trim();
     const type = document.getElementById('task-type').value;
-    if(!text) return showToast('متن تسک را بنویسید');
-
+    if(!text) return;
     user.tasks.push({ id: Date.now(), text, type, done: false });
     DB.updateUser(currentUser, { tasks: user.tasks });
     document.getElementById('task-input').value = '';
     renderTasks();
-    showToast('تسک اضافه شد!');
 }
-
 async function toggleTask(id) {
-    if(isOwner) return;
     const user = DB.getUser(currentUser);
     const task = user.tasks.find(t => t.id === id);
-    if(!task) return;
-
     task.done = !task.done;
-    
-    if(task.done) {
-        user.xp += 15; // XP reward for task
-        const newLvl = getLevel(user.xp);
-        DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, level: newLvl });
-        updateUI();
-        renderPath();
-        showToast('+15 XP برای انجام تسک!');
-    } else {
-        DB.updateUser(currentUser, { tasks: user.tasks });
-    }
+    if(task.done) { user.xp += 15; DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, level: getLevel(user.xp) }); updateUI(); renderPath(); showToast('+15 XP'); }
+    else { DB.updateUser(currentUser, { tasks: user.tasks }); }
     renderTasks();
 }
-
-async function deleteTask(id) {
-    const user = DB.getUser(currentUser);
-    user.tasks = user.tasks.filter(t => t.id !== id);
-    DB.updateUser(currentUser, { tasks: user.tasks });
-    renderTasks();
-}
+function deleteTask(id) { const user = DB.getUser(currentUser); user.tasks = user.tasks.filter(t => t.id !== id); DB.updateUser(currentUser, { tasks: user.tasks }); renderTasks(); }
 
 function renderTasks() {
-    if(isOwner) return;
     const user = DB.getUser(currentUser);
     const daily = user.tasks.filter(t => t.type === 'daily');
     const weekly = user.tasks.filter(t => t.type === 'weekly');
-    
     const renderList = (tasks) => tasks.length === 0 ? '<p class="text-neutral-500 text-sm text-center py-4">تسکی ثبت نشده است</p>' : tasks.map(t => `
         <div class="task-item ${t.done ? 'done' : ''} glass-light p-3 rounded-xl flex items-center justify-between border border-white/5">
             <div class="flex items-center gap-3 flex-1 cursor-pointer" onclick="toggleTask(${t.id})">
-                <div class="task-checkbox ${t.done ? 'done' : ''}">
-                    ${t.done ? '<i data-lucide="check" class="w-4 h-4 text-black"></i>' : ''}
-                </div>
+                <div class="task-checkbox ${t.done ? 'done' : ''}">${t.done ? '<i data-lucide="check" class="w-4 h-4 text-black"></i>' : ''}</div>
                 <span class="text-sm">${t.text}</span>
             </div>
-            <button onclick="deleteTask(${t.id})" class="text-red-400/50 hover:text-red-400 transition-colors p-1">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-        </div>
-    `).join('');
-
+            <button onclick="deleteTask(${t.id})" class="text-red-400/50 hover:text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>`).join('');
     document.getElementById('daily-tasks').innerHTML = renderList(daily);
     document.getElementById('weekly-tasks').innerHTML = renderList(weekly);
     lucide.createIcons();
@@ -610,52 +531,26 @@ function renderTasks() {
 function setTheme(theme) {
     document.body.classList.remove('theme-default', 'theme-matrix', 'theme-amber', 'theme-cyber');
     document.body.classList.add('theme-' + theme);
-    
-    if(theme === 'matrix') {
-        document.documentElement.style.setProperty('--neon-purple', '#0aff00');
-        document.documentElement.style.setProperty('--neon-cyan', '#0aff00');
-    } else if(theme === 'amber') {
-        document.documentElement.style.setProperty('--neon-purple', '#f59e0b');
-        document.documentElement.style.setProperty('--neon-cyan', '#fbbf24');
-    } else if(theme === 'cyber') {
-        document.documentElement.style.setProperty('--neon-purple', '#00ffff');
-        document.documentElement.style.setProperty('--neon-cyan', '#00ffff');
-    } else {
-        document.documentElement.style.setProperty('--neon-purple', '#bc13fe');
-        document.documentElement.style.setProperty('--neon-cyan', '#00ffff');
-    }
-
+    if(theme === 'matrix') { document.documentElement.style.setProperty('--neon-purple', '#0aff00'); document.documentElement.style.setProperty('--neon-cyan', '#0aff00'); }
+    else if(theme === 'amber') { document.documentElement.style.setProperty('--neon-purple', '#f59e0b'); document.documentElement.style.setProperty('--neon-cyan', '#fbbf24'); }
+    else if(theme === 'cyber') { document.documentElement.style.setProperty('--neon-purple', '#00ffff'); document.documentElement.style.setProperty('--neon-cyan', '#00ffff'); }
+    else { document.documentElement.style.setProperty('--neon-purple', '#bc13fe'); document.documentElement.style.setProperty('--neon-cyan', '#00ffff'); }
     if(currentUser) DB.updateUser(currentUser, { theme: theme });
 }
 
 function renderPanel() {
     document.getElementById('owner-panel').classList.toggle('hidden', !isOwner);
     if(isOwner) {
-        const list = document.getElementById('admin-user-list');
-        list.innerHTML = DB.data.users.map(u => `
+        document.getElementById('admin-user-list').innerHTML = DB.data.users.map(u => `
             <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
-                <div>
-                    <span class="font-medium">${u.username}</span>
-                    <span class="text-xs text-purple-400 mr-2">سطح ${u.level}</span>
-                </div>
-                <button onclick="deleteUser('${u.username}')" class="text-red-400 text-xs hover:text-red-300 transition-colors px-2 py-1 hover:bg-red-500/10 rounded">حذف</button>
-            </div>
-        `).join('') || '<p class="text-xs text-neutral-500 text-center py-4">کاربری ثبت‌نام نکرده است</p>';
+                <div><span class="font-medium">${u.username}</span> <span class="text-xs text-purple-400 mr-2">سطح ${u.level}</span></div>
+                <button onclick="deleteUser('${u.username}')" class="text-red-400 text-xs hover:text-red-300 px-2 py-1 hover:bg-red-500/10 rounded">حذف</button>
+            </div>`).join('') || '<p class="text-xs text-neutral-500 text-center py-4">کاربری ثبت‌نام نکرده است</p>';
     }
 }
+function deleteUser(u) { if(!confirm(`حذف ${u}؟`)) return; DB.removeUser(u); renderPanel(); showToast('کاربر حذف شد'); }
 
-function deleteUser(u) {
-    if(!confirm(`حذف ${u}؟`)) return;
-    DB.removeUser(u);
-    renderPanel();
-    showToast('کاربر حذف شد');
-}
-
-window.onload = async function() {
-    await DB.init();
-    showAuthModal();
-    lucide.createIcons();
-};
+window.onload = async function() { await DB.init(); showAuthModal(); lucide.createIcons(); };
 </script>
 </body>
 </html>
