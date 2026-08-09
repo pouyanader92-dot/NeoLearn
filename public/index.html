@@ -578,15 +578,8 @@ function openWorkspace(id) {
     const userNotes = user.notes && user.notes[id] ? user.notes[id] : '';
     
     if(method.tool === 'note') {
-        content.innerHTML = `
-        <div class="flex justify-between items-center mb-3">
-            <p class="text-sm text-slate-500">یادداشت‌های خود را ثبت کنید (حداقل ۱۰ کاراکتر):</p>
-            <button onclick="generateAISummary()" id="ai-btn" class="btn-outline px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> خلاصه‌سازی با هوش مصنوعی
-            </button>
-        </div>
-        <textarea id="ws-textarea" class="w-full h-48 bg-slate-50 p-4" placeholder="متن طولانی خود را اینجا بنویسید..." oninput="checkNoteValidity()">${userNotes}</textarea>
-        <div id="ai-loading" class="text-center text-sm text-indigo-600 font-bold mt-2 hidden">در حال پردازش توسط هوش مصنوعی...</div>`;
+        content.innerHTML = `<p class="text-sm text-slate-500 mb-3">یادداشت‌های خود را ثبت کنید (حداقل ۱۰ کاراکتر):</p>
+        <textarea id="ws-textarea" class="w-full h-48 bg-slate-50 p-4" placeholder="یادداشت‌های شما..." oninput="checkNoteValidity()">${userNotes}</textarea>`;
         checkNoteValidity();
     } else if(method.tool === 'check') {
         content.innerHTML = `<p class="text-sm text-slate-500 mb-4">آیا این مرحله را با موفقیت انجام دادید؟</p>
@@ -641,39 +634,6 @@ function openWorkspace(id) {
     
     document.getElementById('workspace-modal').style.display = 'flex';
     lucide.createIcons();
-}
-
-// تابع جدید برای هوش مصنوعی
-async function generateAISummary() {
-    const text = document.getElementById('ws-textarea').value;
-    if(text.trim().length < 20) return showToast('متن برای خلاصه‌سازی خیلی کوتاه است');
-    
-    const btn = document.getElementById('ai-btn');
-    const loading = document.getElementById('ai-loading');
-    btn.disabled = true;
-    loading.classList.remove('hidden');
-    
-    try {
-        const res = await fetch('/api/ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: `این متن را به صورت نکته‌وار و خلاصه در ۳ خط بنویس: \n\n${text}` })
-        });
-        const data = await res.json();
-        if(data.result) {
-            document.getElementById('ws-textarea').value += `\n\n--- خلاصه هوش مصنوعی ---\n${data.result}`;
-            showToast('خلاصه‌سازی انجام شد!');
-            checkNoteValidity();
-        } else {
-            showToast('خطا در ارتباط با هوش مصنوعی');
-        }
-    } catch (e) {
-        showToast('مشکل در اتصال به سرور');
-    } finally {
-        btn.disabled = false;
-        loading.classList.add('hidden');
-        lucide.createIcons();
-    }
 }
 
 function checkMath() {
