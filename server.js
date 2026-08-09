@@ -11,9 +11,6 @@ const BIN_ID = process.env.JSONBIN_BIN_ID;
 const API_KEY = process.env.JSONBIN_API_KEY;
 const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-// کلید هوش مصنوعی از متغیرهای محیطی خوانده میشه (امنیت بالا)
-const AI_API_KEY = process.env.OPENAI_API_KEY; 
-
 const defaultDb = {
     users: [],
     ownerPassword: "owner123"
@@ -43,39 +40,6 @@ app.post('/api/db', async (req, res) => {
     } catch (err) {
         console.error('POST Error:', err.message);
         res.status(500).json({ error: 'Failed to save database' });
-    }
-});
-
-// Endpoint جدید برای ارتباط با هوش مصنوعی
-app.post('/api/ai', async (req, res) => {
-    const { prompt } = req.body;
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${AI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo", // اگر از مدل دیگه ای استفاده میکنی اینجا تغییر بده
-                messages: [
-                    { role: "system", content: "You are a helpful study assistant. Summarize and extract key points in Persian." },
-                    { role: "user", content: prompt }
-                ],
-                max_tokens: 500
-            })
-        });
-        const data = await response.json();
-        
-        if(data.error) {
-            console.error('AI API Error:', data.error.message);
-            return res.status(400).json({ error: data.error.message });
-        }
-        
-        res.json({ result: data.choices[0].message.content });
-    } catch (err) {
-        console.error('AI Server Error:', err.message);
-        res.status(500).json({ error: 'Failed to connect to AI API' });
     }
 });
 
