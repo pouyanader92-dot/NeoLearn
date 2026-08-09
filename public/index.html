@@ -89,7 +89,6 @@
         </div>
         <div class="flex items-center gap-3 md:gap-4">
             <div class="hidden md:flex items-center gap-4">
-                <!-- Streak Indicator -->
                 <div class="flex items-center gap-1 text-sm font-bold text-orange-500">
                     <i data-lucide="flame" class="w-4 h-4"></i>
                     <span id="nav-streak">0</span>
@@ -127,11 +126,10 @@
             </div>
             <div class="card p-6 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="unlock" class="w-6 h-6 text-indigo-600"></i></div>
-                <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/20</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
+                <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/30</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
             </div>
         </div>
         
-        <!-- Leaderboard Added -->
         <div class="grid md:grid-cols-2 gap-6 mb-10">
             <div class="card p-6">
                 <h3 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="route" class="w-5 h-5 text-indigo-600"></i> مسیر پیشرفت شما</h3>
@@ -258,14 +256,14 @@ const DB = {
     removeUser(u) { this.data.users = this.data.users.filter(x => x.username !== u); this.save(); }
 };
 
-// متدهای جدید (math و speed) اضافه شدند
+// 10 متد جدید اضافه شده است (بیشتر مبتنی بر تایمر شبیه پومودورو)
 const METHODS = [
     { id: 1, name: "خواندن فعال", xp: 10, coins: 5, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
     { id: 2, name: "یادداشت‌برداری", xp: 10, coins: 5, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
     { id: 3, name: "خلاصه‌نویسی", xp: 15, coins: 8, lvl: 2, icon: "file-text", desc: "خلاصه کردن مفاهیم.", tool: "note" },
     { id: 4, name: "فلش‌کارت", xp: 20, coins: 10, lvl: 2, icon: "layers", desc: "ساخت کارت سوال/جواب.", tool: "flashcard" },
     { id: 5, name: "نقشه ذهنی", xp: 25, coins: 12, lvl: 3, icon: "network", desc: "رسم نمودار درختی.", tool: "note" },
-    { id: 6, name: "تکنیک پومودورو", xp: 15, coins: 8, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro" },
+    { id: 6, name: "تکنیک پومودورو", xp: 15, coins: 8, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro", time: 25 },
     { id: 7, name: "یادگیری فعال", xp: 30, coins: 15, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "tap" },
     { id: 8, name: "تکنیک فاینمن", xp: 40, coins: 20, lvl: 4, icon: "user-check", desc: "آموزش ساده به دیگری.", tool: "note" },
     { id: 9, name: "تکرار فاصله‌دار", xp: 35, coins: 18, lvl: 5, icon: "repeat", desc: "مرور در زمان افزایشی.", tool: "check" },
@@ -279,7 +277,19 @@ const METHODS = [
     { id: 17, name: "روش کورنل", xp: 55, coins: 28, lvl: 9, icon: "layout-grid", desc: "بخش‌بندی برگه.", tool: "note" },
     { id: 18, name: "طوفان فکری", xp: 55, coins: 28, lvl: 9, icon: "cloud-lightning", desc: "ایده‌پردازی.", tool: "note" },
     { id: 19, name: "آموزش همکار", xp: 60, coins: 30, lvl: 10, icon: "users", desc: "یاد دادن به دوست.", tool: "check" },
-    { id: 20, name: "خواب استراتژیک", xp: 30, coins: 15, lvl: 10, icon: "moon", desc: "استراحت مغز.", tool: "check" }
+    { id: 20, name: "خواب استراتژیک", xp: 30, coins: 15, lvl: 10, icon: "moon", desc: "استراحت مغز.", tool: "check" },
+    
+    // 10 متد جدید (تایمرهای تمرکز)
+    { id: 21, name: "قانون دو دقیقه", xp: 15, coins: 5, lvl: 1, icon: "timer-start", desc: "شروع کار با فقط ۲ دقیقه تمرکز.", tool: "pomodoro", time: 2 },
+    { id: 22, name: "ذهن‌آگاهی ۱ دقیقه", xp: 10, coins: 5, lvl: 2, icon: "brain", desc: "یک دقیقه تنفس و آرامش قبل از مطالعه.", tool: "pomodoro", time: 1 },
+    { id: 23, name: "مرور سریع ۱۰ دقیقه", xp: 20, coins: 10, lvl: 3, icon: "fast-forward", desc: "مرور سریع نکات در ۱۰ دقیقه.", tool: "pomodoro", time: 10 },
+    { id: 24, name: "خواندن عمیق ۱۵ دقیقه", xp: 25, coins: 12, lvl: 4, icon: "book-marked", desc: "۱۵ دقیقه مطالعه بدون حواس‌پرتی.", tool: "pomodoro", time: 15 },
+    { id: 25, name: "قانون پارکینسون", xp: 40, coins: 20, lvl: 5, icon: "rocket", desc: "تمرین را در ۲۰ دقیقه تمام کن!", tool: "pomodoro", time: 20 },
+    { id: 26, name: "استراحت فعال ۵ دقیقه", xp: 15, coins: 8, lvl: 6, icon: "coffee", desc: "۵ دقیقه استراحت برای بازشارژ مغز.", tool: "pomodoro", time: 5 },
+    { id: 27, name: "تکنیک ۳۰/۳۰", xp: 50, coins: 25, lvl: 7, icon: "repeat-clock", desc: "۳۰ دقیقه مطالعه، ۳۰ دقیقه استراحت.", tool: "pomodoro", time: 30 },
+    { id: 28, name: "بلوک زمانی ۴۵ دقیقه", xp: 55, coins: 28, lvl: 8, icon: "layers-3", desc: "۴۵ دقیقه تمرکز عمیق روی یک مبحث.", tool: "pomodoro", time: 45 },
+    { id: 29, name: "قانون ۵۲/۱۷", xp: 65, coins: 30, lvl: 9, icon: "hourglass", desc: "۵۲ دقیقه کار، ۱۷ دقیقه استراحت.", tool: "pomodoro", time: 52 },
+    { id: 30, name: "تمرکز اولترادین ۹۰ دقیقه", xp: 80, coins: 40, lvl: 10, icon: "infinity", desc: "۹۰ دقیقه تمرکز نهایی (ریتم طبیعی مغز).", tool: "pomodoro", time: 90 }
 ];
 
 const XP_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
@@ -327,9 +337,7 @@ async function doAuth() {
 function logout() { currentUser = null; isOwner = false; document.getElementById('app').classList.add('hidden'); showAuthModal(); }
 function getLevel(xp) { for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp >= XP_THRESHOLDS[i]) return i+1; } return 1; }
 
-// محاسبه ضریب اشتراک
 function getSubMult(user) { if(user.subscription === 'plus') return 1.5; if(user.subscription === 'eco') return 1.2; return 1; }
-// محاسبه ضریب استریک (اگر 3 روز یا بیشتر باشه 10٪ پاداش بیشتر)
 function getStreakMult(user) { return user.streak >= 3 ? 1.1 : 1.0; }
 
 function initApp() { 
@@ -358,13 +366,12 @@ function updateUI() {
         document.getElementById('nav-streak').textContent = '∞';
         document.getElementById('stat-level').textContent = 'Max';
         document.getElementById('stat-coins').textContent = '∞';
-        document.getElementById('stat-unlocked').textContent = '20/20';
+        document.getElementById('stat-unlocked').textContent = '30/30';
         return;
     }
     const user = DB.getUser(currentUser);
     if(!user) return logout();
     
-    // آپدیت استریک روزانه
     const today = new Date().toDateString();
     if(user.lastActive !== today) {
         const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -388,7 +395,7 @@ function updateUI() {
     const nextXp = XP_THRESHOLDS[lvl] || XP_THRESHOLDS[XP_THRESHOLDS.length-1];
     const prevXp = XP_THRESHOLDS[lvl-1] || 0;
     document.getElementById('nav-xp-bar').style.width = Math.min(100, ((user.xp - prevXp) / (nextXp - prevXp)) * 100) + '%';
-    document.getElementById('stat-unlocked').textContent = METHODS.filter(m => m.lvl <= lvl).length + '/20';
+    document.getElementById('stat-unlocked').textContent = METHODS.filter(m => m.lvl <= lvl).length + '/30';
     setTheme(user.theme || 'indigo');
 }
 
@@ -403,7 +410,6 @@ function renderPath() {
     lucide.createIcons();
 }
 
-// تابع جدید تابلوی نخبگان
 function renderLeaderboard() {
     const sortedUsers = [...DB.data.users].sort((a, b) => b.xp - a.xp).slice(0, 3);
     const medals = ['🥇', '🥈', '🥉'];
@@ -481,9 +487,12 @@ function openWorkspace(id) {
             <span class="text-sm font-medium text-slate-700">بله، تمرین را کامل کردم.</span>
         </label>`;
     } else if(method.tool === 'pomodoro') {
+        const mins = method.time || 25;
+        const displayMins = mins < 10 ? '0' + mins : mins;
         content.innerHTML = `<div class="text-center">
-            <div id="pomodoro-display" class="text-5xl font-bold text-indigo-600 my-8 tracking-wider">25:00</div>
-            <button onclick="startPomodoro()" id="pomo-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع تایمر</button>
+            <p class="text-sm text-slate-500 mb-4">تایمر را شروع کن و تا پایان آن زمان تمرکز کن!</p>
+            <div id="pomodoro-display" class="text-5xl font-bold text-indigo-600 my-8 tracking-wider">${displayMins}:00</div>
+            <button onclick="startPomodoro(${mins})" id="pomo-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع تایمر</button>
         </div>`;
     } else if(method.tool === 'flashcard') {
         content.innerHTML = `<div class="space-y-3">
@@ -505,7 +514,6 @@ function openWorkspace(id) {
             <button onclick="startChallenge()" id="ch-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع چالش</button>
         </div>`;
     } 
-    // ابزارهای جدید بازی‌گونه
     else if(method.tool === 'math') {
         const a = Math.floor(Math.random() * 10) + 1;
         const b = Math.floor(Math.random() * 10) + 1;
@@ -527,7 +535,6 @@ function openWorkspace(id) {
     lucide.createIcons();
 }
 
-// توابع جدید برای ابزارهای ریاضی و تایپ
 function checkMath() {
     const val = parseInt(document.getElementById('math-input').value);
     const res = document.getElementById('math-result');
@@ -631,7 +638,6 @@ function completeWorkspace() {
     
     const user = DB.getUser(currentUser);
     
-    // اعمال ضرایب اشتراک و استریک
     const subMult = getSubMult(user);
     const streakMult = getStreakMult(user);
     
@@ -661,8 +667,9 @@ function completeWorkspace() {
     else showToast(`+${xpReward} XP و +${coinReward} سکه کسب کردید!`);
 }
 
-function startPomodoro() {
-    let time = 25 * 60;
+// تابع پومودورو آپدیت شد تا زمان‌های متفاوت رو هندل کنه
+function startPomodoro(minutes = 25) {
+    let time = minutes * 60;
     const btn = document.getElementById('pomo-btn');
     btn.disabled = true;
     if(pomodoroInterval) clearInterval(pomodoroInterval);
@@ -670,11 +677,13 @@ function startPomodoro() {
         time--;
         let m = Math.floor(time / 60);
         let s = time % 60;
-        document.getElementById('pomodoro-display').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+        document.getElementById('pomodoro-display').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
         if(time <= 0) {
             clearInterval(pomodoroInterval);
             document.getElementById('pomodoro-display').textContent = "پایان!";
             document.getElementById('ws-complete-btn').disabled = false;
+            btn.textContent = "تکمیل شد";
+            btn.disabled = false;
         }
     }, 1000);
 }
