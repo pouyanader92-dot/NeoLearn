@@ -36,6 +36,11 @@
         .task-item.done span { text-decoration: line-through; color: #94a3b8; }
         .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
         .poll-bar { transition: width 0.5s ease-in-out; }
+        .badge-locked { opacity: 0.2; filter: grayscale(100%); }
+        .toggle-switch { width: 40px; height: 22px; background: #cbd5e1; border-radius: 11px; position: relative; cursor: pointer; transition: background 0.3s; }
+        .toggle-switch.active { background: var(--brand-color); }
+        .toggle-dot { width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; transition: right 0.3s; }
+        .toggle-switch.active .toggle-dot { right: 20px; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -90,7 +95,6 @@
             <span class="text-base md:text-lg font-bold hidden sm:block text-slate-800">NeoLearn</span>
         </div>
         
-        <!-- Desktop Nav -->
         <div class="hidden md:flex items-center gap-3 md:gap-4">
             <div class="hidden lg:flex items-center gap-4">
                 <div class="flex items-center gap-1 text-sm font-bold text-orange-500">
@@ -117,7 +121,6 @@
             <button onclick="logout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
         </div>
         
-        <!-- Mobile Stats & Hamburger -->
         <div class="flex md:hidden items-center gap-3">
             <div class="flex items-center gap-1 text-xs font-bold text-orange-500">
                 <i data-lucide="flame" class="w-4 h-4"></i>
@@ -133,39 +136,30 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu Dropdown -->
     <div id="mobile-menu" class="hidden md:hidden card p-4 mb-6 rounded-xl grid grid-cols-3 gap-3 z-30">
         <button onclick="navigate('tasks'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="list-checks" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">برنامه‌ریز</span>
+            <i data-lucide="list-checks" class="w-6 h-6"></i><span class="text-xs font-medium">برنامه‌ریز</span>
         </button>
         <button onclick="navigate('methods'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="book-open" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">متدها</span>
+            <i data-lucide="book-open" class="w-6 h-6"></i><span class="text-xs font-medium">متدها</span>
         </button>
         <button onclick="navigate('neogram'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="megaphone" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">نیوگرام</span>
+            <i data-lucide="megaphone" class="w-6 h-6"></i><span class="text-xs font-medium">نیوگرام</span>
         </button>
         <button onclick="navigate('community'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="users" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">جامعه</span>
+            <i data-lucide="users" class="w-6 h-6"></i><span class="text-xs font-medium">جامعه</span>
         </button>
         <button onclick="navigate('store'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">اشتراک‌ها</span>
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i><span class="text-xs font-medium">اشتراک‌ها</span>
         </button>
         <button onclick="navigate('panel'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="settings" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">پنل</span>
+            <i data-lucide="settings" class="w-6 h-6"></i><span class="text-xs font-medium">پنل</span>
         </button>
         <button onclick="navigate('about'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
-            <i data-lucide="info" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">درباره ما</span>
+            <i data-lucide="info" class="w-6 h-6"></i><span class="text-xs font-medium">درباره ما</span>
         </button>
         <button onclick="logout(); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-red-50 rounded-lg text-red-500 hover:text-red-700 transition col-span-3">
-            <i data-lucide="log-out" class="w-6 h-6"></i>
-            <span class="text-xs font-medium">خروج از حساب</span>
+            <i data-lucide="log-out" class="w-6 h-6"></i><span class="text-xs font-medium">خروج از حساب</span>
         </button>
     </div>
 
@@ -198,6 +192,12 @@
                 <div id="leaderboard-list" class="space-y-2 md:space-y-3"></div>
             </div>
         </div>
+
+        <!-- Achievements Section -->
+        <div class="card p-4 md:p-6">
+            <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-amber-500"></i> دستاوردهای شما</h3>
+            <div id="achievements-container" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4"></div>
+        </div>
     </div>
 
     <div id="section-tasks" class="hidden">
@@ -228,7 +228,6 @@
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
     </div>
 
-    <!-- Neogram Section -->
     <div id="section-neogram" class="hidden anim-pop">
         <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="megaphone" class="w-6 h-6 text-indigo-600"></i> نیوگرام</h2>
         <div class="card p-4 md:p-6 mb-4 md:mb-8">
@@ -290,7 +289,6 @@
         </div>
     </div>
 
-    <!-- About Us Section -->
     <div id="section-about" class="hidden anim-pop">
         <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="info" class="w-6 h-6 text-indigo-600"></i> درباره ما</h2>
         <div class="card p-4 md:p-8 relative overflow-hidden">
@@ -302,7 +300,6 @@
             <p class="text-slate-600 text-center leading-relaxed mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
                 نئولرن یک پلتفرم آموزشی و گیمیفیکیشن است که با هدف ارتقای سطح انگیزه و روش‌های یادگیری دانش‌آموزان طراحی شده است. ما با استفاده از تکنولوژی‌های روز، یادگیری را به تجربه‌ای جذاب و دوستانه تبدیل کرده‌ایم. این پلتفرم برای علاقه‌مندان به یادگیری ساخته شده تا در فضایی رقابتی و چالش‌برانگیز مهارت‌های خود را محک بزنند و با متدهای جدید آشنا شوند.
             </p>
-            
             <div class="grid sm:grid-cols-2 gap-4 md:gap-6 text-sm mb-6 md:mb-8 max-w-xl mx-auto">
                 <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
                     <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-5 h-5 text-indigo-600"></i></div>
@@ -326,7 +323,6 @@
                     </div>
                 </div>
             </div>
-
             <div>
                 <div class="text-slate-500 text-xs md:text-sm mb-4 text-center">ما را در شبکه‌های اجتماعی دنبال کنید:</div>
                 <div class="flex justify-center gap-3 md:gap-4 flex-wrap">
@@ -358,11 +354,16 @@
         <div class="grid md:grid-cols-2 gap-4 md:gap-6">
             <div class="card p-4 md:p-8">
                 <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="palette" class="w-5 h-5 text-indigo-600"></i> تنظیمات رنگ</h3>
-                <div class="flex gap-3">
+                <div class="flex gap-3 mb-6">
                     <button onclick="setTheme('indigo')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #4f46e5;"></button>
                     <button onclick="setTheme('emerald')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #10b981;"></button>
                     <button onclick="setTheme('rose')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f43f5e;"></button>
                     <button onclick="setTheme('amber')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f59e0b;"></button>
+                </div>
+                <h3 class="text-base md:text-lg font-bold mb-4 flex items-center gap-2 text-slate-800"><i data-lucide="volume-2" class="w-5 h-5 text-indigo-600"></i> افکت‌های صوتی</h3>
+                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <span class="text-sm text-slate-600">پخش صدا هنگام انجام کارها</span>
+                    <div id="sound-toggle" class="toggle-switch active" onclick="toggleSound()"><div class="toggle-dot"></div></div>
                 </div>
             </div>
             <div class="card p-4 md:p-8 md:col-span-2">
@@ -389,6 +390,51 @@
 </div>
 
 <script>
+// --- Sound System ---
+let audioCtx = null;
+let soundEnabled = localStorage.getItem('sound_enabled') !== 'false';
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('sound_enabled', soundEnabled);
+    document.getElementById('sound-toggle').classList.toggle('active', soundEnabled);
+    if(soundEnabled) playSound('click');
+}
+
+function playSound(type) {
+    if(!soundEnabled) return;
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'success') {
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'level') {
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+            osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+            osc.type = 'triangle';
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        } else if (type === 'click') {
+            osc.frequency.value = 400;
+            osc.type = 'square';
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+        }
+    } catch(e) { console.log("Sound error", e); }
+}
+
 const DB = {
     data: null,
     async init() {
@@ -411,6 +457,7 @@ const DB = {
                 if(!u.favoriteGame) u.favoriteGame = null;
                 if(!u.pollVotes) u.pollVotes = [];
                 if(!u.following) u.following = [];
+                if(!u.achievements) u.achievements = [];
             });
         } catch (e) { console.error(e); this.data = { users: [], messages: [], posts: [], ownerPassword: "owner123", poll: { q: "بهترین زمان برای مطالعه شما کِیه؟", opts: ["صبح زود", "ظهر", "عصر", "شب‌بیداری"], votes: [0, 0, 0, 0] } }; }
     },
@@ -455,6 +502,16 @@ const METHODS = [
 ];
 
 const XP_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
+
+const ACHIEVEMENTS = [
+    { id: 'first_step', name: 'اولین قدم', desc: 'تکمیل اولین متد', icon: 'shoe-prints', check: (u) => Object.keys(u.notes || {}).length > 0 || u.xp > 10 },
+    { id: 'social', name: 'اجتماعی', desc: 'اولین پست در نیوگرام', icon: 'megaphone', check: (u) => DB.data.posts.some(p => p.author === u.username) },
+    { id: 'level5', name: 'پیشرفت کرده', desc: 'رسیدن به سطح ۵', icon: 'trending-up', check: (u) => getLevel(u.xp) >= 5 },
+    { id: 'rich', name: 'ثروتمند', desc: 'داشتن ۱۰۰ سکه', icon: 'coins', check: (u) => u.coins >= 100 },
+    { id: 'streak7', name: 'پایدار', desc: '۷ روز ورود پیاپی', icon: 'flame', check: (u) => u.streak >= 7 },
+    { id: 'premium', name: 'ویژه', desc: 'خرید اشتراک پلاس', icon: 'crown', check: (u) => u.subscription === 'plus' }
+];
+
 let currentUser = null;
 let isOwner = false;
 let authMode = 'login';
@@ -479,7 +536,7 @@ async function doAuth() {
     const p = document.getElementById('auth-password').value;
     if(!u || !p) return showToast('نام کاربری و رمز را وارد کنید');
     if(u === 'owner') {
-        if(p === DB.data.ownerPassword) { isOwner = true; hideAuthModal(); initApp(); showToast('به کنسول ادمین خوش آمدید'); } 
+        if(p === DB.data.ownerPassword) { isOwner = true; hideAuthModal(); initApp(); showToast('به کنسول ادمین خوش آمدید'); playSound('success'); } 
         else { showToast('رمز ادمین اشتباه است'); }
         return;
     }
@@ -489,8 +546,9 @@ async function doAuth() {
         currentUser = u;
     } else {
         if(DB.getUser(u)) return showToast('این کاربر وجود دارد');
-        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free', streak: 0, lastActive: null, favoriteGame: null, pollVotes: [], following: [] });
+        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free', streak: 0, lastActive: null, favoriteGame: null, pollVotes: [], following: [], achievements: [] });
         currentUser = u;
+        playSound('success');
     }
     hideAuthModal();
     initApp();
@@ -516,13 +574,42 @@ function toggleMobileMenu() {
 function navigate(section) {
     ['home', 'tasks', 'methods', 'store', 'community', 'neogram', 'panel', 'about'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
-    document.getElementById('mobile-menu').classList.add('hidden'); // Close mobile menu on navigate
+    document.getElementById('mobile-menu').classList.add('hidden');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
-    if(section === 'home') { renderPath(); renderLeaderboard(); }
+    if(section === 'home') { renderPath(); renderLeaderboard(); renderAchievements(); }
     if(section === 'tasks') renderTasks();
     if(section === 'community') renderCommunity();
     if(section === 'neogram') renderNeogram();
+    lucide.createIcons();
+}
+
+function checkAchievements() {
+    const user = DB.getUser(currentUser);
+    if(!user) return;
+    let newAchievement = false;
+    ACHIEVEMENTS.forEach(a => {
+        if(!user.achievements.includes(a.id) && a.check(user)) {
+            user.achievements.push(a.id);
+            newAchievement = true;
+            showToast(`🏆 دستاورد جدید: ${a.name}`);
+            playSound('level');
+        }
+    });
+    if(newAchievement) DB.updateUser(currentUser, { achievements: user.achievements });
+}
+
+function renderAchievements() {
+    const user = isOwner ? { achievements: ACHIEVEMENTS.map(a=>a.id) } : DB.getUser(currentUser);
+    const html = ACHIEVEMENTS.map(a => {
+        const unlocked = user.achievements && user.achievements.includes(a.id);
+        return `
+        <div class="flex flex-col items-center text-center p-2 rounded-xl ${unlocked ? 'bg-amber-50 border border-amber-200' : 'bg-slate-50 border border-slate-200 badge-locked'} transition-all">
+            <i data-lucide="${a.icon}" class="w-6 h-6 mb-1 ${unlocked ? 'text-amber-500' : 'text-slate-400'}"></i>
+            <span class="text-[10px] md:text-xs font-medium ${unlocked ? 'text-amber-700' : 'text-slate-400'}">${a.name}</span>
+        </div>`;
+    }).join('');
+    document.getElementById('achievements-container').innerHTML = html;
     lucide.createIcons();
 }
 
@@ -572,6 +659,8 @@ function updateUI() {
     document.getElementById('nav-xp-bar').style.width = Math.min(100, ((user.xp - prevXp) / (nextXp - prevXp)) * 100) + '%';
     document.getElementById('stat-unlocked').textContent = METHODS.filter(m => m.lvl <= lvl).length + '/30';
     setTheme(user.theme || 'indigo');
+    
+    document.getElementById('sound-toggle').classList.toggle('active', soundEnabled);
 }
 
 function renderPath() {
@@ -652,6 +741,7 @@ function saveGame() {
         DB.updateUser(currentUser, { favoriteGame: val, coins: user.coins });
         updateUI();
         showToast('+۱۰ سکه دریافت کردی!');
+        playSound('success');
     } else {
         DB.updateUser(currentUser, { favoriteGame: val });
         showToast('بازی محبوب آپدیت شد.');
@@ -703,6 +793,7 @@ function vote(index) {
         DB.data.poll = poll;
         DB.save();
         showToast('رای شما ثبت شد!');
+        playSound('click');
     }
     renderPoll();
 }
@@ -783,7 +874,9 @@ function postNeogram() {
     document.getElementById('neogram-input').value = '';
     renderNeogram();
     updateUI();
+    checkAchievements();
     showToast('پست شما در نیوگرام منتشر شد! +۵ XP');
+    playSound('success');
 }
 
 function likeNeogram(postId) {
@@ -795,6 +888,7 @@ function likeNeogram(postId) {
         post.likes.splice(index, 1);
     } else {
         post.likes.push(currentUser);
+        playSound('click');
     }
     DB.save();
     renderNeogram();
@@ -811,6 +905,7 @@ function addNeogramComment(postId) {
         DB.save();
         renderNeogram();
         document.getElementById(`comments-${postId}`).classList.remove('hidden');
+        playSound('click');
     }
 }
 
@@ -915,6 +1010,7 @@ function checkMath() {
         res.textContent = 'آفرین! درست بود.';
         res.style.color = '#10b981';
         document.getElementById('ws-complete-btn').disabled = false;
+        playSound('click');
     } else {
         res.textContent = 'دقت کن!';
         res.style.color = '#ef4444';
@@ -945,6 +1041,7 @@ function checkSpeed(target) {
         document.getElementById('speed-timer').textContent = "عالی بود!";
         document.getElementById('speed-timer').style.color = "#10b981";
         document.getElementById('ws-complete-btn').disabled = false;
+        playSound('success');
     }
 }
 
@@ -958,6 +1055,9 @@ function handleTap() {
             circle.textContent = '✓';
             document.getElementById('ws-complete-btn').disabled = false;
             showToast('آفرین! حافظه‌ات فعال شد.');
+            playSound('success');
+        } else {
+            playSound('click');
         }
     }
 }
@@ -978,6 +1078,7 @@ function startChallenge() {
             document.getElementById('ws-complete-btn').disabled = false;
             btn.textContent = "تکمیل شد";
             btn.disabled = false;
+            playSound('success');
         }
     }, 1000);
 }
@@ -1034,10 +1135,16 @@ function completeWorkspace() {
     updateUI();
     renderPath();
     renderLeaderboard();
+    checkAchievements();
     closeWorkspace();
     
-    if(newLvl > oldLvl) showToast(`🎉 سطح بالا رفت! سطح ${newLvl}`);
-    else showToast(`+${xpReward} XP و +${coinReward} سکه کسب کردید!`);
+    if(newLvl > oldLvl) {
+        showToast(`🎉 سطح بالا رفت! سطح ${newLvl}`);
+        playSound('level');
+    } else {
+        showToast(`+${xpReward} XP و +${coinReward} سکه کسب کردید!`);
+        playSound('success');
+    }
 }
 
 function startPomodoro(minutes = 25) {
@@ -1056,6 +1163,7 @@ function startPomodoro(minutes = 25) {
             document.getElementById('ws-complete-btn').disabled = false;
             btn.textContent = "تکمیل شد";
             btn.disabled = false;
+            playSound('success');
         }
     }, 1000);
 }
@@ -1070,6 +1178,7 @@ function addFlashcard() {
     document.getElementById('fc-q').value = '';
     document.getElementById('fc-a').value = '';
     document.getElementById('ws-complete-btn').disabled = false;
+    playSound('click');
 }
 
 async function addTask() {
@@ -1081,6 +1190,7 @@ async function addTask() {
     DB.updateUser(currentUser, { tasks: user.tasks });
     document.getElementById('task-input').value = '';
     renderTasks();
+    playSound('click');
 }
 
 async function toggleTask(id) {
@@ -1096,14 +1206,15 @@ async function toggleTask(id) {
         user.xp += Math.floor(15 * subMult * streakMult); 
         user.coins += Math.floor(5 * subMult * streakMult); 
         DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, coins: user.coins, level: getLevel(user.xp) }); 
-        updateUI(); renderPath(); renderLeaderboard(); showToast('تسک انجام شد! پاداش گرفتید'); 
+        updateUI(); renderPath(); renderLeaderboard(); checkAchievements(); showToast('تسک انجام شد! پاداش گرفتید'); 
+        playSound('success');
     } else { 
         DB.updateUser(currentUser, { tasks: user.tasks }); 
     }
     renderTasks();
 }
 
-function deleteTask(id) { const user = DB.getUser(currentUser); user.tasks = user.tasks.filter(t => t.id !== id); DB.updateUser(currentUser, { tasks: user.tasks }); renderTasks(); }
+function deleteTask(id) { const user = DB.getUser(currentUser); user.tasks = user.tasks.filter(t => t.id !== id); DB.updateUser(currentUser, { tasks: user.tasks }); renderTasks(); playSound('click'); }
 
 function renderTasks() {
     const user = DB.getUser(currentUser);
@@ -1131,7 +1242,9 @@ function buySub(type) {
     
     DB.updateUser(currentUser, { coins: user.coins - prices[type], subscription: type });
     updateUI();
+    checkAchievements();
     showToast('اشتراک با موفقیت فعال شد!');
+    playSound('level');
 }
 
 function sendSupport() {
@@ -1141,6 +1254,7 @@ function sendSupport() {
     DB.save();
     document.getElementById('support-msg').value = '';
     showToast('پیام شما ارسال شد');
+    playSound('click');
 }
 
 function setTheme(theme) {
@@ -1173,6 +1287,11 @@ function setTheme(theme) {
         .task-item.done span { text-decoration: line-through; color: #94a3b8; }
         .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
         .poll-bar { transition: width 0.5s ease-in-out; }
+        .badge-locked { opacity: 0.2; filter: grayscale(100%); }
+        .toggle-switch { width: 40px; height: 22px; background: #cbd5e1; border-radius: 11px; position: relative; cursor: pointer; transition: background 0.3s; }
+        .toggle-switch.active { background: ${colors[theme]}; }
+        .toggle-dot { width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; transition: right 0.3s; }
+        .toggle-switch.active .toggle-dot { right: 20px; }
     `;
 
     if(currentUser) DB.updateUser(currentUser, { theme: theme });
@@ -1180,6 +1299,7 @@ function setTheme(theme) {
 
 function renderPanel() {
     document.getElementById('owner-panel').classList.toggle('hidden', !isOwner);
+    document.getElementById('sound-toggle').classList.toggle('active', soundEnabled);
     if(isOwner) {
         document.getElementById('admin-user-list').innerHTML = DB.data.users.map(u => `
             <div class="flex justify-between items-center bg-slate-50 p-2 md:p-3 rounded-lg border border-slate-200">
