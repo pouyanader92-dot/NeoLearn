@@ -8,58 +8,32 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Vazirmatn', 'sans-serif'] }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Vazirmatn', 'sans-serif'] } } } }
     </script>
-    <style>
+    <style id="dynamic-style">
+        :root { --brand-color: #4f46e5; }
         * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
         body { background-color: #f8fafc; color: #1e293b; margin: 0; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-
         .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        
-        .btn-brand { background: #4f46e5; color: #fff; transition: 0.2s; border: none; cursor: pointer; }
-        .btn-brand:hover { background: #4338ca; transform: translateY(-1px); }
-        .btn-brand:disabled { background: #c7d2fe; cursor: not-allowed; transform: none; }
-        
-        .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: #4f46e5; transition: 0.2s; cursor: pointer; }
+        .btn-brand { background: var(--brand-color); color: #fff; transition: 0.2s; border: none; cursor: pointer; }
+        .btn-brand:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+        .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: var(--brand-color); transition: 0.2s; cursor: pointer; }
         .btn-outline:hover { background: #f1f5f9; }
-
-        input, select, textarea { 
-            background: #fff; 
-            border: 1px solid #cbd5e1; 
-            border-radius: 0.5rem; 
-            padding: 0.75rem; 
-            color: #1e293b; 
-            width: 100%; 
-            transition: 0.2s; 
-            font-size: 1rem;
-        }
-        input:focus, select:focus, textarea:focus { 
-            border-color: #4f46e5; 
-            outline: none; 
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.1); 
-        }
+        /* ارتفاع اینپوت‌ها بیشتر شد */
+        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 56px; }
+        input:focus, select:focus, textarea:focus { border-color: var(--brand-color); outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
         input::placeholder { color: #94a3b8; }
-
-        .level-badge { background: #eef2ff; color: #4f46e5; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
-        
+        .level-badge { background: #eef2ff; color: var(--brand-color); padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
         .xp-bar { height: 8px; background: #e2e8f0; border-radius: 0.25rem; overflow: hidden; }
-        .xp-fill { height: 100%; background: #4f46e5; transition: width 1s ease-in-out; }
-
+        .xp-fill { height: 100%; background: var(--brand-color); transition: width 1s ease-in-out; }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
         .anim-pop { animation: fadeInUp 0.4s ease-out forwards; }
-
         .task-checkbox { width: 24px; height: 24px; border-radius: 0.375rem; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: #fff; }
-        .task-checkbox.done { background: #4f46e5; border-color: #4f46e5; }
+        .task-checkbox.done { background: var(--brand-color); border-color: var(--brand-color); }
         .task-item.done span { text-decoration: line-through; color: #94a3b8; }
-
         .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; p-4; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
     </style>
 </head>
@@ -100,7 +74,7 @@
             <div class="mt-8 flex justify-end gap-3">
                 <button onclick="closeWorkspace()" class="btn-outline px-6 py-3 rounded-lg">بستن</button>
                 <button id="ws-complete-btn" onclick="completeWorkspace()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center gap-2" disabled>
-                    <i data-lucide="check-circle" class="w-5 h-5"></i> تکمیل و دریافت XP
+                    <i data-lucide="check-circle" class="w-5 h-5"></i> تکمیل و دریافت پاداش
                 </button>
             </div>
         </div>
@@ -115,46 +89,49 @@
             <span class="text-lg font-bold hidden sm:block text-slate-800">NeoLearn</span>
         </div>
         <div class="flex items-center gap-3 md:gap-4">
-            <div class="hidden md:flex items-center gap-3">
-                <span class="text-sm text-slate-500">سطح <b id="nav-level" class="text-indigo-600">1</b></span>
-                <div class="w-32 xp-bar"><div id="nav-xp-bar" class="xp-fill" style="width:0%"></div></div>
+            <div class="hidden md:flex items-center gap-4">
+                <div class="flex items-center gap-2 text-sm">
+                    <i data-lucide="star" class="w-4 h-4 text-amber-500"></i>
+                    <b id="nav-level" class="text-indigo-600">1</b>
+                    <div class="w-24 xp-bar"><div id="nav-xp-bar" class="xp-fill" style="width:0%"></div></div>
+                </div>
+                <div class="flex items-center gap-1 text-sm text-amber-600 font-bold">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    <span id="nav-coins">0</span>
+                </div>
             </div>
-            <button onclick="navigate('tasks')" class="btn-outline px-3 py-2 rounded-lg text-sm font-medium">برنامه‌ریز</button>
-            <button onclick="navigate('methods')" class="btn-outline px-3 py-2 rounded-lg text-sm font-medium">متدها</button>
-            <button onclick="navigate('panel')" class="btn-outline px-3 py-2 rounded-lg text-sm font-medium">پنل</button>
+            <button onclick="navigate('tasks')" class="btn-outline px-3 py-2 rounded-lg text-sm">برنامه‌ریز</button>
+            <button onclick="navigate('methods')" class="btn-outline px-3 py-2 rounded-lg text-sm">متدها</button>
+            <button onclick="navigate('panel')" class="btn-outline px-3 py-2 rounded-lg text-sm">پنل</button>
             <button onclick="logout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
         </div>
     </nav>
 
     <div id="section-home" class="anim-pop">
         <h1 class="text-3xl font-bold mb-2 text-slate-800">سلام، <span id="welcome-name" class="text-indigo-600">کاربر</span> 👋</h1>
-        <p class="text-slate-500 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP متدهای پیشرفته‌تری را باز کن!</p>
+        <p class="text-slate-500 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP و سکه، متدهای پیشرفته‌تری را باز کن!</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="card p-6 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="trending-up" class="w-6 h-6 text-indigo-600"></i></div>
                 <div><div class="text-2xl font-bold text-slate-800" id="stat-level">1</div><div class="text-sm text-slate-500">سطح فعلی</div></div>
             </div>
             <div class="card p-6 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="zap" class="w-6 h-6 text-indigo-600"></i></div>
-                <div><div class="text-2xl font-bold text-slate-800" id="stat-xp">0</div><div class="text-sm text-slate-500">امتیاز (XP)</div></div>
+                <div class="w-12 h-12 rounded-lg bg-amber-50 flex items-center justify-center"><i data-lucide="coins" class="w-6 h-6 text-amber-500"></i></div>
+                <div><div class="text-2xl font-bold text-slate-800" id="stat-coins">0</div><div class="text-sm text-slate-500">موجودی سکه</div></div>
             </div>
             <div class="card p-6 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="unlock" class="w-6 h-6 text-indigo-600"></i></div>
                 <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/20</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
             </div>
         </div>
-        <div class="card p-8">
-            <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="rocket" class="w-5 h-5 text-indigo-600"></i> مسیر پیشرفت شما</h3>
-            <div id="progress-path" class="flex justify-between items-center relative"></div>
-        </div>
     </div>
 
     <div id="section-tasks" class="hidden">
         <h2 class="text-2xl font-bold mb-2 text-slate-800">برنامه‌ریز هوشمند</h2>
-        <p class="text-slate-500 mb-8">تسک‌های روزانه و هفتگی خود را ثبت کن و با انجام آن‌ها ۱۵ XP کسب کن!</p>
+        <p class="text-slate-500 mb-8">تسک‌های خود را ثبت کن و با انجام آن‌ها ۱۵ XP و ۵ سکه کسب کن!</p>
         <div class="card p-6 mb-8">
             <div class="flex flex-col md:flex-row gap-3">
-                <input id="task-input" type="text" placeholder="مثلا: حل ۱۰ سوال ریاضی فصل ۳..." class="flex-1">
+                <input id="task-input" type="text" placeholder="مثلا: حل ۱۰ سوال ریاضی..." class="flex-1">
                 <select id="task-type" class="md:w-1/4"><option value="daily">روزانه</option><option value="weekly">هفتگی</option></select>
                 <button onclick="addTask()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2"><i data-lucide="plus" class="w-5 h-5"></i> افزودن</button>
             </div>
@@ -173,7 +150,7 @@
 
     <div id="section-methods" class="hidden">
         <h2 class="text-2xl font-bold mb-2 text-slate-800">کتابخانه متدهای مطالعه</h2>
-        <p class="text-slate-500 mb-8">۲۰ روش اثبات‌شده. روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی!</p>
+        <p class="text-slate-500 mb-8">روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی و پاداش بگیری!</p>
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
@@ -183,15 +160,49 @@
             <div class="card p-8">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="palette" class="w-5 h-5 text-indigo-600"></i> تنظیمات رنگ</h3>
                 <div class="flex gap-3">
-                    <button onclick="setTheme('indigo')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110 transition-transform" style="background: #4f46e5;"></button>
-                    <button onclick="setTheme('emerald')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110 transition-transform" style="background: #10b981;"></button>
-                    <button onclick="setTheme('rose')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110 transition-transform" style="background: #f43f5e;"></button>
-                    <button onclick="setTheme('amber')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110 transition-transform" style="background: #f59e0b;"></button>
+                    <button onclick="setTheme('indigo')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #4f46e5;"></button>
+                    <button onclick="setTheme('emerald')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #10b981;"></button>
+                    <button onclick="setTheme('rose')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f43f5e;"></button>
+                    <button onclick="setTheme('amber')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f59e0b;"></button>
                 </div>
             </div>
-            <div id="owner-panel" class="card p-8 hidden">
+            
+            <div class="card p-8">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> اشتراک‌ها</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="font-medium text-slate-600">اشتراک عادی</span>
+                        <span class="text-xs text-slate-400">رایگان</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                        <span class="font-medium text-emerald-700">اشتراک اکو (۱.۲x XP)</span>
+                        <button onclick="buySub('eco')" class="btn-brand px-4 py-2 rounded-lg text-xs font-bold">۱۰۰ سکه</button>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-amber-50 rounded-lg border border-amber-200">
+                        <span class="font-medium text-amber-700">اشتراک پلاس (۱.۵x XP)</span>
+                        <button onclick="buySub('plus')" class="btn-brand px-4 py-2 rounded-lg text-xs font-bold">۲۵۰ سکه</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-8 md:col-span-2">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i> پیام به پشتیبانی</h3>
+                <textarea id="support-msg" rows="3" placeholder="پیام خود را بنویسید..." class="mb-4" style="min-height: 80px;"></textarea>
+                <button onclick="sendSupport()" class="btn-brand px-6 py-3 rounded-lg font-bold">ارسال پیام</button>
+            </div>
+
+            <div id="owner-panel" class="card p-8 hidden md:col-span-2">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-amber-600"><i data-lucide="shield-check" class="w-5 h-5"></i> کنسول ادمین</h3>
-                <div id="admin-user-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-bold mb-2 text-slate-500">لیست کاربران</h4>
+                        <div id="admin-user-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold mb-2 text-slate-500">پیام‌های پشتیبانی</h4>
+                        <div id="admin-msg-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -205,8 +216,14 @@ const DB = {
             const res = await fetch('/api/db');
             this.data = await res.json();
             if(!this.data.users) this.data.users = [];
-            this.data.users.forEach(u => { if(!u.tasks) u.tasks = []; if(!u.notes) u.notes = {}; });
-        } catch (e) { console.error(e); this.data = { users: [], ownerPassword: "owner123" }; }
+            if(!this.data.messages) this.data.messages = [];
+            this.data.users.forEach(u => {
+                if(!u.tasks) u.tasks = [];
+                if(!u.notes) u.notes = {};
+                if(u.coins === undefined) u.coins = 0;
+                if(!u.subscription) u.subscription = 'free';
+            });
+        } catch (e) { console.error(e); this.data = { users: [], messages: [], ownerPassword: "owner123" }; }
     },
     async save() { await fetch('/api/db', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.data) }); },
     getUser(u) { return this.data.users.find(x => x.username === u); },
@@ -216,26 +233,26 @@ const DB = {
 };
 
 const METHODS = [
-    { id: 1, name: "خواندن فعال", xp: 10, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
-    { id: 2, name: "یادداشت‌برداری", xp: 10, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
-    { id: 3, name: "خلاصه‌نویسی", xp: 15, lvl: 2, icon: "file-text", desc: "خلاصه کردن مفاهیم.", tool: "note" },
-    { id: 4, name: "فلش‌کارت", xp: 20, lvl: 2, icon: "layers", desc: "ساخت کارت سوال/جواب.", tool: "flashcard" },
-    { id: 5, name: "نقشه ذهنی", xp: 25, lvl: 3, icon: "network", desc: "رسم نمودار درختی.", tool: "note" },
-    { id: 6, name: "تکنیک پومودورو", xp: 15, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro" },
-    { id: 7, name: "یادگیری فعال", xp: 30, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "note" },
-    { id: 8, name: "تکنیک فاینمن", xp: 40, lvl: 4, icon: "user-check", desc: "آموزش ساده به دیگری.", tool: "note" },
-    { id: 9, name: "تکرار فاصله‌دار", xp: 35, lvl: 5, icon: "repeat", desc: "مرور در زمان افزایشی.", tool: "check" },
-    { id: 10, name: "روش SQ3R", xp: 35, lvl: 5, icon: "list-checks", desc: "پیمایش و مرور.", tool: "check" },
-    { id: 11, name: "درهم‌آمیزی", xp: 40, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "check" },
-    { id: 12, name: "دسته‌بندی", xp: 40, lvl: 6, icon: "box", desc: "تقسیم به قطعات.", tool: "note" },
-    { id: 13, name: "تست‌سازی شخصی", xp: 45, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "note" },
-    { id: 14, name: "تصویرسازی ذهنی", xp: 45, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "note" },
-    { id: 15, name: "ارتباط معنایی", xp: 50, lvl: 8, icon: "link", desc: "ربط به دانش قبلی.", tool: "note" },
-    { id: 16, name: "مثال‌سازی", xp: 50, lvl: 8, icon: "lightbulb", desc: "مثال عینی سازی.", tool: "note" },
-    { id: 17, name: "روش کورنل", xp: 55, lvl: 9, icon: "layout-grid", desc: "بخش‌بندی برگه.", tool: "note" },
-    { id: 18, name: "طوفان فکری", xp: 55, lvl: 9, icon: "cloud-lightning", desc: "ایده‌پردازی.", tool: "note" },
-    { id: 19, name: "آموزش همکار", xp: 60, lvl: 10, icon: "users", desc: "یاد دادن به دوست.", tool: "check" },
-    { id: 20, name: "خواب استراتژیک", xp: 30, lvl: 10, icon: "moon", desc: "استراحت مغز.", tool: "check" }
+    { id: 1, name: "خواندن فعال", xp: 10, coins: 5, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
+    { id: 2, name: "یادداشت‌برداری", xp: 10, coins: 5, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
+    { id: 3, name: "خلاصه‌نویسی", xp: 15, coins: 8, lvl: 2, icon: "file-text", desc: "خلاصه کردن مفاهیم.", tool: "note" },
+    { id: 4, name: "فلش‌کارت", xp: 20, coins: 10, lvl: 2, icon: "layers", desc: "ساخت کارت سوال/جواب.", tool: "flashcard" },
+    { id: 5, name: "نقشه ذهنی", xp: 25, coins: 12, lvl: 3, icon: "network", desc: "رسم نمودار درختی.", tool: "note" },
+    { id: 6, name: "تکنیک پومودورو", xp: 15, coins: 8, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro" },
+    { id: 7, name: "یادگیری فعال", xp: 30, coins: 15, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "note" },
+    { id: 8, name: "تکنیک فاینمن", xp: 40, coins: 20, lvl: 4, icon: "user-check", desc: "آموزش ساده به دیگری.", tool: "note" },
+    { id: 9, name: "تکرار فاصله‌دار", xp: 35, coins: 18, lvl: 5, icon: "repeat", desc: "مرور در زمان افزایشی.", tool: "check" },
+    { id: 10, name: "روش SQ3R", xp: 35, coins: 18, lvl: 5, icon: "list-checks", desc: "پیمایش و مرور.", tool: "check" },
+    { id: 11, name: "درهم‌آمیزی", xp: 40, coins: 20, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "check" },
+    { id: 12, name: "دسته‌بندی", xp: 40, coins: 20, lvl: 6, icon: "box", desc: "تقسیم به قطعات.", tool: "note" },
+    { id: 13, name: "تست‌سازی شخصی", xp: 45, coins: 22, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "note" },
+    { id: 14, name: "تصویرسازی ذهنی", xp: 45, coins: 22, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "note" },
+    { id: 15, name: "ارتباط معنایی", xp: 50, coins: 25, lvl: 8, icon: "link", desc: "ربط به دانش قبلی.", tool: "note" },
+    { id: 16, name: "مثال‌سازی", xp: 50, coins: 25, lvl: 8, icon: "lightbulb", desc: "مثال عینی سازی.", tool: "note" },
+    { id: 17, name: "روش کورنل", xp: 55, coins: 28, lvl: 9, icon: "layout-grid", desc: "بخش‌بندی برگه.", tool: "note" },
+    { id: 18, name: "طوفان فکری", xp: 55, coins: 28, lvl: 9, icon: "cloud-lightning", desc: "ایده‌پردازی.", tool: "note" },
+    { id: 19, name: "آموزش همکار", xp: 60, coins: 30, lvl: 10, icon: "users", desc: "یاد دادن به دوست.", tool: "check" },
+    { id: 20, name: "خواب استراتژیک", xp: 30, coins: 15, lvl: 10, icon: "moon", desc: "استراحت مغز.", tool: "check" }
 ];
 
 const XP_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
@@ -270,7 +287,7 @@ async function doAuth() {
         currentUser = u;
     } else {
         if(DB.getUser(u)) return showToast('این کاربر وجود دارد');
-        DB.addUser({ username: u, password: p, xp: 0, level: 1, theme: 'indigo', tasks: [], notes: {} });
+        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free' });
         currentUser = u;
     }
     hideAuthModal();
@@ -279,6 +296,7 @@ async function doAuth() {
 
 function logout() { currentUser = null; isOwner = false; document.getElementById('app').classList.add('hidden'); showAuthModal(); }
 function getLevel(xp) { for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp >= XP_THRESHOLDS[i]) return i+1; } return 1; }
+function getMult(user) { if(user.subscription === 'plus') return 1.5; if(user.subscription === 'eco') return 1.2; return 1; }
 function initApp() { document.getElementById('app').classList.remove('hidden'); updateUI(); navigate('home'); lucide.createIcons(); }
 
 function navigate(section) {
@@ -296,8 +314,9 @@ function updateUI() {
         document.getElementById('welcome-name').textContent = 'ادمین';
         document.getElementById('nav-level').textContent = 'Max';
         document.getElementById('nav-xp-bar').style.width = '100%';
+        document.getElementById('nav-coins').textContent = '∞';
         document.getElementById('stat-level').textContent = 'Max';
-        document.getElementById('stat-xp').textContent = '∞';
+        document.getElementById('stat-coins').textContent = '∞';
         document.getElementById('stat-unlocked').textContent = '20/20';
         return;
     }
@@ -307,8 +326,9 @@ function updateUI() {
     user.level = lvl;
     document.getElementById('welcome-name').textContent = currentUser;
     document.getElementById('nav-level').textContent = lvl;
+    document.getElementById('nav-coins').textContent = user.coins;
     document.getElementById('stat-level').textContent = lvl;
-    document.getElementById('stat-xp').textContent = user.xp;
+    document.getElementById('stat-coins').textContent = user.coins;
     const nextXp = XP_THRESHOLDS[lvl] || XP_THRESHOLDS[XP_THRESHOLDS.length-1];
     const prevXp = XP_THRESHOLDS[lvl-1] || 0;
     document.getElementById('nav-xp-bar').style.width = Math.min(100, ((user.xp - prevXp) / (nextXp - prevXp)) * 100) + '%';
@@ -335,26 +355,25 @@ function renderMethods() {
         <div class="card p-6 flex flex-col justify-between ${locked ? 'opacity-50 pointer-events-none' : ''}">
             <div>
                 <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center">
-                        <i data-lucide="${m.icon}" class="w-6 h-6 text-indigo-600"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="${m.icon}" class="w-6 h-6 text-indigo-600"></i></div>
                     <span class="level-badge">Lv.${m.lvl}</span>
                 </div>
                 <h3 class="text-lg font-bold mb-2 text-slate-800">${m.name}</h3>
                 <p class="text-sm text-slate-500 mb-6 min-h-[40px]">${m.desc}</p>
             </div>
             <div class="flex items-center justify-between">
-                <span class="text-sm font-bold text-indigo-600">+${m.xp} XP</span>
-                <button onclick="openWorkspace(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1">
-                    <i data-lucide="play" class="w-4 h-4"></i> استفاده
-                </button>
+                <div class="flex gap-2 text-xs font-bold">
+                    <span class="text-indigo-600">+${Math.floor(m.xp * getMult(user))} XP</span>
+                    <span class="text-amber-500">+${Math.floor(m.coins * getMult(user))} سکه</span>
+                </div>
+                <button onclick="openWorkspace(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1"><i data-lucide="play" class="w-4 h-4"></i> استفاده</button>
             </div>
         </div>`;
     }).join('');
     lucide.createIcons();
 }
 
-// --- Method Workspace Logic ---
+// Workspace Logic
 function openWorkspace(id) {
     if(isOwner) return;
     const user = DB.getUser(currentUser);
@@ -368,12 +387,12 @@ function openWorkspace(id) {
     
     const content = document.getElementById('ws-content');
     const completeBtn = document.getElementById('ws-complete-btn');
-    completeBtn.disabled = true; // Disable by default
+    completeBtn.disabled = true;
     
     const userNotes = user.notes && user.notes[id] ? user.notes[id] : '';
     
     if(method.tool === 'note') {
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-3">یادداشت‌های خود را برای این متد ثبت کنید (باید حداقل ۱۰ کاراکتر بنویسید):</p>
+        content.innerHTML = `<p class="text-sm text-slate-500 mb-3">یادداشت‌های خود را ثبت کنید (حداقل ۱۰ کاراکتر):</p>
         <textarea id="ws-textarea" class="w-full h-48 bg-slate-50 p-4" placeholder="یادداشت‌های شما..." oninput="checkNoteValidity()">${userNotes}</textarea>`;
         checkNoteValidity();
     } else if(method.tool === 'check') {
@@ -386,7 +405,6 @@ function openWorkspace(id) {
         content.innerHTML = `<div class="text-center">
             <div id="pomodoro-display" class="text-5xl font-bold text-indigo-600 my-8 tracking-wider">25:00</div>
             <button onclick="startPomodoro()" id="pomo-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع تایمر</button>
-            <p class="text-xs text-slate-400 mt-4">تایمر باید به صفر برسه تا بتونی XP بگیری.</p>
         </div>`;
     } else if(method.tool === 'flashcard') {
         content.innerHTML = `<div class="space-y-3">
@@ -394,7 +412,6 @@ function openWorkspace(id) {
             <input id="fc-a" type="text" placeholder="جواب...">
             <button onclick="addFlashcard()" class="btn-outline px-4 py-2 rounded-lg text-sm">افزودن کارت</button>
             <div id="fc-list" class="mt-4 space-y-2"></div>
-            <p class="text-xs text-slate-400 mt-2">حداقل ۱ کارت بساز تا دکمه فعال بشه.</p>
         </div>`;
     }
     
@@ -427,14 +444,19 @@ function completeWorkspace() {
     const method = METHODS.find(m => m.id === currentMethodId);
     if(!method) return;
     
-    // Give XP
     const user = DB.getUser(currentUser);
-    user.xp += method.xp;
+    const mult = getMult(user);
+    
+    const xpReward = Math.floor(method.xp * mult);
+    const coinReward = Math.floor(method.coins * mult);
+    
+    user.xp += xpReward;
+    user.coins += coinReward;
     const oldLvl = user.level;
     const newLvl = getLevel(user.xp);
-    DB.updateUser(currentUser, { xp: user.xp, level: newLvl });
     
-    // Save note if exists
+    DB.updateUser(currentUser, { xp: user.xp, coins: user.coins, level: newLvl });
+    
     if(method.tool === 'note') {
         const text = document.getElementById('ws-textarea').value;
         if(!user.notes) user.notes = {};
@@ -446,15 +468,14 @@ function completeWorkspace() {
     renderPath();
     closeWorkspace();
     
-    if(newLvl > oldLvl) showToast(`🎉 سطح بالا رفت! اکنون سطح ${newLvl} هستید!`);
-    else showToast(`+${method.xp} XP کسب کردید!`);
+    if(newLvl > oldLvl) showToast(`🎉 سطح بالا رفت! سطح ${newLvl}`);
+    else showToast(`+${xpReward} XP و +${coinReward} سکه کسب کردید!`);
 }
 
 function startPomodoro() {
     let time = 25 * 60;
     const btn = document.getElementById('pomo-btn');
     btn.disabled = true;
-    btn.textContent = "در حال اجرا...";
     if(pomodoroInterval) clearInterval(pomodoroInterval);
     pomodoroInterval = setInterval(() => {
         time--;
@@ -464,8 +485,7 @@ function startPomodoro() {
         if(time <= 0) {
             clearInterval(pomodoroInterval);
             document.getElementById('pomodoro-display').textContent = "پایان!";
-            document.getElementById('ws-complete-btn').disabled = false; // Enable complete button
-            btn.textContent = "تکمیل شد";
+            document.getElementById('ws-complete-btn').disabled = false;
         }
     }, 1000);
 }
@@ -479,7 +499,7 @@ function addFlashcard() {
     document.getElementById('fc-list').innerHTML += `<div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-sm"><b>سوال:</b> ${q}<br><b>جواب:</b> ${a}</div>`;
     document.getElementById('fc-q').value = '';
     document.getElementById('fc-a').value = '';
-    document.getElementById('ws-complete-btn').disabled = false; // Enable complete button
+    document.getElementById('ws-complete-btn').disabled = false;
 }
 
 // Task Manager
@@ -501,8 +521,9 @@ async function toggleTask(id) {
     
     if(task.done) { 
         user.xp += 15; 
-        DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, level: getLevel(user.xp) }); 
-        updateUI(); renderPath(); showToast('+15 XP برای انجام تسک!'); 
+        user.coins += 5; 
+        DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, coins: user.coins, level: getLevel(user.xp) }); 
+        updateUI(); renderPath(); showToast('+15 XP و +5 سکه'); 
     } else { 
         DB.updateUser(currentUser, { tasks: user.tasks }); 
     }
@@ -528,13 +549,35 @@ function renderTasks() {
     lucide.createIcons();
 }
 
+// Subscriptions & Support
+function buySub(type) {
+    const user = DB.getUser(currentUser);
+    const prices = { eco: 100, plus: 250 };
+    if(user.subscription === type) return showToast('این اشتراک را دارید');
+    if(type === 'eco' && user.subscription === 'plus') return showToast('اشتراک فعلی بهتر است');
+    if(user.coins < prices[type]) return showToast('سکه کافی ندارید');
+    
+    DB.updateUser(currentUser, { coins: user.coins - prices[type], subscription: type });
+    updateUI();
+    showToast('اشتراک با موفقیت فعال شد!');
+}
+
+function sendSupport() {
+    const text = document.getElementById('support-msg').value.trim();
+    if(!text) return;
+    DB.data.messages.push({ id: Date.now(), from: currentUser, text: text });
+    DB.save();
+    document.getElementById('support-msg').value = '';
+    showToast('پیام شما ارسال شد');
+}
+
 function setTheme(theme) {
     const colors = { indigo: '#4f46e5', emerald: '#10b981', rose: '#f43f5e', amber: '#f59e0b' };
     document.documentElement.style.setProperty('--brand-color', colors[theme]);
     
-    // Update styles dynamically
-    const style = document.querySelector('style');
+    const style = document.querySelector('style#dynamic-style');
     style.innerHTML = `
+        :root { --brand-color: ${colors[theme]}; }
         * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
         body { background-color: #f8fafc; color: #1e293b; margin: 0; }
         ::-webkit-scrollbar { width: 6px; }
@@ -545,7 +588,7 @@ function setTheme(theme) {
         .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
         .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: ${colors[theme]}; transition: 0.2s; cursor: pointer; }
         .btn-outline:hover { background: #f1f5f9; }
-        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.75rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; }
+        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 56px; }
         input:focus, select:focus, textarea:focus { border-color: ${colors[theme]}; outline: none; box-shadow: 0 0 0 3px ${colors[theme]}20; }
         input::placeholder { color: #94a3b8; }
         .level-badge { background: ${colors[theme]}20; color: ${colors[theme]}; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
@@ -570,6 +613,13 @@ function renderPanel() {
                 <div><span class="font-medium text-slate-800">${u.username}</span> <span class="text-xs text-indigo-600 mr-2">سطح ${u.level}</span></div>
                 <button onclick="deleteUser('${u.username}')" class="text-red-500 text-xs hover:text-red-700 px-2 py-1 hover:bg-red-50 rounded">حذف</button>
             </div>`).join('') || '<p class="text-xs text-slate-400 text-center py-4">کاربری ثبت‌نام نکرده است</p>';
+            
+        document.getElementById('admin-msg-list').innerHTML = DB.data.messages.map(m => `
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <b class="text-xs text-slate-800">${m.from}:</b>
+                <p class="text-xs text-slate-600 mt-1">${m.text}</p>
+            </div>
+        `).join('') || '<p class="text-xs text-slate-400 text-center py-4">پیامی وجود ندارد</p>';
     }
 }
 function deleteUser(u) { if(!confirm(`حذف ${u}؟`)) return; DB.removeUser(u); renderPanel(); showToast('کاربر حذف شد'); }
