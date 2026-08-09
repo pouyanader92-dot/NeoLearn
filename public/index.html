@@ -22,7 +22,6 @@
         .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
         .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: var(--brand-color); transition: 0.2s; cursor: pointer; }
         .btn-outline:hover { background: #f1f5f9; }
-        /* ارتفاع اینپوت‌ها بیشتر شد */
         input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 56px; }
         input:focus, select:focus, textarea:focus { border-color: var(--brand-color); outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
         input::placeholder { color: #94a3b8; }
@@ -34,7 +33,7 @@
         .task-checkbox { width: 24px; height: 24px; border-radius: 0.375rem; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: #fff; }
         .task-checkbox.done { background: var(--brand-color); border-color: var(--brand-color); }
         .task-item.done span { text-decoration: line-through; color: #94a3b8; }
-        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; p-4; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
+        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
     </style>
 </head>
 <body class="min-h-screen">
@@ -102,6 +101,7 @@
             </div>
             <button onclick="navigate('tasks')" class="btn-outline px-3 py-2 rounded-lg text-sm">برنامه‌ریز</button>
             <button onclick="navigate('methods')" class="btn-outline px-3 py-2 rounded-lg text-sm">متدها</button>
+            <button onclick="navigate('store')" class="btn-outline px-3 py-2 rounded-lg text-sm">اشتراک‌ها</button>
             <button onclick="navigate('panel')" class="btn-outline px-3 py-2 rounded-lg text-sm">پنل</button>
             <button onclick="logout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
         </div>
@@ -123,6 +123,11 @@
                 <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="unlock" class="w-6 h-6 text-indigo-600"></i></div>
                 <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/20</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
             </div>
+        </div>
+        <!-- اضافه شدن مسیر پیشرفت برای جلوگیری از خطای جاوااسکریپت -->
+        <div class="card p-6 mb-10">
+            <h3 class="text-lg font-bold mb-6 text-slate-800">مسیر پیشرفت شما</h3>
+            <div id="progress-path" class="flex items-center justify-between relative before:absolute before:left-0 before:right-0 before:top-5 before:h-0.5 before:bg-slate-200"></div>
         </div>
     </div>
 
@@ -154,6 +159,32 @@
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
+    <!-- بخش جدید اشتراک‌ها -->
+    <div id="section-store" class="hidden anim-pop">
+        <h2 class="text-2xl font-bold mb-8 text-slate-800">فروشگاه و اشتراک‌ها</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="card p-8 flex flex-col items-center text-center border-2 border-slate-200">
+                <i data-lucide="user" class="w-10 h-10 text-slate-400 mb-4"></i>
+                <h3 class="text-lg font-bold mb-2 text-slate-800">اشتراک عادی</h3>
+                <p class="text-sm text-slate-500 mb-6 flex-grow">دسترسی پایه به متدها با سرعت معمولی</p>
+                <span class="text-slate-400 font-bold">رایگان</span>
+            </div>
+            <div class="card p-8 flex flex-col items-center text-center border-2 border-emerald-500 relative">
+                <span class="absolute top-0 right-4 bg-emerald-500 text-white text-xs px-3 py-1 rounded-b-md font-bold">محبوب</span>
+                <i data-lucide="leaf" class="w-10 h-10 text-emerald-500 mb-4"></i>
+                <h3 class="text-lg font-bold mb-2 text-emerald-700">اشتراک اکو (۱.۲x XP)</h3>
+                <p class="text-sm text-slate-500 mb-6 flex-grow">۲۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
+                <button onclick="buySub('eco')" class="btn-brand w-full py-3 rounded-lg font-bold" style="background: #10b981;">۱۰۰ سکه</button>
+            </div>
+            <div class="card p-8 flex flex-col items-center text-center border-2 border-amber-400">
+                <i data-lucide="crown" class="w-10 h-10 text-amber-500 mb-4"></i>
+                <h3 class="text-lg font-bold mb-2 text-amber-700">اشتراک پلاس (۱.۵x XP)</h3>
+                <p class="text-sm text-slate-500 mb-6 flex-grow">۵۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
+                <button onclick="buySub('plus')" class="btn-brand w-full py-3 rounded-lg font-bold" style="background: #f59e0b;">۲۵۰ سکه</button>
+            </div>
+        </div>
+    </div>
+
     <div id="section-panel" class="hidden">
         <h2 class="text-2xl font-bold mb-8 text-slate-800">پنل مدیریت</h2>
         <div class="grid md:grid-cols-2 gap-6">
@@ -167,23 +198,7 @@
                 </div>
             </div>
             
-            <div class="card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="credit-card" class="w-5 h-5 text-indigo-600"></i> اشتراک‌ها</h3>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200">
-                        <span class="font-medium text-slate-600">اشتراک عادی</span>
-                        <span class="text-xs text-slate-400">رایگان</span>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                        <span class="font-medium text-emerald-700">اشتراک اکو (۱.۲x XP)</span>
-                        <button onclick="buySub('eco')" class="btn-brand px-4 py-2 rounded-lg text-xs font-bold">۱۰۰ سکه</button>
-                    </div>
-                    <div class="flex justify-between items-center p-3 bg-amber-50 rounded-lg border border-amber-200">
-                        <span class="font-medium text-amber-700">اشتراک پلاس (۱.۵x XP)</span>
-                        <button onclick="buySub('plus')" class="btn-brand px-4 py-2 rounded-lg text-xs font-bold">۲۵۰ سکه</button>
-                    </div>
-                </div>
-            </div>
+            <!-- بخش اشتراک از اینجا حذف شد و به منوی بالا منتقل شد -->
 
             <div class="card p-8 md:col-span-2">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i> پیام به پشتیبانی</h3>
@@ -232,6 +247,7 @@ const DB = {
     removeUser(u) { this.data.users = this.data.users.filter(x => x.username !== u); this.save(); }
 };
 
+// متدهای جدید (Tap و Challenge) به لیست اضافه شدند
 const METHODS = [
     { id: 1, name: "خواندن فعال", xp: 10, coins: 5, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
     { id: 2, name: "یادداشت‌برداری", xp: 10, coins: 5, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
@@ -239,11 +255,11 @@ const METHODS = [
     { id: 4, name: "فلش‌کارت", xp: 20, coins: 10, lvl: 2, icon: "layers", desc: "ساخت کارت سوال/جواب.", tool: "flashcard" },
     { id: 5, name: "نقشه ذهنی", xp: 25, coins: 12, lvl: 3, icon: "network", desc: "رسم نمودار درختی.", tool: "note" },
     { id: 6, name: "تکنیک پومودورو", xp: 15, coins: 8, lvl: 3, icon: "timer", desc: "۲۵ دقیقه مطالعه.", tool: "pomodoro" },
-    { id: 7, name: "یادگیری فعال", xp: 30, coins: 15, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "note" },
+    { id: 7, name: "یادگیری فعال", xp: 30, coins: 15, lvl: 4, icon: "zap", desc: "یادآوری از حافظه.", tool: "tap" },
     { id: 8, name: "تکنیک فاینمن", xp: 40, coins: 20, lvl: 4, icon: "user-check", desc: "آموزش ساده به دیگری.", tool: "note" },
     { id: 9, name: "تکرار فاصله‌دار", xp: 35, coins: 18, lvl: 5, icon: "repeat", desc: "مرور در زمان افزایشی.", tool: "check" },
     { id: 10, name: "روش SQ3R", xp: 35, coins: 18, lvl: 5, icon: "list-checks", desc: "پیمایش و مرور.", tool: "check" },
-    { id: 11, name: "درهم‌آمیزی", xp: 40, coins: 20, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "check" },
+    { id: 11, name: "درهم‌آمیزی", xp: 40, coins: 20, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "challenge" },
     { id: 12, name: "دسته‌بندی", xp: 40, coins: 20, lvl: 6, icon: "box", desc: "تقسیم به قطعات.", tool: "note" },
     { id: 13, name: "تست‌سازی شخصی", xp: 45, coins: 22, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "note" },
     { id: 14, name: "تصویرسازی ذهنی", xp: 45, coins: 22, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "note" },
@@ -261,6 +277,8 @@ let isOwner = false;
 let authMode = 'login';
 let currentMethodId = null;
 let pomodoroInterval = null;
+let challengeInterval = null;
+let tapCount = 0;
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000); }
 function showAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); document.getElementById('auth-modal').classList.add('flex'); }
@@ -299,8 +317,9 @@ function getLevel(xp) { for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp
 function getMult(user) { if(user.subscription === 'plus') return 1.5; if(user.subscription === 'eco') return 1.2; return 1; }
 function initApp() { document.getElementById('app').classList.remove('hidden'); updateUI(); navigate('home'); lucide.createIcons(); }
 
+// 'store' به لیست اضافه شد
 function navigate(section) {
-    ['home', 'tasks', 'methods', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
+    ['home', 'tasks', 'methods', 'store', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
@@ -414,9 +433,58 @@ function openWorkspace(id) {
             <div id="fc-list" class="mt-4 space-y-2"></div>
         </div>`;
     }
+    // ابزارهای جدید اضافه شد
+    else if(method.tool === 'tap') {
+        tapCount = 0;
+        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">برای فعال‌سازی حافظه کوتاه‌مدت، روی دایره زیر ۱۰ بار کلیک کن!</p>
+        <div class="flex flex-col items-center gap-4 mt-6">
+            <div id="tap-circle" onclick="handleTap()" class="w-24 h-24 rounded-full btn-brand flex items-center justify-center text-3xl font-bold cursor-pointer transition-transform active:scale-90">0</div>
+        </div>`;
+    } else if(method.tool === 'challenge') {
+        content.innerHTML = `<div class="text-center">
+            <p class="text-sm text-slate-500 mb-4">آماده‌ای؟ روی دکمه بزن تا ۶۰ ثانیه تمرکزت رو شروع کنی!</p>
+            <div id="challenge-display" class="text-5xl font-bold text-indigo-600 my-6 tracking-wider">01:00</div>
+            <button onclick="startChallenge()" id="ch-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع چالش</button>
+        </div>`;
+    }
     
     document.getElementById('workspace-modal').style.display = 'flex';
     lucide.createIcons();
+}
+
+// توابع جدید برای بازی‌ها
+function handleTap() {
+    tapCount++;
+    const circle = document.getElementById('tap-circle');
+    if(circle) {
+        circle.textContent = tapCount;
+        if(tapCount >= 10) {
+            circle.style.background = '#10b981';
+            circle.textContent = '✓';
+            document.getElementById('ws-complete-btn').disabled = false;
+            showToast('آفرین! حافظه‌ات فعال شد.');
+        }
+    }
+}
+
+function startChallenge() {
+    let time = 60;
+    const btn = document.getElementById('ch-btn');
+    btn.disabled = true;
+    if(challengeInterval) clearInterval(challengeInterval);
+    challengeInterval = setInterval(() => {
+        time--;
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById('challenge-display').textContent = `00:${s < 10 ? '0' + s : s}`;
+        if(time <= 0) {
+            clearInterval(challengeInterval);
+            document.getElementById('challenge-display').textContent = "آفرین!";
+            document.getElementById('ws-complete-btn').disabled = false;
+            btn.textContent = "تکمیل شد";
+            btn.disabled = false;
+        }
+    }, 1000);
 }
 
 function checkNoteValidity() {
@@ -436,10 +504,12 @@ function closeWorkspace() {
         }
     }
     if(pomodoroInterval) clearInterval(pomodoroInterval);
+    if(challengeInterval) clearInterval(challengeInterval);
     document.getElementById('workspace-modal').style.display = 'none';
     currentMethodId = null;
 }
 
+// امکان تکرار متدها به صورت پیش‌فرض در این تابع وجود دارد
 function completeWorkspace() {
     const method = METHODS.find(m => m.id === currentMethodId);
     if(!method) return;
@@ -517,6 +587,8 @@ async function addTask() {
 async function toggleTask(id) {
     const user = DB.getUser(currentUser);
     const task = user.tasks.find(t => t.id === id);
+    if(task.done) return; // جلوگیری از کلیم چندباره پاداش تسک
+    
     task.done = !task.done;
     
     if(task.done) { 
@@ -599,7 +671,7 @@ function setTheme(theme) {
         .task-checkbox { width: 24px; height: 24px; border-radius: 0.375rem; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: #fff; }
         .task-checkbox.done { background: ${colors[theme]}; border-color: ${colors[theme]}; }
         .task-item.done span { text-decoration: line-through; color: #94a3b8; }
-        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; p-4; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
+        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
     `;
 
     if(currentUser) DB.updateUser(currentUser, { theme: theme });
