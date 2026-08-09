@@ -6,7 +6,6 @@
     <title>NeoLearn - پلتفرم یادگیری هوشمند</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- اضافه شدن کتابخانه فونت آسام برای آیکون‌های شبکه‌های اجتماعی -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
@@ -24,7 +23,7 @@
         .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
         .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: var(--brand-color); transition: 0.2s; cursor: pointer; }
         .btn-outline:hover { background: #f1f5f9; }
-        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 56px; }
+        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.75rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 48px; }
         input:focus, select:focus, textarea:focus { border-color: var(--brand-color); outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
         input::placeholder { color: #94a3b8; }
         .level-badge { background: #eef2ff; color: var(--brand-color); padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
@@ -41,20 +40,20 @@
 </head>
 <body class="min-h-screen">
 
-<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden card px-8 py-3 rounded-lg text-sm font-medium"></div>
+<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden card px-6 py-3 rounded-lg text-sm font-medium"></div>
 
 <!-- Auth Modal -->
 <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-100">
-    <div class="card p-10 w-full max-w-md anim-pop relative">
+    <div class="card p-6 md:p-10 w-full max-w-md anim-pop relative">
         <button onclick="hideAuthModal()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-6 h-6"></i></button>
-        <div class="text-center mb-8">
-            <div class="w-16 h-16 mx-auto rounded-xl btn-brand flex items-center justify-center text-2xl font-bold mb-3">N</div>
-            <h2 id="auth-title" class="text-2xl font-bold text-slate-800">ورود به نئولرن</h2>
+        <div class="text-center mb-6 md:mb-8">
+            <div class="w-14 h-14 md:w-16 md:h-16 mx-auto rounded-xl btn-brand flex items-center justify-center text-xl md:text-2xl font-bold mb-3">N</div>
+            <h2 id="auth-title" class="text-xl md:text-2xl font-bold text-slate-800">ورود به نئولرن</h2>
         </div>
-        <div class="space-y-5">
+        <div class="space-y-4 md:space-y-5">
             <input id="auth-username" type="text" placeholder="نام کاربری">
             <input id="auth-password" type="password" placeholder="رمز عبور" onkeydown="if(event.key==='Enter')doAuth()">
-            <button id="auth-btn" onclick="doAuth()" class="w-full py-3 btn-brand rounded-lg font-bold">ورود</button>
+            <button id="auth-btn" onclick="doAuth()" class="w-full py-2.5 md:py-3 btn-brand rounded-lg font-bold">ورود</button>
             <p id="auth-switch" class="text-center text-sm text-slate-500">حساب ندارید؟ <a class="text-indigo-600 cursor-pointer hover:underline" onclick="toggleAuthMode('register')">ثبت‌نام کنید</a></p>
         </div>
     </div>
@@ -64,18 +63,18 @@
 <div id="workspace-modal" class="modal-overlay">
     <div class="card w-full max-w-2xl m-4 anim-pop relative max-h-[90vh] overflow-y-auto">
         <button onclick="closeWorkspace()" class="absolute top-4 left-4 text-slate-400 hover:text-slate-700 z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
-        <div class="p-8">
+        <div class="p-4 md:p-8">
             <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                <div id="ws-icon" class="w-12 h-12 rounded-lg btn-brand flex items-center justify-center"></div>
+                <div id="ws-icon" class="w-10 h-10 md:w-12 md:h-12 rounded-lg btn-brand flex items-center justify-center"></div>
                 <div>
-                    <h2 id="ws-title" class="text-xl font-bold text-slate-800"></h2>
-                    <p id="ws-desc" class="text-sm text-slate-500"></p>
+                    <h2 id="ws-title" class="text-lg md:text-xl font-bold text-slate-800"></h2>
+                    <p id="ws-desc" class="text-xs md:text-sm text-slate-500"></p>
                 </div>
             </div>
             <div id="ws-content" class="min-h-[200px] text-slate-700"></div>
-            <div class="mt-8 flex justify-end gap-3">
-                <button onclick="closeWorkspace()" class="btn-outline px-6 py-3 rounded-lg">بستن</button>
-                <button id="ws-complete-btn" onclick="completeWorkspace()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center gap-2" disabled>
+            <div class="mt-6 md:mt-8 flex justify-end gap-3">
+                <button onclick="closeWorkspace()" class="btn-outline px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm">بستن</button>
+                <button id="ws-complete-btn" onclick="completeWorkspace()" class="btn-brand px-4 md:px-6 py-2 md:py-3 rounded-lg font-bold flex items-center gap-2 text-sm" disabled>
                     <i data-lucide="check-circle" class="w-5 h-5"></i> تکمیل و دریافت پاداش
                 </button>
             </div>
@@ -85,13 +84,15 @@
 
 <!-- App Layout -->
 <div id="app" class="hidden max-w-6xl mx-auto p-4 md:p-8 pb-20">
-    <nav class="flex items-center justify-between mb-10 card px-6 py-4 rounded-xl sticky top-4 z-40">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
-            <div class="w-9 h-9 rounded-lg btn-brand flex items-center justify-center text-base font-bold">N</div>
-            <span class="text-lg font-bold hidden sm:block text-slate-800">NeoLearn</span>
+    <nav class="flex items-center justify-between mb-6 md:mb-10 card px-4 md:px-6 py-3 md:py-4 rounded-xl sticky top-4 z-40">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')">
+            <div class="w-8 h-8 md:w-9 md:h-9 rounded-lg btn-brand flex items-center justify-center text-sm md:text-base font-bold">N</div>
+            <span class="text-base md:text-lg font-bold hidden sm:block text-slate-800">NeoLearn</span>
         </div>
-        <div class="flex items-center gap-3 md:gap-4">
-            <div class="hidden md:flex items-center gap-4">
+        
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-3 md:gap-4">
+            <div class="hidden lg:flex items-center gap-4">
                 <div class="flex items-center gap-1 text-sm font-bold text-orange-500">
                     <i data-lucide="flame" class="w-4 h-4"></i>
                     <span id="nav-streak">0</span>
@@ -115,87 +116,138 @@
             <button onclick="navigate('about')" class="btn-outline px-3 py-2 rounded-lg text-sm">درباره ما</button>
             <button onclick="logout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
         </div>
+        
+        <!-- Mobile Stats & Hamburger -->
+        <div class="flex md:hidden items-center gap-3">
+            <div class="flex items-center gap-1 text-xs font-bold text-orange-500">
+                <i data-lucide="flame" class="w-4 h-4"></i>
+                <span id="nav-streak-m">0</span>
+            </div>
+            <div class="flex items-center gap-1 text-xs text-amber-600 font-bold">
+                <i data-lucide="coins" class="w-4 h-4"></i>
+                <span id="nav-coins-m">0</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="btn-outline p-2 rounded-lg">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
     </nav>
 
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden card p-4 mb-6 rounded-xl grid grid-cols-3 gap-3 z-30">
+        <button onclick="navigate('tasks'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="list-checks" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">برنامه‌ریز</span>
+        </button>
+        <button onclick="navigate('methods'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">متدها</span>
+        </button>
+        <button onclick="navigate('neogram'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="megaphone" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">نیوگرام</span>
+        </button>
+        <button onclick="navigate('community'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="users" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">جامعه</span>
+        </button>
+        <button onclick="navigate('store'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">اشتراک‌ها</span>
+        </button>
+        <button onclick="navigate('panel'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="settings" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">پنل</span>
+        </button>
+        <button onclick="navigate('about'); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-slate-50 rounded-lg text-slate-600 hover:text-indigo-600 transition">
+            <i data-lucide="info" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">درباره ما</span>
+        </button>
+        <button onclick="logout(); toggleMobileMenu()" class="flex flex-col items-center justify-center gap-1 p-3 bg-red-50 rounded-lg text-red-500 hover:text-red-700 transition col-span-3">
+            <i data-lucide="log-out" class="w-6 h-6"></i>
+            <span class="text-xs font-medium">خروج از حساب</span>
+        </button>
+    </div>
+
     <div id="section-home" class="anim-pop">
-        <h1 class="text-3xl font-bold mb-2 text-slate-800">سلام، <span id="welcome-name" class="text-indigo-600">کاربر</span> 👋</h1>
-        <p class="text-slate-500 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP و سکه، متدهای پیشرفته‌تری را باز کن!</p>
+        <h1 class="text-xl md:text-3xl font-bold mb-2 text-slate-800">سلام، <span id="welcome-name" class="text-indigo-600">کاربر</span> 👋</h1>
+        <p class="text-slate-500 mb-6 md:mb-10 text-sm md:text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP و سکه، متدهای پیشرفته‌تری را باز کن!</p>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="card p-6 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="trending-up" class="w-6 h-6 text-indigo-600"></i></div>
-                <div><div class="text-2xl font-bold text-slate-800" id="stat-level">1</div><div class="text-sm text-slate-500">سطح فعلی</div></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10">
+            <div class="card p-4 md:p-6 flex items-center gap-3 md:gap-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0"><i data-lucide="trending-up" class="w-5 h-5 md:w-6 md:h-6 text-indigo-600"></i></div>
+                <div><div class="text-xl md:text-2xl font-bold text-slate-800" id="stat-level">1</div><div class="text-xs md:text-sm text-slate-500">سطح فعلی</div></div>
             </div>
-            <div class="card p-6 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-amber-50 flex items-center justify-center"><i data-lucide="coins" class="w-6 h-6 text-amber-500"></i></div>
-                <div><div class="text-2xl font-bold text-slate-800" id="stat-coins">0</div><div class="text-sm text-slate-500">موجودی سکه</div></div>
+            <div class="card p-4 md:p-6 flex items-center gap-3 md:gap-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-amber-50 flex items-center justify-center shrink-0"><i data-lucide="coins" class="w-5 h-5 md:w-6 md:h-6 text-amber-500"></i></div>
+                <div><div class="text-xl md:text-2xl font-bold text-slate-800" id="stat-coins">0</div><div class="text-xs md:text-sm text-slate-500">موجودی سکه</div></div>
             </div>
-            <div class="card p-6 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="unlock" class="w-6 h-6 text-indigo-600"></i></div>
-                <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/30</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
+            <div class="card p-4 md:p-6 flex items-center gap-3 md:gap-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0"><i data-lucide="unlock" class="w-5 h-5 md:w-6 md:h-6 text-indigo-600"></i></div>
+                <div><div class="text-xl md:text-2xl font-bold text-slate-800" id="stat-unlocked">0/30</div><div class="text-xs md:text-sm text-slate-500">متدهای فعال</div></div>
             </div>
         </div>
         
-        <div class="grid md:grid-cols-2 gap-6 mb-10">
-            <div class="card p-6">
-                <h3 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="route" class="w-5 h-5 text-indigo-600"></i> مسیر پیشرفت شما</h3>
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-10">
+            <div class="card p-4 md:p-6">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="route" class="w-5 h-5 text-indigo-600"></i> مسیر پیشرفت شما</h3>
                 <div id="progress-path" class="flex items-center justify-between relative before:absolute before:left-0 before:right-0 before:top-5 before:h-0.5 before:bg-slate-200"></div>
             </div>
-            <div class="card p-6">
-                <h3 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i> تابلوی نخبگان</h3>
-                <div id="leaderboard-list" class="space-y-3"></div>
+            <div class="card p-4 md:p-6">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i> تابلوی نخبگان</h3>
+                <div id="leaderboard-list" class="space-y-2 md:space-y-3"></div>
             </div>
         </div>
     </div>
 
     <div id="section-tasks" class="hidden">
-        <h2 class="text-2xl font-bold mb-2 text-slate-800">برنامه‌ریز هوشمند</h2>
-        <p class="text-slate-500 mb-8">تسک‌های خود را ثبت کن و با انجام آن‌ها ۱۵ XP و ۵ سکه کسب کن!</p>
-        <div class="card p-6 mb-8">
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-slate-800">برنامه‌ریز هوشمند</h2>
+        <p class="text-slate-500 mb-4 md:mb-8 text-sm md:text-base">تسک‌های خود را ثبت کن و با انجام آن‌ها ۱۵ XP و ۵ سکه کسب کن!</p>
+        <div class="card p-4 md:p-6 mb-4 md:mb-8">
             <div class="flex flex-col md:flex-row gap-3">
                 <input id="task-input" type="text" placeholder="مثلا: حل ۱۰ سوال ریاضی..." class="flex-1">
                 <select id="task-type" class="md:w-1/4"><option value="daily">روزانه</option><option value="weekly">هفتگی</option></select>
-                <button onclick="addTask()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center justify-center gap-2"><i data-lucide="plus" class="w-5 h-5"></i> افزودن</button>
+                <button onclick="addTask()" class="btn-brand px-4 py-3 rounded-lg font-bold flex items-center justify-center gap-2"><i data-lucide="plus" class="w-5 h-5"></i> افزودن</button>
             </div>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-6">
-                <h3 class="text-lg font-bold mb-4 text-indigo-600 flex items-center gap-2"><i data-lucide="sun"></i> تسک‌های روزانه</h3>
-                <div id="daily-tasks" class="space-y-3"></div>
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+            <div class="card p-4 md:p-6">
+                <h3 class="text-base md:text-lg font-bold mb-3 md:mb-4 text-indigo-600 flex items-center gap-2"><i data-lucide="sun"></i> تسک‌های روزانه</h3>
+                <div id="daily-tasks" class="space-y-2 md:space-y-3"></div>
             </div>
-            <div class="card p-6">
-                <h3 class="text-lg font-bold mb-4 text-indigo-600 flex items-center gap-2"><i data-lucide="calendar-days"></i> تسک‌های هفتگی</h3>
-                <div id="weekly-tasks" class="space-y-3"></div>
+            <div class="card p-4 md:p-6">
+                <h3 class="text-base md:text-lg font-bold mb-3 md:mb-4 text-indigo-600 flex items-center gap-2"><i data-lucide="calendar-days"></i> تسک‌های هفتگی</h3>
+                <div id="weekly-tasks" class="space-y-2 md:space-y-3"></div>
             </div>
         </div>
     </div>
 
     <div id="section-methods" class="hidden">
-        <h2 class="text-2xl font-bold mb-2 text-slate-800">کتابخانه متدهای مطالعه</h2>
-        <p class="text-slate-500 mb-8">روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی و پاداش بگیری!</p>
-        <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <h2 class="text-xl md:text-2xl font-bold mb-2 text-slate-800">کتابخانه متدهای مطالعه</h2>
+        <p class="text-slate-500 mb-4 md:mb-8 text-sm md:text-base">روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی و پاداش بگیری!</p>
+        <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
     </div>
 
     <!-- Neogram Section -->
     <div id="section-neogram" class="hidden anim-pop">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="megaphone" class="w-6 h-6 text-indigo-600"></i> نیوگرام</h2>
-        <div class="card p-6 mb-8">
-            <textarea id="neogram-input" class="w-full bg-slate-50 p-4 mb-4" placeholder="چی تو ذهنته؟ نکته یادگیری، موفقیت یا تجربه‌ت رو به اشتراک بذار..." style="min-height: 100px;"></textarea>
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="megaphone" class="w-6 h-6 text-indigo-600"></i> نیوگرام</h2>
+        <div class="card p-4 md:p-6 mb-4 md:mb-8">
+            <textarea id="neogram-input" class="w-full bg-slate-50 p-3 md:p-4 mb-3" placeholder="چی تو ذهنته؟ نکته یادگیری، موفقیت یا تجربه‌ت رو به اشتراک بذار..." style="min-height: 80px;"></textarea>
             <div class="flex justify-end">
-                <button onclick="postNeogram()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center gap-2">
-                    <i data-lucide="send" class="w-5 h-5"></i> انتشار پست (۵ XP)
+                <button onclick="postNeogram()" class="btn-brand px-4 py-2 md:px-6 md:py-3 rounded-lg font-bold flex items-center gap-2 text-sm">
+                    <i data-lucide="send" class="w-4 h-4 md:w-5 md:h-5"></i> انتشار پست (۵ XP)
                 </button>
             </div>
         </div>
-        <div id="neogram-feed" class="space-y-6"></div>
+        <div id="neogram-feed" class="space-y-4 md:space-y-6"></div>
     </div>
 
     <div id="section-community" class="hidden anim-pop">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800">جامعه کاربری نئولرن</h2>
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
-            <div class="card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="gamepad-2" class="w-5 h-5 text-indigo-600"></i> سبک بازی محبوب شما؟</h3>
-                <p class="text-sm text-slate-500 mb-4">برای شخصی‌سازی تجربه گیمیفیکیشن، بازی مورد علاقه‌ات رو انتخاب کن (پاداش +۱۰ سکه):</p>
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800">جامعه کاربری نئولرن</h2>
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+            <div class="card p-4 md:p-8">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="gamepad-2" class="w-5 h-5 text-indigo-600"></i> سبک بازی محبوب شما؟</h3>
+                <p class="text-xs md:text-sm text-slate-500 mb-3 md:mb-4">برای شخصی‌سازی تجربه گیمیفیکیشن، بازی مورد علاقه‌ات رو انتخاب کن (پاداش +۱۰ سکه):</p>
                 <select id="game-select" class="mb-4" onchange="saveGame()">
                     <option value="">انتخاب کنید...</option>
                     <option value="action">اکشن و هیجانی</option>
@@ -204,54 +256,54 @@
                     <option value="puzzle">معما و معمایی</option>
                     <option value="sports">ورزشی و رقابتی</option>
                 </select>
-                <div id="game-status" class="text-sm font-bold text-emerald-500 mt-2"></div>
+                <div id="game-status" class="text-xs md:text-sm font-bold text-emerald-500 mt-2"></div>
             </div>
-            <div class="card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-600"></i> نظرسنجی روزانه</h3>
+            <div class="card p-4 md:p-8">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-600"></i> نظرسنجی روزانه</h3>
                 <div id="poll-content"></div>
             </div>
         </div>
     </div>
 
     <div id="section-store" class="hidden anim-pop">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800">فروشگاه و اشتراک‌ها</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="card p-8 flex flex-col items-center text-center border-2 border-slate-200">
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800">فروشگاه و اشتراک‌ها</h2>
+        <div class="grid md:grid-cols-3 gap-4 md:gap-6">
+            <div class="card p-4 md:p-8 flex flex-col items-center text-center border-2 border-slate-200">
                 <i data-lucide="user" class="w-10 h-10 text-slate-400 mb-4"></i>
-                <h3 class="text-lg font-bold mb-2 text-slate-800">اشتراک عادی</h3>
-                <p class="text-sm text-slate-500 mb-6 flex-grow">دسترسی پایه به متدها با سرعت معمولی</p>
+                <h3 class="text-base md:text-lg font-bold mb-2 text-slate-800">اشتراک عادی</h3>
+                <p class="text-xs md:text-sm text-slate-500 mb-4 md:mb-6 flex-grow">دسترسی پایه به متدها با سرعت معمولی</p>
                 <span class="text-slate-400 font-bold">رایگان</span>
             </div>
-            <div class="card p-8 flex flex-col items-center text-center border-2 border-emerald-500 relative">
+            <div class="card p-4 md:p-8 flex flex-col items-center text-center border-2 border-emerald-500 relative">
                 <span class="absolute top-0 right-4 bg-emerald-500 text-white text-xs px-3 py-1 rounded-b-md font-bold">محبوب</span>
                 <i data-lucide="leaf" class="w-10 h-10 text-emerald-500 mb-4"></i>
-                <h3 class="text-lg font-bold mb-2 text-emerald-700">اشتراک اکو (۱.۲x XP)</h3>
-                <p class="text-sm text-slate-500 mb-6 flex-grow">۲۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
-                <button onclick="buySub('eco')" class="btn-brand w-full py-3 rounded-lg font-bold" style="background: #10b981;">۱۰۰ سکه</button>
+                <h3 class="text-base md:text-lg font-bold mb-2 text-emerald-700">اشتراک اکو (۱.۲x XP)</h3>
+                <p class="text-xs md:text-sm text-slate-500 mb-4 md:mb-6 flex-grow">۲۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
+                <button onclick="buySub('eco')" class="btn-brand w-full py-2 md:py-3 rounded-lg font-bold text-sm" style="background: #10b981;">۱۰۰ سکه</button>
             </div>
-            <div class="card p-8 flex flex-col items-center text-center border-2 border-amber-400">
+            <div class="card p-4 md:p-8 flex flex-col items-center text-center border-2 border-amber-400">
                 <i data-lucide="crown" class="w-10 h-10 text-amber-500 mb-4"></i>
-                <h3 class="text-lg font-bold mb-2 text-amber-700">اشتراک پلاس (۱.۵x XP)</h3>
-                <p class="text-sm text-slate-500 mb-6 flex-grow">۵۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
-                <button onclick="buySub('plus')" class="btn-brand w-full py-3 rounded-lg font-bold" style="background: #f59e0b;">۲۵۰ سکه</button>
+                <h3 class="text-base md:text-lg font-bold mb-2 text-amber-700">اشتراک پلاس (۱.۵x XP)</h3>
+                <p class="text-xs md:text-sm text-slate-500 mb-4 md:mb-6 flex-grow">۵۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
+                <button onclick="buySub('plus')" class="btn-brand w-full py-2 md:py-3 rounded-lg font-bold text-sm" style="background: #f59e0b;">۲۵۰ سکه</button>
             </div>
         </div>
     </div>
 
     <!-- About Us Section -->
     <div id="section-about" class="hidden anim-pop">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="info" class="w-6 h-6 text-indigo-600"></i> درباره ما</h2>
-        <div class="card p-8 relative overflow-hidden">
-            <div class="flex flex-col items-center text-center mb-8">
-                <div class="w-20 h-20 rounded-2xl btn-brand flex items-center justify-center text-3xl font-bold mb-4">N</div>
-                <h1 class="text-3xl font-bold text-indigo-600">درباره ما - NeoLearn</h1>
-                <p class="text-sm text-slate-500 mt-2">پلتفرم گیمیفیکیشن و یادگیری هوشمند</p>
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="info" class="w-6 h-6 text-indigo-600"></i> درباره ما</h2>
+        <div class="card p-4 md:p-8 relative overflow-hidden">
+            <div class="flex flex-col items-center text-center mb-6 md:mb-8">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl btn-brand flex items-center justify-center text-2xl md:text-3xl font-bold mb-4">N</div>
+                <h1 class="text-xl md:text-3xl font-bold text-indigo-600">درباره ما - NeoLearn</h1>
+                <p class="text-xs md:text-sm text-slate-500 mt-2">پلتفرم گیمیفیکیشن و یادگیری هوشمند</p>
             </div>
-            <p class="text-slate-600 text-center leading-relaxed mb-8 max-w-2xl mx-auto">
+            <p class="text-slate-600 text-center leading-relaxed mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
                 نئولرن یک پلتفرم آموزشی و گیمیفیکیشن است که با هدف ارتقای سطح انگیزه و روش‌های یادگیری دانش‌آموزان طراحی شده است. ما با استفاده از تکنولوژی‌های روز، یادگیری را به تجربه‌ای جذاب و دوستانه تبدیل کرده‌ایم. این پلتفرم برای علاقه‌مندان به یادگیری ساخته شده تا در فضایی رقابتی و چالش‌برانگیز مهارت‌های خود را محک بزنند و با متدهای جدید آشنا شوند.
             </p>
             
-            <div class="grid sm:grid-cols-2 gap-6 text-sm mb-8 max-w-xl mx-auto">
+            <div class="grid sm:grid-cols-2 gap-4 md:gap-6 text-sm mb-6 md:mb-8 max-w-xl mx-auto">
                 <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
                     <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-5 h-5 text-indigo-600"></i></div>
                     <div>
@@ -276,25 +328,25 @@
             </div>
 
             <div>
-                <div class="text-slate-500 text-sm mb-4 text-center">ما را در شبکه‌های اجتماعی دنبال کنید:</div>
-                <div class="flex justify-center gap-4 flex-wrap">
-                    <a href="https://t.me/neomathIr" target="_blank" class="w-12 h-12 rounded-full bg-sky-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
-                        <i class="fab fa-telegram text-xl text-white"></i>
+                <div class="text-slate-500 text-xs md:text-sm mb-4 text-center">ما را در شبکه‌های اجتماعی دنبال کنید:</div>
+                <div class="flex justify-center gap-3 md:gap-4 flex-wrap">
+                    <a href="https://t.me/neomathIr" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-sky-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                        <i class="fab fa-telegram text-lg md:text-xl text-white"></i>
                     </a>
-                    <a href="https://chat.whatsapp.com/CMT8XOAMVFSCeDfClJlMFe?s=cl&p=a&ilr=1" target="_blank" class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
-                        <i class="fab fa-whatsapp text-xl text-white"></i>
+                    <a href="https://chat.whatsapp.com/CMT8XOAMVFSCeDfClJlMFe?s=cl&p=a&ilr=1" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-green-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                        <i class="fab fa-whatsapp text-lg md:text-xl text-white"></i>
                     </a>
-                    <a href="https://discord.gg/MzFY9QBmS" target="_blank" class="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg" style="background-color: #5865F2;" title="دیسکورد">
-                        <i class="fab fa-discord text-xl text-white"></i>
+                    <a href="https://discord.gg/MzFY9QBmS" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg" style="background-color: #5865F2;" title="دیسکورد">
+                        <i class="fab fa-discord text-lg md:text-xl text-white"></i>
                     </a>
-                    <a href="https://ble.ir/neomathIr" target="_blank" class="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="بله">
-                        <span class="text-xl text-white font-bold">ب</span>
+                    <a href="https://ble.ir/neomathIr" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-900 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="بله">
+                        <span class="text-lg md:text-xl text-white font-bold">ب</span>
                     </a>
-                    <a href="https://eitaa.com/neomath" target="_blank" class="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="ایتا">
-                        <span class="text-xl text-white font-bold">ا</span>
+                    <a href="https://eitaa.com/neomath" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-indigo-700 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="ایتا">
+                        <span class="text-lg md:text-xl text-white font-bold">ا</span>
                     </a>
-                    <a href="https://rubika.ir/neomath" target="_blank" class="w-12 h-12 rounded-full bg-orange-600 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="روبیکا">
-                        <span class="text-xl text-white font-bold">ر</span>
+                    <a href="https://rubika.ir/neomath" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-orange-600 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="روبیکا">
+                        <span class="text-lg md:text-xl text-white font-bold">ر</span>
                     </a>
                 </div>
             </div>
@@ -302,10 +354,10 @@
     </div>
 
     <div id="section-panel" class="hidden">
-        <h2 class="text-2xl font-bold mb-8 text-slate-800">پنل مدیریت</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="palette" class="w-5 h-5 text-indigo-600"></i> تنظیمات رنگ</h3>
+        <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-8 text-slate-800">پنل مدیریت</h2>
+        <div class="grid md:grid-cols-2 gap-4 md:gap-6">
+            <div class="card p-4 md:p-8">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="palette" class="w-5 h-5 text-indigo-600"></i> تنظیمات رنگ</h3>
                 <div class="flex gap-3">
                     <button onclick="setTheme('indigo')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #4f46e5;"></button>
                     <button onclick="setTheme('emerald')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #10b981;"></button>
@@ -313,21 +365,21 @@
                     <button onclick="setTheme('amber')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f59e0b;"></button>
                 </div>
             </div>
-            <div class="card p-8 md:col-span-2">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i> پیام به پشتیبانی</h3>
+            <div class="card p-4 md:p-8 md:col-span-2">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i> پیام به پشتیبانی</h3>
                 <textarea id="support-msg" rows="3" placeholder="پیام خود را بنویسید..." class="mb-4" style="min-height: 80px;"></textarea>
-                <button onclick="sendSupport()" class="btn-brand px-6 py-3 rounded-lg font-bold">ارسال پیام</button>
+                <button onclick="sendSupport()" class="btn-brand px-4 py-2 md:px-6 md:py-3 rounded-lg font-bold text-sm">ارسال پیام</button>
             </div>
 
-            <div id="owner-panel" class="card p-8 hidden md:col-span-2">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-amber-600"><i data-lucide="shield-check" class="w-5 h-5"></i> کنسول ادمین</h3>
-                <div class="grid md:grid-cols-2 gap-6">
+            <div id="owner-panel" class="card p-4 md:p-8 hidden md:col-span-2">
+                <h3 class="text-base md:text-lg font-bold mb-4 md:mb-6 flex items-center gap-2 text-amber-600"><i data-lucide="shield-check" class="w-5 h-5"></i> کنسول ادمین</h3>
+                <div class="grid md:grid-cols-2 gap-4 md:gap-6">
                     <div>
-                        <h4 class="text-sm font-bold mb-2 text-slate-500">لیست کاربران</h4>
+                        <h4 class="text-xs md:text-sm font-bold mb-2 text-slate-500">لیست کاربران</h4>
                         <div id="admin-user-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
                     </div>
                     <div>
-                        <h4 class="text-sm font-bold mb-2 text-slate-500">پیام‌های پشتیبانی</h4>
+                        <h4 class="text-xs md:text-sm font-bold mb-2 text-slate-500">پیام‌های پشتیبانی</h4>
                         <div id="admin-msg-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
                     </div>
                 </div>
@@ -457,9 +509,14 @@ function initApp() {
     lucide.createIcons(); 
 }
 
+function toggleMobileMenu() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+}
+
 function navigate(section) {
     ['home', 'tasks', 'methods', 'store', 'community', 'neogram', 'panel', 'about'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
+    document.getElementById('mobile-menu').classList.add('hidden'); // Close mobile menu on navigate
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
     if(section === 'home') { renderPath(); renderLeaderboard(); }
@@ -476,6 +533,8 @@ function updateUI() {
         document.getElementById('nav-xp-bar').style.width = '100%';
         document.getElementById('nav-coins').textContent = '∞';
         document.getElementById('nav-streak').textContent = '∞';
+        if(document.getElementById('nav-coins-m')) document.getElementById('nav-coins-m').textContent = '∞';
+        if(document.getElementById('nav-streak-m')) document.getElementById('nav-streak-m').textContent = '∞';
         document.getElementById('stat-level').textContent = 'Max';
         document.getElementById('stat-coins').textContent = '∞';
         document.getElementById('stat-unlocked').textContent = '30/30';
@@ -502,6 +561,10 @@ function updateUI() {
     document.getElementById('nav-level').textContent = lvl;
     document.getElementById('nav-coins').textContent = user.coins;
     document.getElementById('nav-streak').textContent = user.streak || 0;
+    
+    if(document.getElementById('nav-coins-m')) document.getElementById('nav-coins-m').textContent = user.coins;
+    if(document.getElementById('nav-streak-m')) document.getElementById('nav-streak-m').textContent = user.streak || 0;
+    
     document.getElementById('stat-level').textContent = lvl;
     document.getElementById('stat-coins').textContent = user.coins;
     const nextXp = XP_THRESHOLDS[lvl] || XP_THRESHOLDS[XP_THRESHOLDS.length-1];
@@ -516,7 +579,7 @@ function renderPath() {
     let html = '';
     for(let i=1; i<=10; i++) {
         const unlocked = user.level >= i;
-        html += `<div class="flex flex-col items-center gap-2 z-10"><div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold ${unlocked ? 'btn-brand' : 'bg-slate-200 text-slate-400'}">${unlocked ? i : '<i data-lucide="lock" class="w-4 h-4"></i>'}</div></div>`;
+        html += `<div class="flex flex-col items-center gap-2 z-10"><div class="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-xs md:text-sm font-bold ${unlocked ? 'btn-brand' : 'bg-slate-200 text-slate-400'}">${unlocked ? i : '<i data-lucide="lock" class="w-3 h-3 md:w-4 md:h-4"></i>'}</div></div>`;
     }
     document.getElementById('progress-path').innerHTML = html;
     lucide.createIcons();
@@ -526,12 +589,12 @@ function renderLeaderboard() {
     const sortedUsers = [...DB.data.users].sort((a, b) => b.xp - a.xp).slice(0, 3);
     const medals = ['🥇', '🥈', '🥉'];
     document.getElementById('leaderboard-list').innerHTML = sortedUsers.map((u, i) => `
-        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
-            <div class="flex items-center gap-3">
-                <span class="text-xl">${medals[i]}</span>
-                <span class="font-bold text-slate-800">${u.username}</span>
+        <div class="flex items-center justify-between p-2 md:p-3 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="flex items-center gap-2 md:gap-3">
+                <span class="text-lg md:text-xl">${medals[i]}</span>
+                <span class="text-sm md:text-base font-bold text-slate-800">${u.username}</span>
             </div>
-            <div class="flex items-center gap-1 text-sm font-bold text-indigo-600">
+            <div class="flex items-center gap-1 text-xs md:text-sm font-bold text-indigo-600">
                 <i data-lucide="star" class="w-4 h-4"></i>
                 ${u.xp} XP
             </div>
@@ -549,21 +612,21 @@ function renderMethods() {
         const finalXp = Math.floor(m.xp * subMult * streakMult);
         const finalCoins = Math.floor(m.coins * subMult * streakMult);
         return `
-        <div class="card p-6 flex flex-col justify-between ${locked ? 'opacity-50 pointer-events-none' : ''}">
+        <div class="card p-4 md:p-6 flex flex-col justify-between ${locked ? 'opacity-50 pointer-events-none' : ''}">
             <div>
-                <div class="flex justify-between items-start mb-4">
-                    <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="${m.icon}" class="w-6 h-6 text-indigo-600"></i></div>
+                <div class="flex justify-between items-start mb-3 md:mb-4">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="${m.icon}" class="w-5 h-5 md:w-6 md:h-6 text-indigo-600"></i></div>
                     <span class="level-badge">Lv.${m.lvl}</span>
                 </div>
-                <h3 class="text-lg font-bold mb-2 text-slate-800">${m.name}</h3>
-                <p class="text-sm text-slate-500 mb-6 min-h-[40px]">${m.desc}</p>
+                <h3 class="text-base md:text-lg font-bold mb-1 md:mb-2 text-slate-800">${m.name}</h3>
+                <p class="text-xs md:text-sm text-slate-500 mb-4 md:mb-6 min-h-[40px]">${m.desc}</p>
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex gap-2 text-xs font-bold">
                     <span class="text-indigo-600">+${finalXp} XP</span>
                     <span class="text-amber-500">+${finalCoins} سکه</span>
                 </div>
-                <button onclick="openWorkspace(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1"><i data-lucide="play" class="w-4 h-4"></i> استفاده</button>
+                <button onclick="openWorkspace(${m.id})" class="btn-brand px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1"><i data-lucide="play" class="w-4 h-4"></i> استفاده</button>
             </div>
         </div>`;
     }).join('');
@@ -601,22 +664,22 @@ function renderPoll() {
     const poll = DB.data.poll;
     const hasVoted = user.pollVotes && user.pollVotes.includes(poll.q);
     
-    let html = `<p class="font-bold text-slate-800 mb-4">${poll.q}</p>`;
+    let html = `<p class="font-bold text-slate-800 mb-4 text-sm md:text-base">${poll.q}</p>`;
     
     if(!hasVoted) {
-        html += `<div class="space-y-3">`;
+        html += `<div class="space-y-2 md:space-y-3">`;
         poll.opts.forEach((opt, i) => {
-            html += `<button onclick="vote(${i})" class="w-full text-right p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition font-medium text-slate-700">${opt}</button>`;
+            html += `<button onclick="vote(${i})" class="w-full text-right p-2 md:p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition font-medium text-slate-700 text-sm md:text-base">${opt}</button>`;
         });
         html += `</div>`;
     } else {
         const totalVotes = poll.votes.reduce((a, b) => a + b, 0) || 1;
-        html += `<div class="space-y-4">`;
+        html += `<div class="space-y-3 md:space-y-4">`;
         poll.opts.forEach((opt, i) => {
             const percentage = Math.round((poll.votes[i] / totalVotes) * 100);
             html += `
             <div>
-                <div class="flex justify-between text-sm font-medium text-slate-700 mb-1">
+                <div class="flex justify-between text-xs md:text-sm font-medium text-slate-700 mb-1">
                     <span>${opt}</span>
                     <span>${percentage}%</span>
                 </div>
@@ -660,37 +723,37 @@ function renderNeogram() {
         const isOwnPost = p.author === currentUser;
 
         let commentsHtml = p.comments.map(c => `
-            <div class="bg-slate-50 p-3 rounded-lg text-sm">
+            <div class="bg-slate-50 p-2 md:p-3 rounded-lg text-xs md:text-sm">
                 <b class="text-indigo-600">${c.author}</b>: <span class="text-slate-700">${c.text}</span>
             </div>
         `).join('');
 
         return `
-        <div class="card p-6 anim-pop">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full btn-brand flex items-center justify-center font-bold">${p.author.charAt(0).toUpperCase()}</div>
+        <div class="card p-4 md:p-6 anim-pop">
+            <div class="flex items-center justify-between mb-3 md:mb-4">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="w-8 h-8 md:w-10 md:h-10 rounded-full btn-brand flex items-center justify-center text-sm md:text-base font-bold">${p.author.charAt(0).toUpperCase()}</div>
                     <div>
-                        <h3 class="font-bold text-slate-800">${p.author}</h3>
-                        <span class="text-xs text-slate-400">${p.timestamp}</span>
+                        <h3 class="font-bold text-sm md:text-base text-slate-800">${p.author}</h3>
+                        <span class="text-[10px] md:text-xs text-slate-400">${p.timestamp}</span>
                     </div>
                 </div>
-                ${!isOwnPost ? `<button onclick="toggleFollow('${p.author}')" class="text-xs font-bold px-3 py-1 rounded-lg ${isFollowing ? 'bg-slate-100 text-slate-500' : 'btn-brand'}">${isFollowing ? 'دنبال شده' : 'دنبال کردن'}</button>` : ''}
+                ${!isOwnPost ? `<button onclick="toggleFollow('${p.author}')" class="text-[10px] md:text-xs font-bold px-2 md:px-3 py-1 rounded-lg ${isFollowing ? 'bg-slate-100 text-slate-500' : 'btn-brand'}">${isFollowing ? 'دنبال شده' : 'دنبال کردن'}</button>` : ''}
             </div>
-            <p class="text-slate-700 mb-4 whitespace-pre-wrap">${p.text}</p>
-            <div class="flex items-center gap-6 border-t border-slate-100 pt-4">
-                <button onclick="likeNeogram(${p.id})" class="flex items-center gap-2 text-sm font-medium ${liked ? 'text-rose-500' : 'text-slate-500'} hover:text-rose-500 transition">
-                    <i data-lucide="heart" class="w-5 h-5" fill="${liked ? 'currentColor' : 'none'}"></i> ${p.likes.length}
+            <p class="text-slate-700 mb-3 md:mb-4 whitespace-pre-wrap text-sm md:text-base">${p.text}</p>
+            <div class="flex items-center gap-4 md:gap-6 border-t border-slate-100 pt-3 md:pt-4">
+                <button onclick="likeNeogram(${p.id})" class="flex items-center gap-2 text-xs md:text-sm font-medium ${liked ? 'text-rose-500' : 'text-slate-500'} hover:text-rose-500 transition">
+                    <i data-lucide="heart" class="w-4 h-4 md:w-5 md:h-5" fill="${liked ? 'currentColor' : 'none'}"></i> ${p.likes.length}
                 </button>
-                <button onclick="document.getElementById('comments-${p.id}').classList.toggle('hidden')" class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition">
-                    <i data-lucide="message-circle" class="w-5 h-5"></i> ${p.comments.length} کامنت
+                <button onclick="document.getElementById('comments-${p.id}').classList.toggle('hidden')" class="flex items-center gap-2 text-xs md:text-sm font-medium text-slate-500 hover:text-indigo-600 transition">
+                    <i data-lucide="message-circle" class="w-4 h-4 md:w-5 md:h-5"></i> ${p.comments.length} کامنت
                 </button>
             </div>
-            <div id="comments-${p.id}" class="hidden mt-4 space-y-3">
+            <div id="comments-${p.id}" class="hidden mt-3 md:mt-4 space-y-2 md:space-y-3">
                 ${commentsHtml}
-                <div class="flex gap-2 mt-3">
+                <div class="flex gap-2 mt-2 md:mt-3">
                     <input id="comment-input-${p.id}" type="text" class="flex-1 min-h-[40px] text-sm" placeholder="کامنت بنویس...">
-                    <button onclick="addNeogramComment(${p.id})" class="btn-brand px-4 py-2 rounded-lg text-sm">ارسال</button>
+                    <button onclick="addNeogramComment(${p.id})" class="btn-brand px-3 py-2 rounded-lg text-xs md:text-sm">ارسال</button>
                 </div>
             </div>
         </div>`;
@@ -778,7 +841,7 @@ function openWorkspace(id) {
     currentMethodId = id;
     document.getElementById('ws-title').textContent = method.name;
     document.getElementById('ws-desc').textContent = method.desc;
-    document.getElementById('ws-icon').innerHTML = `<i data-lucide="${method.icon}" class="w-6 h-6 text-white"></i>`;
+    document.getElementById('ws-icon').innerHTML = `<i data-lucide="${method.icon}" class="w-5 h-5 md:w-6 md:h-6 text-white"></i>`;
     
     const content = document.getElementById('ws-content');
     const completeBtn = document.getElementById('ws-complete-btn');
@@ -787,57 +850,57 @@ function openWorkspace(id) {
     const userNotes = user.notes && user.notes[id] ? user.notes[id] : '';
     
     if(method.tool === 'note') {
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-3">یادداشت‌های خود را ثبت کنید (حداقل ۱۰ کاراکتر):</p>
-        <textarea id="ws-textarea" class="w-full h-48 bg-slate-50 p-4" placeholder="یادداشت‌های شما..." oninput="checkNoteValidity()">${userNotes}</textarea>`;
+        content.innerHTML = `<p class="text-xs md:text-sm text-slate-500 mb-3">یادداشت‌های خود را ثبت کنید (حداقل ۱۰ کاراکتر):</p>
+        <textarea id="ws-textarea" class="w-full h-40 md:h-48 bg-slate-50 p-3 md:p-4 text-sm" placeholder="یادداشت‌های شما..." oninput="checkNoteValidity()">${userNotes}</textarea>`;
         checkNoteValidity();
     } else if(method.tool === 'check') {
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-4">آیا این مرحله را با موفقیت انجام دادید؟</p>
-        <label class="flex items-center gap-3 cursor-pointer bg-slate-50 p-4 rounded-lg border border-slate-200">
+        content.innerHTML = `<p class="text-xs md:text-sm text-slate-500 mb-4">آیا این مرحله را با موفقیت انجام دادید؟</p>
+        <label class="flex items-center gap-3 cursor-pointer bg-slate-50 p-3 md:p-4 rounded-lg border border-slate-200">
             <input type="checkbox" id="ws-check-confirm" class="w-5 h-5" onchange="document.getElementById('ws-complete-btn').disabled = !this.checked">
-            <span class="text-sm font-medium text-slate-700">بله، تمرین را کامل کردم.</span>
+            <span class="text-xs md:text-sm font-medium text-slate-700">بله، تمرین را کامل کردم.</span>
         </label>`;
     } else if(method.tool === 'pomodoro') {
         const mins = method.time || 25;
         const displayMins = mins < 10 ? '0' + mins : mins;
         content.innerHTML = `<div class="text-center">
-            <p class="text-sm text-slate-500 mb-4">تایمر را شروع کن و تا پایان آن زمان تمرکز کن!</p>
-            <div id="pomodoro-display" class="text-5xl font-bold text-indigo-600 my-8 tracking-wider">${displayMins}:00</div>
-            <button onclick="startPomodoro(${mins})" id="pomo-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع تایمر</button>
+            <p class="text-xs md:text-sm text-slate-500 mb-4">تایمر را شروع کن و تا پایان آن زمان تمرکز کن!</p>
+            <div id="pomodoro-display" class="text-4xl md:text-5xl font-bold text-indigo-600 my-6 md:my-8 tracking-wider">${displayMins}:00</div>
+            <button onclick="startPomodoro(${mins})" id="pomo-btn" class="btn-brand px-6 py-2 md:px-8 md:py-3 rounded-lg font-bold text-sm">شروع تایمر</button>
         </div>`;
     } else if(method.tool === 'flashcard') {
-        content.innerHTML = `<div class="space-y-3">
-            <input id="fc-q" type="text" placeholder="سوال...">
-            <input id="fc-a" type="text" placeholder="جواب...">
+        content.innerHTML = `<div class="space-y-2 md:space-y-3">
+            <input id="fc-q" type="text" placeholder="سوال..." class="text-sm">
+            <input id="fc-a" type="text" placeholder="جواب..." class="text-sm">
             <button onclick="addFlashcard()" class="btn-outline px-4 py-2 rounded-lg text-sm">افزودن کارت</button>
             <div id="fc-list" class="mt-4 space-y-2"></div>
         </div>`;
     } else if(method.tool === 'tap') {
         tapCount = 0;
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">برای فعال‌سازی حافظه کوتاه‌مدت، روی دایره زیر ۱۰ بار کلیک کن!</p>
+        content.innerHTML = `<p class="text-xs md:text-sm text-slate-500 mb-4 text-center">برای فعال‌سازی حافظه کوتاه‌مدت، روی دایره زیر ۱۰ بار کلیک کن!</p>
         <div class="flex flex-col items-center gap-4 mt-6">
-            <div id="tap-circle" onclick="handleTap()" class="w-24 h-24 rounded-full btn-brand flex items-center justify-center text-3xl font-bold cursor-pointer transition-transform active:scale-90">0</div>
+            <div id="tap-circle" onclick="handleTap()" class="w-20 h-20 md:w-24 md:h-24 rounded-full btn-brand flex items-center justify-center text-2xl md:text-3xl font-bold cursor-pointer transition-transform active:scale-90">0</div>
         </div>`;
     } else if(method.tool === 'challenge') {
         content.innerHTML = `<div class="text-center">
-            <p class="text-sm text-slate-500 mb-4">آماده‌ای؟ روی دکمه بزن تا ۶۰ ثانیه تمرکزت رو شروع کنی!</p>
-            <div id="challenge-display" class="text-5xl font-bold text-indigo-600 my-6 tracking-wider">01:00</div>
-            <button onclick="startChallenge()" id="ch-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع چالش</button>
+            <p class="text-xs md:text-sm text-slate-500 mb-4">آماده‌ای؟ روی دکمه بزن تا ۶۰ ثانیه تمرکزت رو شروع کنی!</p>
+            <div id="challenge-display" class="text-4xl md:text-5xl font-bold text-indigo-600 my-6 tracking-wider">01:00</div>
+            <button onclick="startChallenge()" id="ch-btn" class="btn-brand px-6 py-2 md:px-8 md:py-3 rounded-lg font-bold text-sm">شروع چالش</button>
         </div>`;
     } 
     else if(method.tool === 'math') {
         const a = Math.floor(Math.random() * 10) + 1;
         const b = Math.floor(Math.random() * 10) + 1;
         window.mathAnswer = a + b;
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">حافظه کاری خود را تست کن! حاصل جمع زیر چنده؟</p>
-        <div class="bg-indigo-50 p-4 rounded-lg text-center font-bold text-3xl text-indigo-700 mb-4">${a} + ${b} = ?</div>
-        <input id="math-input" type="number" class="w-full text-center text-2xl font-bold" placeholder="جواب..." oninput="checkMath()">
-        <div id="math-result" class="text-center font-bold mt-2"></div>`;
+        content.innerHTML = `<p class="text-xs md:text-sm text-slate-500 mb-4 text-center">حافظه کاری خود را تست کن! حاصل جمع زیر چنده؟</p>
+        <div class="bg-indigo-50 p-3 md:p-4 rounded-lg text-center font-bold text-2xl md:text-3xl text-indigo-700 mb-4">${a} + ${b} = ?</div>
+        <input id="math-input" type="number" class="w-full text-center text-xl md:text-2xl font-bold" placeholder="جواب..." oninput="checkMath()">
+        <div id="math-result" class="text-center font-bold mt-2 text-sm"></div>`;
     } else if(method.tool === 'speed') {
         const targetText = "یادگیری کلید موفقیت در زندگی است";
-        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">جمله زیر را در کمتر از ۱۰ ثانیه دقیق تایپ کن:</p>
-        <div class="bg-indigo-50 p-4 rounded-lg text-center font-bold text-lg text-indigo-700 mb-4">${targetText}</div>
-        <textarea id="speed-input" class="w-full h-24 bg-slate-50 p-4" placeholder="اینجا تایپ کن..." oninput="checkSpeed('${targetText}')"></textarea>
-        <div id="speed-timer" class="text-center text-amber-500 font-bold mt-2">۱۰ ثانیه</div>`;
+        content.innerHTML = `<p class="text-xs md:text-sm text-slate-500 mb-4 text-center">جمله زیر را در کمتر از ۱۰ ثانیه دقیق تایپ کن:</p>
+        <div class="bg-indigo-50 p-3 md:p-4 rounded-lg text-center font-bold text-base md:text-lg text-indigo-700 mb-4">${targetText}</div>
+        <textarea id="speed-input" class="w-full h-20 md:h-24 bg-slate-50 p-3 md:p-4 text-sm" placeholder="اینجا تایپ کن..." oninput="checkSpeed('${targetText}')"></textarea>
+        <div id="speed-timer" class="text-center text-amber-500 font-bold mt-2 text-sm">۱۰ ثانیه</div>`;
         startSpeedTimer();
     }
     
@@ -1046,11 +1109,11 @@ function renderTasks() {
     const user = DB.getUser(currentUser);
     const daily = user.tasks.filter(t => t.type === 'daily');
     const weekly = user.tasks.filter(t => t.type === 'weekly');
-    const renderList = (tasks) => tasks.length === 0 ? '<p class="text-slate-400 text-sm text-center py-4">تسکی ثبت نشده است</p>' : tasks.map(t => `
-        <div class="task-item ${t.done ? 'done' : ''} bg-slate-50 p-3 rounded-lg flex items-center justify-between border border-slate-200">
-            <div class="flex items-center gap-3 flex-1 cursor-pointer" onclick="toggleTask(${t.id})">
+    const renderList = (tasks) => tasks.length === 0 ? '<p class="text-slate-400 text-xs md:text-sm text-center py-4">تسکی ثبت نشده است</p>' : tasks.map(t => `
+        <div class="task-item ${t.done ? 'done' : ''} bg-slate-50 p-2 md:p-3 rounded-lg flex items-center justify-between border border-slate-200">
+            <div class="flex items-center gap-2 md:gap-3 flex-1 cursor-pointer" onclick="toggleTask(${t.id})">
                 <div class="task-checkbox ${t.done ? 'done' : ''}">${t.done ? '<i data-lucide="check" class="w-4 h-4 text-white"></i>' : ''}</div>
-                <span class="text-sm text-slate-700">${t.text}</span>
+                <span class="text-xs md:text-sm text-slate-700">${t.text}</span>
             </div>
             <button onclick="deleteTask(${t.id})" class="text-slate-300 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
         </div>`).join('');
@@ -1097,7 +1160,7 @@ function setTheme(theme) {
         .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
         .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: ${colors[theme]}; transition: 0.2s; cursor: pointer; }
         .btn-outline:hover { background: #f1f5f9; }
-        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 1rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 56px; }
+        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.75rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 48px; }
         input:focus, select:focus, textarea:focus { border-color: ${colors[theme]}; outline: none; box-shadow: 0 0 0 3px ${colors[theme]}20; }
         input::placeholder { color: #94a3b8; }
         .level-badge { background: ${colors[theme]}20; color: ${colors[theme]}; padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
@@ -1119,15 +1182,15 @@ function renderPanel() {
     document.getElementById('owner-panel').classList.toggle('hidden', !isOwner);
     if(isOwner) {
         document.getElementById('admin-user-list').innerHTML = DB.data.users.map(u => `
-            <div class="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <div><span class="font-medium text-slate-800">${u.username}</span> <span class="text-xs text-indigo-600 mr-2">سطح ${u.level}</span></div>
-                <button onclick="deleteUser('${u.username}')" class="text-red-500 text-xs hover:text-red-700 px-2 py-1 hover:bg-red-50 rounded">حذف</button>
+            <div class="flex justify-between items-center bg-slate-50 p-2 md:p-3 rounded-lg border border-slate-200">
+                <div><span class="text-xs md:text-sm font-medium text-slate-800">${u.username}</span> <span class="text-[10px] md:text-xs text-indigo-600 mr-2">سطح ${u.level}</span></div>
+                <button onclick="deleteUser('${u.username}')" class="text-red-500 text-[10px] md:text-xs hover:text-red-700 px-2 py-1 hover:bg-red-50 rounded">حذف</button>
             </div>`).join('') || '<p class="text-xs text-slate-400 text-center py-4">کاربری ثبت‌نام نکرده است</p>';
             
         document.getElementById('admin-msg-list').innerHTML = DB.data.messages.map(m => `
-            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <b class="text-xs text-slate-800">${m.from}:</b>
-                <p class="text-xs text-slate-600 mt-1">${m.text}</p>
+            <div class="bg-slate-50 p-2 md:p-3 rounded-lg border border-slate-200">
+                <b class="text-xs md:text-sm text-slate-800">${m.from}:</b>
+                <p class="text-xs md:text-sm text-slate-600 mt-1">${m.text}</p>
             </div>
         `).join('') || '<p class="text-xs text-slate-400 text-center py-4">پیامی وجود ندارد</p>';
     }
