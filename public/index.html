@@ -1,1 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoLearn - پلتفرم یادگیری هوشمند</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
+                    colors: {
+                        neon: {
+                            cyan: '#00ffff', purple: '#bc13fe', pink: '#ff00ff', green: '#0aff00'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen grid-bg">
 
+<div class="bg-glow">
+    <div class="glow-circle c1"></div>
+    <div class="glow-circle c2"></div>
+</div>
+
+<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] hidden glass px-8 py-3 rounded-full text-sm font-medium border border-purple-500/30"></div>
+
+<div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass p-10 w-full max-w-md anim-pop relative purple-glow">
+        <button onclick="hideAuthModal()" class="absolute top-4 left-4 text-neutral-400 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 mx-auto rounded-2xl btn-brand flex items-center justify-center text-3xl font-bold mb-4 shadow-lg">N</div>
+            <h2 id="auth-title" class="text-3xl font-bold neon-text">ورود به نئولرن</h2>
+            <p class="text-sm text-neutral-400 mt-2">پلتفرم یادگیری هوشمند</p>
+        </div>
+        <div class="space-y-4">
+            <input id="auth-username" type="text" placeholder="نام کاربری (انگلیسی)" class="text-center">
+            <input id="auth-password" type="password" placeholder="رمز عبور" class="text-center" onkeydown="if(event.key==='Enter')doAuth()">
+            <button id="auth-btn" onclick="doAuth()" class="w-full py-3 btn-brand rounded-xl font-bold text-lg">ورود</button>
+            <p id="auth-switch" class="text-center text-sm text-neutral-400">حساب ندارید؟ <a class="text-cyan-400 cursor-pointer hover:text-cyan-300" onclick="toggleAuthMode('register')">ثبت‌نام کنید</a></p>
+        </div>
+    </div>
+</div>
+
+<div id="app" class="hidden max-w-6xl mx-auto p-4 md:p-8 pb-20">
+    <nav class="flex items-center justify-between mb-10 glass px-6 py-4 rounded-2xl sticky top-4 z-40">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('home')">
+            <div class="w-10 h-10 rounded-xl btn-brand flex items-center justify-center text-lg font-bold">N</div>
+            <span class="text-xl font-bold hidden sm:block">NeoLearn</span>
+        </div>
+        <div class="flex items-center gap-3 md:gap-4">
+            <div class="hidden md:flex items-center gap-3">
+                <span class="text-sm text-neutral-400">سطح <b id="nav-level" class="text-cyan-400">1</b></span>
+                <div class="w-32 xp-tube">
+                    <div id="nav-xp-bar" class="xp-fill" style="width:0%"></div>
+                </div>
+            </div>
+            <button onclick="navigate('tasks')" class="btn-outline px-3 md:px-4 py-2 rounded-xl text-sm font-medium">برنامه‌ریز</button>
+            <button onclick="navigate('methods')" class="btn-outline px-3 md:px-4 py-2 rounded-xl text-sm font-medium">متدها</button>
+            <button onclick="navigate('panel')" class="btn-outline px-3 md:px-4 py-2 rounded-xl text-sm font-medium">پنل</button>
+            <button onclick="logout()" class="text-neutral-400 hover:text-red-400 transition-colors"><i data-lucide="log-out" class="w-5 h-5"></i></button>
+        </div>
+    </nav>
+
+    <div id="section-home" class="anim-pop">
+        <h1 class="text-4xl font-bold mb-2">سلام، <span id="welcome-name" class="text-transparent bg-clip-text bg-gradient-to-l from-cyan-400 to-purple-400">کاربر</span> 👋</h1>
+        <p class="text-neutral-400 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP متدهای پیشرفته‌تری را باز کن!</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="glass p-6 flex items-center gap-4 hover:border-cyan-500/30 transition-all">
+                <div class="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center cyan-glow">
+                    <i data-lucide="trending-up" class="w-7 h-7 text-cyan-400"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold" id="stat-level">1</div>
+                    <div class="text-sm text-neutral-500">سطح فعلی</div>
+                </div>
+            </div>
+            <div class="glass p-6 flex items-center gap-4 hover:border-purple-500/30 transition-all">
+                <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center purple-glow">
+                    <i data-lucide="zap" class="w-7 h-7 text-purple-400"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold" id="stat-xp">0</div>
+                    <div class="text-sm text-neutral-500">امتیاز (XP)</div>
+                </div>
+            </div>
+            <div class="glass p-6 flex items-center gap-4 hover:border-pink-500/30 transition-all">
+                <div class="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center" style="box-shadow: 0 0 15px rgba(255,0,255,0.2); border-color: rgba(255,0,255,0.3) !important;">
+                    <i data-lucide="unlock" class="w-7 h-7 text-pink-400"></i>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold" id="stat-unlocked">0/20</div>
+                    <div class="text-sm text-neutral-500">متدهای فعال</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="glass p-8">
+            <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="rocket" class="w-6 h-6 text-cyan-400"></i> مسیر پیشرفت شما</h3>
+            <div id="progress-path" class="flex justify-between items-center relative"></div>
+        </div>
+    </div>
+
+    <div id="section-tasks" class="hidden">
+        <h2 class="text-3xl font-bold mb-2 neon-text">برنامه‌ریز هوشمند</h2>
+        <p class="text-neutral-400 mb-8">تسک‌های روزانه و هفتگی خود را ثبت کن و با انجام آن‌ها ۱۵ XP کسب کن!</p>
+        
+        <div class="glass p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input id="task-input" type="text" placeholder="مثلا: حل 10 سوال ریاضی فصل ۳..." class="flex-1">
+                <select id="task-type" class="md:w-1/4">
+                    <option value="daily">روزانه</option>
+                    <option value="weekly">هفتگی</option>
+                </select>
+                <button onclick="addTask()" class="btn-brand px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <i data-lucide="plus" class="w-5 h-5"></i> افزودن تسک
+                </button>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass p-6">
+                <h3 class="text-xl font-bold mb-4 text-cyan-400 flex items-center gap-2"><i data-lucide="sun"></i> تسک‌های روزانه</h3>
+                <div id="daily-tasks" class="space-y-3"></div>
+            </div>
+            <div class="glass p-6">
+                <h3 class="text-xl font-bold mb-4 text-purple-400 flex items-center gap-2"><i data-lucide="calendar-days"></i> تسک‌های هفتگی</h3>
+                <div id="weekly-tasks" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-methods" class="hidden">
+        <h2 class="text-3xl font-bold mb-2 neon-text">کتابخانه متدهای مطالعه</h2>
+        <p class="text-neutral-400 mb-8">۲۰ روش اثبات‌شده برای تسلط بر ریاضی و سایر دروس</p>
+        <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <div id="section-panel" class="hidden">
+        <h2 class="text-3xl font-bold mb-8">پنل مدیریت</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="glass p-8">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="palette" class="w-6 h-6 text-pink-400"></i> تنظیمات تم</h3>
+                <div class="flex gap-3 flex-wrap">
+                    <button onclick="setTheme('default')" class="theme-btn w-12 h-12 rounded-full transition-transform hover:scale-110" style="background: linear-gradient(135deg, #6366f1, #bc13fe);"></button>
+                    <button onclick="setTheme('matrix')" class="theme-btn w-12 h-12 rounded-full transition-transform hover:scale-110" style="background: #00ff00;"></button>
+                    <button onclick="setTheme('amber')" class="theme-btn w-12 h-12 rounded-full transition-transform hover:scale-110" style="background: #f59e0b;"></button>
+                    <button onclick="setTheme('cyber')" class="theme-btn w-12 h-12 rounded-full transition-transform hover:scale-110" style="background: #00ffff;"></button>
+                </div>
+            </div>
+            <div id="owner-panel" class="glass p-8 hidden">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-amber-400"><i data-lucide="shield-check" class="w-6 h-6"></i> کنسول ادمین</h3>
+                <div id="admin-user-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>
