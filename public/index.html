@@ -106,6 +106,7 @@
             </div>
             <button onclick="navigate('tasks')" class="btn-outline px-3 py-2 rounded-lg text-sm">برنامه‌ریز</button>
             <button onclick="navigate('methods')" class="btn-outline px-3 py-2 rounded-lg text-sm">متدها</button>
+            <button onclick="navigate('neogram')" class="btn-outline px-3 py-2 rounded-lg text-sm">نیوگرام</button>
             <button onclick="navigate('community')" class="btn-outline px-3 py-2 rounded-lg text-sm">جامعه</button>
             <button onclick="navigate('store')" class="btn-outline px-3 py-2 rounded-lg text-sm">اشتراک‌ها</button>
             <button onclick="navigate('panel')" class="btn-outline px-3 py-2 rounded-lg text-sm">پنل</button>
@@ -170,6 +171,20 @@
         <h2 class="text-2xl font-bold mb-2 text-slate-800">کتابخانه متدهای مطالعه</h2>
         <p class="text-slate-500 mb-8">روی "استفاده" بزن تا وارد فضای کارِ اون متد بشی و پاداش بگیری!</p>
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- Neogram Section -->
+    <div id="section-neogram" class="hidden anim-pop">
+        <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="megaphone" class="w-6 h-6 text-indigo-600"></i> نیوگرام</h2>
+        <div class="card p-6 mb-8">
+            <textarea id="neogram-input" class="w-full bg-slate-50 p-4 mb-4" placeholder="چی تو ذهنته؟ نکته یادگیری، موفقیت یا تجربه‌ت رو به اشتراک بذار..." style="min-height: 100px;"></textarea>
+            <div class="flex justify-end">
+                <button onclick="postNeogram()" class="btn-brand px-6 py-3 rounded-lg font-bold flex items-center gap-2">
+                    <i data-lucide="send" class="w-5 h-5"></i> انتشار پست (۵ XP)
+                </button>
+            </div>
+        </div>
+        <div id="neogram-feed" class="space-y-6"></div>
     </div>
 
     <div id="section-community" class="hidden anim-pop">
@@ -264,6 +279,7 @@ const DB = {
             this.data = await res.json();
             if(!this.data.users) this.data.users = [];
             if(!this.data.messages) this.data.messages = [];
+            if(!this.data.posts) this.data.posts = [];
             if(!this.data.poll) {
                 this.data.poll = { q: "بهترین زمان برای مطالعه شما کِیه؟", opts: ["صبح زود", "ظهر", "عصر", "شب‌بیداری"], votes: [0, 0, 0, 0] };
             }
@@ -276,8 +292,9 @@ const DB = {
                 if(!u.lastActive) u.lastActive = null;
                 if(!u.favoriteGame) u.favoriteGame = null;
                 if(!u.pollVotes) u.pollVotes = [];
+                if(!u.following) u.following = [];
             });
-        } catch (e) { console.error(e); this.data = { users: [], messages: [], ownerPassword: "owner123", poll: { q: "بهترین زمان برای مطالعه شما کِیه؟", opts: ["صبح زود", "ظهر", "عصر", "شب‌بیداری"], votes: [0, 0, 0, 0] } }; }
+        } catch (e) { console.error(e); this.data = { users: [], messages: [], posts: [], ownerPassword: "owner123", poll: { q: "بهترین زمان برای مطالعه شما کِیه؟", opts: ["صبح زود", "ظهر", "عصر", "شب‌بیداری"], votes: [0, 0, 0, 0] } }; }
     },
     async save() { await fetch('/api/db', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.data) }); },
     getUser(u) { return this.data.users.find(x => x.username === u); },
@@ -354,7 +371,7 @@ async function doAuth() {
         currentUser = u;
     } else {
         if(DB.getUser(u)) return showToast('این کاربر وجود دارد');
-        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free', streak: 0, lastActive: null, favoriteGame: null, pollVotes: [] });
+        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free', streak: 0, lastActive: null, favoriteGame: null, pollVotes: [], following: [] });
         currentUser = u;
     }
     hideAuthModal();
@@ -375,13 +392,14 @@ function initApp() {
 }
 
 function navigate(section) {
-    ['home', 'tasks', 'methods', 'store', 'community', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
+    ['home', 'tasks', 'methods', 'store', 'community', 'neogram', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
     if(section === 'home') { renderPath(); renderLeaderboard(); }
     if(section === 'tasks') renderTasks();
     if(section === 'community') renderCommunity();
+    if(section === 'neogram') renderNeogram();
     lucide.createIcons();
 }
 
@@ -560,6 +578,132 @@ function vote(index) {
     renderPoll();
 }
 
+// Neogram Logic
+function renderNeogram() {
+    const posts = DB.data.posts || [];
+    const user = DB.getUser(currentUser);
+    
+    if(posts.length === 0) {
+        document.getElementById('neogram-feed').innerHTML = '<p class="text-slate-400 text-center py-8">هنوز پستی وجود ندارد. اولین نفر باش!</p>';
+        return;
+    }
+
+    document.getElementById('neogram-feed').innerHTML = posts.slice().reverse().map(p => {
+        const liked = p.likes.includes(currentUser);
+        const isFollowing = user.following && user.following.includes(p.author);
+        const isOwnPost = p.author === currentUser;
+
+        let commentsHtml = p.comments.map(c => `
+            <div class="bg-slate-50 p-3 rounded-lg text-sm">
+                <b class="text-indigo-600">${c.author}</b>: <span class="text-slate-700">${c.text}</span>
+            </div>
+        `).join('');
+
+        return `
+        <div class="card p-6 anim-pop">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full btn-brand flex items-center justify-center font-bold">${p.author.charAt(0).toUpperCase()}</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">${p.author}</h3>
+                        <span class="text-xs text-slate-400">${p.timestamp}</span>
+                    </div>
+                </div>
+                ${!isOwnPost ? `<button onclick="toggleFollow('${p.author}')" class="text-xs font-bold px-3 py-1 rounded-lg ${isFollowing ? 'bg-slate-100 text-slate-500' : 'btn-brand'}">${isFollowing ? 'دنبال شده' : 'دنبال کردن'}</button>` : ''}
+            </div>
+            <p class="text-slate-700 mb-4 whitespace-pre-wrap">${p.text}</p>
+            <div class="flex items-center gap-6 border-t border-slate-100 pt-4">
+                <button onclick="likeNeogram(${p.id})" class="flex items-center gap-2 text-sm font-medium ${liked ? 'text-rose-500' : 'text-slate-500'} hover:text-rose-500 transition">
+                    <i data-lucide="heart" class="w-5 h-5" fill="${liked ? 'currentColor' : 'none'}"></i> ${p.likes.length}
+                </button>
+                <button onclick="document.getElementById('comments-${p.id}').classList.toggle('hidden')" class="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i> ${p.comments.length} کامنت
+                </button>
+            </div>
+            <div id="comments-${p.id}" class="hidden mt-4 space-y-3">
+                ${commentsHtml}
+                <div class="flex gap-2 mt-3">
+                    <input id="comment-input-${p.id}" type="text" class="flex-1 min-h-[40px] text-sm" placeholder="کامنت بنویس...">
+                    <button onclick="addNeogramComment(${p.id})" class="btn-brand px-4 py-2 rounded-lg text-sm">ارسال</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+    lucide.createIcons();
+}
+
+function postNeogram() {
+    const text = document.getElementById('neogram-input').value.trim();
+    if(!text) return showToast('پست نمی‌تواند خالی باشد');
+    
+    const newPost = {
+        id: Date.now(),
+        author: currentUser,
+        text: text,
+        likes: [],
+        comments: [],
+        timestamp: new Date().toLocaleString('fa-IR')
+    };
+    DB.data.posts.push(newPost);
+    DB.save();
+    
+    // Reward
+    const user = DB.getUser(currentUser);
+    user.xp += 5;
+    DB.updateUser(currentUser, { xp: user.xp, level: getLevel(user.xp) });
+    
+    document.getElementById('neogram-input').value = '';
+    renderNeogram();
+    updateUI();
+    showToast('پست شما در نیوگرام منتشر شد! +۵ XP');
+}
+
+function likeNeogram(postId) {
+    const post = DB.data.posts.find(p => p.id === postId);
+    if(!post) return;
+    
+    const index = post.likes.indexOf(currentUser);
+    if(index > -1) {
+        post.likes.splice(index, 1);
+    } else {
+        post.likes.push(currentUser);
+    }
+    DB.save();
+    renderNeogram();
+}
+
+function addNeogramComment(postId) {
+    const input = document.getElementById(`comment-input-${postId}`);
+    const text = input.value.trim();
+    if(!text) return;
+    
+    const post = DB.data.posts.find(p => p.id === postId);
+    if(post) {
+        post.comments.push({ id: Date.now(), author: currentUser, text: text });
+        DB.save();
+        renderNeogram();
+        document.getElementById(`comments-${postId}`).classList.remove('hidden');
+    }
+}
+
+function toggleFollow(username) {
+    const user = DB.getUser(currentUser);
+    if(!user) return;
+    
+    if(!user.following) user.following = [];
+    const index = user.following.indexOf(username);
+    if(index > -1) {
+        user.following.splice(index, 1);
+        showToast(`${username} دیگر دنبال نمی‌شود`);
+    } else {
+        user.following.push(username);
+        showToast(`${username} دنبال شد`);
+    }
+    DB.updateUser(currentUser, { following: user.following });
+    renderNeogram();
+}
+
+// Workspace Logic
 function openWorkspace(id) {
     if(isOwner) return;
     const user = DB.getUser(currentUser);
