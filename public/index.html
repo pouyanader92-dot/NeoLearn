@@ -6,6 +6,8 @@
     <title>NeoLearn - پلتفرم یادگیری هوشمند</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- اضافه شدن کتابخانه فونت آسام برای آیکون‌های شبکه‌های اجتماعی -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = { theme: { extend: { fontFamily: { sans: ['Vazirmatn', 'sans-serif'] } } } }
@@ -110,6 +112,7 @@
             <button onclick="navigate('community')" class="btn-outline px-3 py-2 rounded-lg text-sm">جامعه</button>
             <button onclick="navigate('store')" class="btn-outline px-3 py-2 rounded-lg text-sm">اشتراک‌ها</button>
             <button onclick="navigate('panel')" class="btn-outline px-3 py-2 rounded-lg text-sm">پنل</button>
+            <button onclick="navigate('about')" class="btn-outline px-3 py-2 rounded-lg text-sm">درباره ما</button>
             <button onclick="logout()" class="text-slate-400 hover:text-red-500"><i data-lucide="log-out" class="w-5 h-5"></i></button>
         </div>
     </nav>
@@ -231,6 +234,69 @@
                 <h3 class="text-lg font-bold mb-2 text-amber-700">اشتراک پلاس (۱.۵x XP)</h3>
                 <p class="text-sm text-slate-500 mb-6 flex-grow">۵۰ درصد پاداش XP و سکه بیشتر در تمام متدها</p>
                 <button onclick="buySub('plus')" class="btn-brand w-full py-3 rounded-lg font-bold" style="background: #f59e0b;">۲۵۰ سکه</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div id="section-about" class="hidden anim-pop">
+        <h2 class="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-2"><i data-lucide="info" class="w-6 h-6 text-indigo-600"></i> درباره ما</h2>
+        <div class="card p-8 relative overflow-hidden">
+            <div class="flex flex-col items-center text-center mb-8">
+                <div class="w-20 h-20 rounded-2xl btn-brand flex items-center justify-center text-3xl font-bold mb-4">N</div>
+                <h1 class="text-3xl font-bold text-indigo-600">درباره ما - NeoLearn</h1>
+                <p class="text-sm text-slate-500 mt-2">پلتفرم گیمیفیکیشن و یادگیری هوشمند</p>
+            </div>
+            <p class="text-slate-600 text-center leading-relaxed mb-8 max-w-2xl mx-auto">
+                نئولرن یک پلتفرم آموزشی و گیمیفیکیشن است که با هدف ارتقای سطح انگیزه و روش‌های یادگیری دانش‌آموزان طراحی شده است. ما با استفاده از تکنولوژی‌های روز، یادگیری را به تجربه‌ای جذاب و دوستانه تبدیل کرده‌ایم. این پلتفرم برای علاقه‌مندان به یادگیری ساخته شده تا در فضایی رقابتی و چالش‌برانگیز مهارت‌های خود را محک بزنند و با متدهای جدید آشنا شوند.
+            </p>
+            
+            <div class="grid sm:grid-cols-2 gap-6 text-sm mb-8 max-w-xl mx-auto">
+                <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0"><i data-lucide="user" class="w-5 h-5 text-indigo-600"></i></div>
+                    <div>
+                        <div class="text-slate-400 text-xs">طراح و توسعه‌دهنده</div>
+                        <div class="text-slate-800 font-medium">پویان نادر</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center shrink-0"><i data-lucide="mail" class="w-5 h-5 text-purple-600"></i></div>
+                    <div>
+                        <div class="text-slate-400 text-xs">ایمیل</div>
+                        <div class="text-slate-800 font-medium" dir="ltr">neomathi@neomath.ir</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0"><i data-lucide="phone" class="w-5 h-5 text-emerald-600"></i></div>
+                    <div>
+                        <div class="text-slate-400 text-xs">شماره تماس</div>
+                        <div class="text-slate-800 font-medium" dir="ltr">09360090737</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-slate-500 text-sm mb-4 text-center">ما را در شبکه‌های اجتماعی دنبال کنید:</div>
+                <div class="flex justify-center gap-4 flex-wrap">
+                    <a href="https://t.me/neomathIr" target="_blank" class="w-12 h-12 rounded-full bg-sky-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                        <i class="fab fa-telegram text-xl text-white"></i>
+                    </a>
+                    <a href="https://chat.whatsapp.com/CMT8XOAMVFSCeDfClJlMFe?s=cl&p=a&ilr=1" target="_blank" class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                        <i class="fab fa-whatsapp text-xl text-white"></i>
+                    </a>
+                    <a href="https://discord.gg/MzFY9QBmS" target="_blank" class="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-lg" style="background-color: #5865F2;" title="دیسکورد">
+                        <i class="fab fa-discord text-xl text-white"></i>
+                    </a>
+                    <a href="https://ble.ir/neomathIr" target="_blank" class="w-12 h-12 rounded-full bg-blue-900 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="بله">
+                        <span class="text-xl text-white font-bold">ب</span>
+                    </a>
+                    <a href="https://eitaa.com/neomath" target="_blank" class="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="ایتا">
+                        <span class="text-xl text-white font-bold">ا</span>
+                    </a>
+                    <a href="https://rubika.ir/neomath" target="_blank" class="w-12 h-12 rounded-full bg-orange-600 flex items-center justify-center hover:scale-110 transition-transform shadow-lg" title="روبیکا">
+                        <span class="text-xl text-white font-bold">ر</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -392,7 +458,7 @@ function initApp() {
 }
 
 function navigate(section) {
-    ['home', 'tasks', 'methods', 'store', 'community', 'neogram', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
+    ['home', 'tasks', 'methods', 'store', 'community', 'neogram', 'panel', 'about'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
@@ -647,7 +713,6 @@ function postNeogram() {
     DB.data.posts.push(newPost);
     DB.save();
     
-    // Reward
     const user = DB.getUser(currentUser);
     user.xp += 5;
     DB.updateUser(currentUser, { xp: user.xp, level: getLevel(user.xp) });
