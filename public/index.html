@@ -89,6 +89,11 @@
         </div>
         <div class="flex items-center gap-3 md:gap-4">
             <div class="hidden md:flex items-center gap-4">
+                <!-- Streak Indicator -->
+                <div class="flex items-center gap-1 text-sm font-bold text-orange-500">
+                    <i data-lucide="flame" class="w-4 h-4"></i>
+                    <span id="nav-streak">0</span>
+                </div>
                 <div class="flex items-center gap-2 text-sm">
                     <i data-lucide="star" class="w-4 h-4 text-amber-500"></i>
                     <b id="nav-level" class="text-indigo-600">1</b>
@@ -110,6 +115,7 @@
     <div id="section-home" class="anim-pop">
         <h1 class="text-3xl font-bold mb-2 text-slate-800">سلام، <span id="welcome-name" class="text-indigo-600">کاربر</span> 👋</h1>
         <p class="text-slate-500 mb-10 text-lg">برای یادگیری موثرتر، متدهای مطالعه را امتحان کن و با کسب XP و سکه، متدهای پیشرفته‌تری را باز کن!</p>
+        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="card p-6 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center"><i data-lucide="trending-up" class="w-6 h-6 text-indigo-600"></i></div>
@@ -124,10 +130,17 @@
                 <div><div class="text-2xl font-bold text-slate-800" id="stat-unlocked">0/20</div><div class="text-sm text-slate-500">متدهای فعال</div></div>
             </div>
         </div>
-        <!-- اضافه شدن مسیر پیشرفت برای جلوگیری از خطای جاوااسکریپت -->
-        <div class="card p-6 mb-10">
-            <h3 class="text-lg font-bold mb-6 text-slate-800">مسیر پیشرفت شما</h3>
-            <div id="progress-path" class="flex items-center justify-between relative before:absolute before:left-0 before:right-0 before:top-5 before:h-0.5 before:bg-slate-200"></div>
+        
+        <!-- Leaderboard Added -->
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+            <div class="card p-6">
+                <h3 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="route" class="w-5 h-5 text-indigo-600"></i> مسیر پیشرفت شما</h3>
+                <div id="progress-path" class="flex items-center justify-between relative before:absolute before:left-0 before:right-0 before:top-5 before:h-0.5 before:bg-slate-200"></div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2"><i data-lucide="trophy" class="w-5 h-5 text-amber-500"></i> تابلوی نخبگان</h3>
+                <div id="leaderboard-list" class="space-y-3"></div>
+            </div>
         </div>
     </div>
 
@@ -159,7 +172,6 @@
         <div id="methods-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
-    <!-- بخش جدید اشتراک‌ها -->
     <div id="section-store" class="hidden anim-pop">
         <h2 class="text-2xl font-bold mb-8 text-slate-800">فروشگاه و اشتراک‌ها</h2>
         <div class="grid md:grid-cols-3 gap-6">
@@ -197,9 +209,6 @@
                     <button onclick="setTheme('amber')" class="w-10 h-10 rounded-md border-2 border-slate-200 hover:scale-110" style="background: #f59e0b;"></button>
                 </div>
             </div>
-            
-            <!-- بخش اشتراک از اینجا حذف شد و به منوی بالا منتقل شد -->
-
             <div class="card p-8 md:col-span-2">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800"><i data-lucide="message-square" class="w-5 h-5 text-indigo-600"></i> پیام به پشتیبانی</h3>
                 <textarea id="support-msg" rows="3" placeholder="پیام خود را بنویسید..." class="mb-4" style="min-height: 80px;"></textarea>
@@ -237,6 +246,8 @@ const DB = {
                 if(!u.notes) u.notes = {};
                 if(u.coins === undefined) u.coins = 0;
                 if(!u.subscription) u.subscription = 'free';
+                if(!u.streak) u.streak = 0;
+                if(!u.lastActive) u.lastActive = null;
             });
         } catch (e) { console.error(e); this.data = { users: [], messages: [], ownerPassword: "owner123" }; }
     },
@@ -247,7 +258,7 @@ const DB = {
     removeUser(u) { this.data.users = this.data.users.filter(x => x.username !== u); this.save(); }
 };
 
-// متدهای جدید (Tap و Challenge) به لیست اضافه شدند
+// متدهای جدید (math و speed) اضافه شدند
 const METHODS = [
     { id: 1, name: "خواندن فعال", xp: 10, coins: 5, lvl: 1, icon: "book-open", desc: "خواندن با تمرکز کامل.", tool: "check" },
     { id: 2, name: "یادداشت‌برداری", xp: 10, coins: 5, lvl: 1, icon: "pen-line", desc: "نوشتن نکات کلیدی.", tool: "note" },
@@ -261,8 +272,8 @@ const METHODS = [
     { id: 10, name: "روش SQ3R", xp: 35, coins: 18, lvl: 5, icon: "list-checks", desc: "پیمایش و مرور.", tool: "check" },
     { id: 11, name: "درهم‌آمیزی", xp: 40, coins: 20, lvl: 6, icon: "shuffle", desc: "ترکیب موضوعات.", tool: "challenge" },
     { id: 12, name: "دسته‌بندی", xp: 40, coins: 20, lvl: 6, icon: "box", desc: "تقسیم به قطعات.", tool: "note" },
-    { id: 13, name: "تست‌سازی شخصی", xp: 45, coins: 22, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "note" },
-    { id: 14, name: "تصویرسازی ذهنی", xp: 45, coins: 22, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "note" },
+    { id: 13, name: "تست‌سازی شخصی", xp: 45, coins: 22, lvl: 7, icon: "file-question", desc: "طراحی سوال.", tool: "math" },
+    { id: 14, name: "تصویرسازی ذهنی", xp: 45, coins: 22, lvl: 7, icon: "image", desc: "تبدیل به تصویر.", tool: "speed" },
     { id: 15, name: "ارتباط معنایی", xp: 50, coins: 25, lvl: 8, icon: "link", desc: "ربط به دانش قبلی.", tool: "note" },
     { id: 16, name: "مثال‌سازی", xp: 50, coins: 25, lvl: 8, icon: "lightbulb", desc: "مثال عینی سازی.", tool: "note" },
     { id: 17, name: "روش کورنل", xp: 55, coins: 28, lvl: 9, icon: "layout-grid", desc: "بخش‌بندی برگه.", tool: "note" },
@@ -278,6 +289,7 @@ let authMode = 'login';
 let currentMethodId = null;
 let pomodoroInterval = null;
 let challengeInterval = null;
+let speedInterval = null;
 let tapCount = 0;
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000); }
@@ -305,7 +317,7 @@ async function doAuth() {
         currentUser = u;
     } else {
         if(DB.getUser(u)) return showToast('این کاربر وجود دارد');
-        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free' });
+        DB.addUser({ username: u, password: p, xp: 0, coins: 0, level: 1, theme: 'indigo', tasks: [], notes: {}, subscription: 'free', streak: 0, lastActive: null });
         currentUser = u;
     }
     hideAuthModal();
@@ -314,16 +326,25 @@ async function doAuth() {
 
 function logout() { currentUser = null; isOwner = false; document.getElementById('app').classList.add('hidden'); showAuthModal(); }
 function getLevel(xp) { for(let i = XP_THRESHOLDS.length-1; i >= 0; i--) { if(xp >= XP_THRESHOLDS[i]) return i+1; } return 1; }
-function getMult(user) { if(user.subscription === 'plus') return 1.5; if(user.subscription === 'eco') return 1.2; return 1; }
-function initApp() { document.getElementById('app').classList.remove('hidden'); updateUI(); navigate('home'); lucide.createIcons(); }
 
-// 'store' به لیست اضافه شد
+// محاسبه ضریب اشتراک
+function getSubMult(user) { if(user.subscription === 'plus') return 1.5; if(user.subscription === 'eco') return 1.2; return 1; }
+// محاسبه ضریب استریک (اگر 3 روز یا بیشتر باشه 10٪ پاداش بیشتر)
+function getStreakMult(user) { return user.streak >= 3 ? 1.1 : 1.0; }
+
+function initApp() { 
+    document.getElementById('app').classList.remove('hidden'); 
+    updateUI(); 
+    navigate('home'); 
+    lucide.createIcons(); 
+}
+
 function navigate(section) {
     ['home', 'tasks', 'methods', 'store', 'panel'].forEach(s => document.getElementById('section-'+s).classList.add('hidden'));
     document.getElementById('section-'+section).classList.remove('hidden');
     if(section === 'methods') renderMethods();
     if(section === 'panel') renderPanel();
-    if(section === 'home') renderPath();
+    if(section === 'home') { renderPath(); renderLeaderboard(); }
     if(section === 'tasks') renderTasks();
     lucide.createIcons();
 }
@@ -334,6 +355,7 @@ function updateUI() {
         document.getElementById('nav-level').textContent = 'Max';
         document.getElementById('nav-xp-bar').style.width = '100%';
         document.getElementById('nav-coins').textContent = '∞';
+        document.getElementById('nav-streak').textContent = '∞';
         document.getElementById('stat-level').textContent = 'Max';
         document.getElementById('stat-coins').textContent = '∞';
         document.getElementById('stat-unlocked').textContent = '20/20';
@@ -341,11 +363,26 @@ function updateUI() {
     }
     const user = DB.getUser(currentUser);
     if(!user) return logout();
+    
+    // آپدیت استریک روزانه
+    const today = new Date().toDateString();
+    if(user.lastActive !== today) {
+        const yesterday = new Date(Date.now() - 86400000).toDateString();
+        if(user.lastActive === yesterday) {
+            user.streak = (user.streak || 0) + 1;
+        } else {
+            user.streak = 1;
+        }
+        user.lastActive = today;
+        DB.updateUser(currentUser, { streak: user.streak, lastActive: user.lastActive });
+    }
+
     const lvl = getLevel(user.xp);
     user.level = lvl;
     document.getElementById('welcome-name').textContent = currentUser;
     document.getElementById('nav-level').textContent = lvl;
     document.getElementById('nav-coins').textContent = user.coins;
+    document.getElementById('nav-streak').textContent = user.streak || 0;
     document.getElementById('stat-level').textContent = lvl;
     document.getElementById('stat-coins').textContent = user.coins;
     const nextXp = XP_THRESHOLDS[lvl] || XP_THRESHOLDS[XP_THRESHOLDS.length-1];
@@ -366,10 +403,33 @@ function renderPath() {
     lucide.createIcons();
 }
 
+// تابع جدید تابلوی نخبگان
+function renderLeaderboard() {
+    const sortedUsers = [...DB.data.users].sort((a, b) => b.xp - a.xp).slice(0, 3);
+    const medals = ['🥇', '🥈', '🥉'];
+    document.getElementById('leaderboard-list').innerHTML = sortedUsers.map((u, i) => `
+        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">${medals[i]}</span>
+                <span class="font-bold text-slate-800">${u.username}</span>
+            </div>
+            <div class="flex items-center gap-1 text-sm font-bold text-indigo-600">
+                <i data-lucide="star" class="w-4 h-4"></i>
+                ${u.xp} XP
+            </div>
+        </div>
+    `).join('') || '<p class="text-xs text-slate-400 text-center py-4">هنوز نخبه‌ای ثبت نشده است</p>';
+    lucide.createIcons();
+}
+
 function renderMethods() {
     const user = isOwner ? { level: 100 } : DB.getUser(currentUser);
+    const subMult = getSubMult(user);
+    const streakMult = getStreakMult(user);
     document.getElementById('methods-grid').innerHTML = METHODS.map(m => {
         const locked = m.lvl > user.level;
+        const finalXp = Math.floor(m.xp * subMult * streakMult);
+        const finalCoins = Math.floor(m.coins * subMult * streakMult);
         return `
         <div class="card p-6 flex flex-col justify-between ${locked ? 'opacity-50 pointer-events-none' : ''}">
             <div>
@@ -382,8 +442,8 @@ function renderMethods() {
             </div>
             <div class="flex items-center justify-between">
                 <div class="flex gap-2 text-xs font-bold">
-                    <span class="text-indigo-600">+${Math.floor(m.xp * getMult(user))} XP</span>
-                    <span class="text-amber-500">+${Math.floor(m.coins * getMult(user))} سکه</span>
+                    <span class="text-indigo-600">+${finalXp} XP</span>
+                    <span class="text-amber-500">+${finalCoins} سکه</span>
                 </div>
                 <button onclick="openWorkspace(${m.id})" class="btn-brand px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1"><i data-lucide="play" class="w-4 h-4"></i> استفاده</button>
             </div>
@@ -432,9 +492,7 @@ function openWorkspace(id) {
             <button onclick="addFlashcard()" class="btn-outline px-4 py-2 rounded-lg text-sm">افزودن کارت</button>
             <div id="fc-list" class="mt-4 space-y-2"></div>
         </div>`;
-    }
-    // ابزارهای جدید اضافه شد
-    else if(method.tool === 'tap') {
+    } else if(method.tool === 'tap') {
         tapCount = 0;
         content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">برای فعال‌سازی حافظه کوتاه‌مدت، روی دایره زیر ۱۰ بار کلیک کن!</p>
         <div class="flex flex-col items-center gap-4 mt-6">
@@ -446,13 +504,70 @@ function openWorkspace(id) {
             <div id="challenge-display" class="text-5xl font-bold text-indigo-600 my-6 tracking-wider">01:00</div>
             <button onclick="startChallenge()" id="ch-btn" class="btn-brand px-8 py-3 rounded-lg font-bold">شروع چالش</button>
         </div>`;
+    } 
+    // ابزارهای جدید بازی‌گونه
+    else if(method.tool === 'math') {
+        const a = Math.floor(Math.random() * 10) + 1;
+        const b = Math.floor(Math.random() * 10) + 1;
+        window.mathAnswer = a + b;
+        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">حافظه کاری خود را تست کن! حاصل جمع زیر چنده؟</p>
+        <div class="bg-indigo-50 p-4 rounded-lg text-center font-bold text-3xl text-indigo-700 mb-4">${a} + ${b} = ?</div>
+        <input id="math-input" type="number" class="w-full text-center text-2xl font-bold" placeholder="جواب..." oninput="checkMath()">
+        <div id="math-result" class="text-center font-bold mt-2"></div>`;
+    } else if(method.tool === 'speed') {
+        const targetText = "یادگیری کلید موفقیت در زندگی است";
+        content.innerHTML = `<p class="text-sm text-slate-500 mb-4 text-center">جمله زیر را در کمتر از ۱۰ ثانیه دقیق تایپ کن:</p>
+        <div class="bg-indigo-50 p-4 rounded-lg text-center font-bold text-lg text-indigo-700 mb-4">${targetText}</div>
+        <textarea id="speed-input" class="w-full h-24 bg-slate-50 p-4" placeholder="اینجا تایپ کن..." oninput="checkSpeed('${targetText}')"></textarea>
+        <div id="speed-timer" class="text-center text-amber-500 font-bold mt-2">۱۰ ثانیه</div>`;
+        startSpeedTimer();
     }
     
     document.getElementById('workspace-modal').style.display = 'flex';
     lucide.createIcons();
 }
 
-// توابع جدید برای بازی‌ها
+// توابع جدید برای ابزارهای ریاضی و تایپ
+function checkMath() {
+    const val = parseInt(document.getElementById('math-input').value);
+    const res = document.getElementById('math-result');
+    if(val === window.mathAnswer) {
+        res.textContent = 'آفرین! درست بود.';
+        res.style.color = '#10b981';
+        document.getElementById('ws-complete-btn').disabled = false;
+    } else {
+        res.textContent = 'دقت کن!';
+        res.style.color = '#ef4444';
+        document.getElementById('ws-complete-btn').disabled = true;
+    }
+}
+
+function startSpeedTimer() {
+    let time = 10;
+    if(speedInterval) clearInterval(speedInterval);
+    speedInterval = setInterval(() => {
+        time--;
+        document.getElementById('speed-timer').textContent = `${time} ثانیه`;
+        if(time <= 0) {
+            clearInterval(speedInterval);
+            document.getElementById('speed-input').disabled = true;
+            document.getElementById('speed-timer').textContent = "زمان تمام شد!";
+            document.getElementById('speed-timer').style.color = "#ef4444";
+            document.getElementById('ws-complete-btn').disabled = true;
+        }
+    }, 1000);
+}
+
+function checkSpeed(target) {
+    const val = document.getElementById('speed-input').value.trim();
+    if(val === target) {
+        clearInterval(speedInterval);
+        document.getElementById('speed-timer').textContent = "عالی بود!";
+        document.getElementById('speed-timer').style.color = "#10b981";
+        document.getElementById('ws-complete-btn').disabled = false;
+    }
+}
+
 function handleTap() {
     tapCount++;
     const circle = document.getElementById('tap-circle');
@@ -505,20 +620,23 @@ function closeWorkspace() {
     }
     if(pomodoroInterval) clearInterval(pomodoroInterval);
     if(challengeInterval) clearInterval(challengeInterval);
+    if(speedInterval) clearInterval(speedInterval);
     document.getElementById('workspace-modal').style.display = 'none';
     currentMethodId = null;
 }
 
-// امکان تکرار متدها به صورت پیش‌فرض در این تابع وجود دارد
 function completeWorkspace() {
     const method = METHODS.find(m => m.id === currentMethodId);
     if(!method) return;
     
     const user = DB.getUser(currentUser);
-    const mult = getMult(user);
     
-    const xpReward = Math.floor(method.xp * mult);
-    const coinReward = Math.floor(method.coins * mult);
+    // اعمال ضرایب اشتراک و استریک
+    const subMult = getSubMult(user);
+    const streakMult = getStreakMult(user);
+    
+    const xpReward = Math.floor(method.xp * subMult * streakMult);
+    const coinReward = Math.floor(method.coins * subMult * streakMult);
     
     user.xp += xpReward;
     user.coins += coinReward;
@@ -536,6 +654,7 @@ function completeWorkspace() {
     
     updateUI();
     renderPath();
+    renderLeaderboard();
     closeWorkspace();
     
     if(newLvl > oldLvl) showToast(`🎉 سطح بالا رفت! سطح ${newLvl}`);
@@ -587,15 +706,17 @@ async function addTask() {
 async function toggleTask(id) {
     const user = DB.getUser(currentUser);
     const task = user.tasks.find(t => t.id === id);
-    if(task.done) return; // جلوگیری از کلیم چندباره پاداش تسک
+    if(task.done) return; 
     
     task.done = !task.done;
     
     if(task.done) { 
-        user.xp += 15; 
-        user.coins += 5; 
+        const subMult = getSubMult(user);
+        const streakMult = getStreakMult(user);
+        user.xp += Math.floor(15 * subMult * streakMult); 
+        user.coins += Math.floor(5 * subMult * streakMult); 
         DB.updateUser(currentUser, { tasks: user.tasks, xp: user.xp, coins: user.coins, level: getLevel(user.xp) }); 
-        updateUI(); renderPath(); showToast('+15 XP و +5 سکه'); 
+        updateUI(); renderPath(); renderLeaderboard(); showToast('تسک انجام شد! پاداش گرفتید'); 
     } else { 
         DB.updateUser(currentUser, { tasks: user.tasks }); 
     }
