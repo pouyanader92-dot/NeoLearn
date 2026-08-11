@@ -12,37 +12,7 @@
     <script>
         tailwind.config = { theme: { extend: { fontFamily: { sans: ['Vazirmatn', 'sans-serif'] } } } }
     </script>
-    <style id="dynamic-style">
-        :root { --brand-color: #4f46e5; }
-        * { font-family: 'Vazirmatn', sans-serif; box-sizing: border-box; }
-        body { background-color: #f8fafc; color: #1e293b; margin: 0; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .btn-brand { background: var(--brand-color); color: #fff; transition: 0.2s; border: none; cursor: pointer; }
-        .btn-brand:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .btn-brand:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
-        .btn-outline { background: transparent; border: 1px solid #cbd5e1; color: var(--brand-color); transition: 0.2s; cursor: pointer; }
-        .btn-outline:hover { background: #f1f5f9; }
-        input, select, textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.75rem; color: #1e293b; width: 100%; transition: 0.2s; font-size: 1rem; min-height: 48px; }
-        input:focus, select:focus, textarea:focus { border-color: var(--brand-color); outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
-        input::placeholder { color: #94a3b8; }
-        .level-badge { background: #eef2ff; color: var(--brand-color); padding: 0.25rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 700; }
-        .xp-bar { height: 8px; background: #e2e8f0; border-radius: 0.25rem; overflow: hidden; }
-        .xp-fill { height: 100%; background: var(--brand-color); transition: width 1s ease-in-out; }
-        @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        .anim-pop { animation: fadeInUp 0.4s ease-out forwards; }
-        .task-checkbox { width: 24px; height: 24px; border-radius: 0.375rem; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: #fff; }
-        .task-checkbox.done { background: var(--brand-color); border-color: var(--brand-color); }
-        .task-item.done span { text-decoration: line-through; color: #94a3b8; }
-        .modal-overlay { display: none; position: fixed; inset: 0; z-index: 60; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); }
-        .poll-bar { transition: width 0.5s ease-in-out; }
-        .badge-locked { opacity: 0.2; filter: grayscale(100%); }
-        .toggle-switch { width: 40px; height: 22px; background: #cbd5e1; border-radius: 11px; position: relative; cursor: pointer; transition: background 0.3s; }
-        .toggle-switch.active { background: var(--brand-color); }
-        .toggle-dot { width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; transition: right 0.3s; }
-        .toggle-switch.active .toggle-dot { right: 20px; }
-    </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen">
 
